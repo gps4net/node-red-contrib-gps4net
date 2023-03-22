@@ -1,0 +1,52 @@
+<script type="text/javascript">
+    RED.nodes.registerType('g4n03rht-decode', {
+        category: 'GPS4NET',
+        color: '#87a938',
+        defaults: {
+            name: {value: 'g4n03rht decode'}
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: "icons/logo.svg",
+        label: function() {
+            return this.name || 'g4n03rht decode';
+        }
+    });
+    RED.nodes.registerType('g4n03rht-encode', {
+        category: 'GPS4NET',
+        color: '#87a938',
+        defaults: {
+            name: {value: 'g4n03rht encode'}
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: "icons/logo.svg",
+        label: function() {
+            return this.name || 'g4n03rht encode';
+        }
+    });
+</script>
+
+<script type="text/html" data-template-name="g4n03rht-decode">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i>Name</label>
+        <input type="text" id="node-input-name" placeholder="Name"><br>
+    </div>
+</script>
+
+<script type="text/html" data-help-name="g4n03rht-decode">
+    <p>A node that decodes CAN frames from G4N03RHT temperature and humidity
+    sensors to higher level data.</p>
+</script>
+
+<script type="text/html" data-template-name="g4n03rht-encode">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i>Name</label>
+        <input type="text" id="node-input-name" placeholder="Name"><br>
+    </div>
+</script>
+
+<script type="text/html" data-help-name="g4n03rht-encode">
+    <p>A node that encodes CAN frames for programming G4N03RHT temperature
+    and humidity sensors.</p>
+</script>
