@@ -52,7 +52,7 @@ module.exports = function(RED) {
 			res = {
 				canid: msg.payload.canid,
 				epoch: Math.floor(msg.payload.timestamp/1000),
-				type: 'insth',
+				type: 'insth'
 			};
 			if (msg.payload.data && msg.payload.data.length == 8) {
 				res.psn = decodePsn(node, msg);
@@ -65,7 +65,7 @@ module.exports = function(RED) {
 			res = {
 				canid: msg.payload.canid,
 				epoch: Math.floor(msg.payload.timestamp/1000),
-				type: 'avrth',
+				type: 'avrth'
 			};
 			if (msg.payload.data && msg.payload.data.length == 8) {
 				res.psn = decodePsn(node, msg);
@@ -78,7 +78,7 @@ module.exports = function(RED) {
 			res = {
 				canid: msg.payload.canid,
 				epoch: Math.floor(msg.payload.timestamp/1000),
-				type: 'insio',
+				type: 'insio'
 			};
 			if (msg.payload.data && msg.payload.data.length == 8) {
 				res.psn = decodePsn(node, msg);
@@ -90,7 +90,7 @@ module.exports = function(RED) {
 			res = {
 				epoch: Math.floor(msg.payload.timestamp/1000),
 				action: (msg.payload.canid & 0x000000ff),
-				type: 'almt',
+				type: 'almt'
 			};
 			if (msg.payload.data && msg.payload.data.length == 8) {
 				res.psn = decodePsn(node, msg);
@@ -113,7 +113,7 @@ module.exports = function(RED) {
 				canid: msg.payload.canid,
 				epoch: Math.floor(msg.payload.timestamp/1000),
 				action: (msg.payload.canid & 0x000000ff),
-				type: 'almh',
+				type: 'almh'
 			};
 			if (msg.payload.data && msg.payload.data.length == 8) {
 				res.psn = decodePsn(node, msg);
@@ -135,7 +135,7 @@ module.exports = function(RED) {
 				candid: msg.payload.canid,
 				epoch: Math.floor(msg.payload.timestamp/1000),
 				action: (msg.payload.canid & 0x000000ff),
-				type: 'almio',
+				type: 'almio'
 			};
 			if (msg.payload.data && msg.payload.data.length == 8) {
 				res.psn = decodePsn(node, msg);
@@ -167,7 +167,7 @@ module.exports = function(RED) {
 				canid: msg.payload.canid,
 				epoch: Math.floor(msg.payload.timestamp/1000),
 				action: (msg.payload.canid & 0x000000ff),
-				type: 'sysevn',
+				type: 'sysevn'
 			};
 			if (msg.payload.data && msg.payload.data.length == 8) {
 				res.psn = decodePsn(node, msg);
@@ -211,7 +211,7 @@ module.exports = function(RED) {
 			res = {
 				canid: msg.payload.canid,
 				epoch: Math.floor(msg.payload.timestamp/1000),
-				type: 'sysstat',
+				type: 'sysstat'
 			};
 			if (msg.payload.data && msg.payload.data.length == 8) {
 				res.psn = decodePsn(node, msg);
@@ -237,7 +237,7 @@ module.exports = function(RED) {
 				canid: msg.payload.canid,
 				epoch: Math.floor(msg.payload.timestamp/1000),
 				action: (msg.payload.canid & 0x000000ff),
-				type: 'prog',
+				type: 'prog'
 			};
 			if (msg.payload.data && msg.payload.data.length == 8) {
 				res.psn = decodePsn(node, msg);
@@ -246,7 +246,7 @@ module.exports = function(RED) {
 				} else if (res.action == 0x01) {
 					res.slp = true;
 				} else if (res.action == 0xf0) {
-					res.keepalive = true
+					res.keepalive = true;
 				} else if (res.action == 0xf1) {
 					res.imalive = true;
 				}
@@ -292,7 +292,8 @@ module.exports = function(RED) {
 			res = {
 				canid: msg.payload.canid,
 				epoch: Math.floor(msg.payload.timestamp/1000),
-				action: (msg.payload.canid & 0x000000f)
+				action: (msg.payload.canid & 0x000000f),
+				type: 'tmpcal'
 			};
 			if (msg.payload.data && msg.payload.data.length == 8) {
 				res.psn = decodePsn(node, msg);
@@ -314,7 +315,7 @@ module.exports = function(RED) {
 				canid: msg.payload.canid,
 				epoch: Math.floor(msg.payload.timestamp/1000),
 				action: (msg.payload.canid & 0x000000ff),
-				type: 'instset',
+				type: 'instset'
 			};
 			if (msg.payload.data && msg.payload.data.length == 8) {
 				res.psn = decodePsn(node, msg);
@@ -324,12 +325,12 @@ module.exports = function(RED) {
 			}
 			
 		} else if ((msg.payload.canid >> 8) == 0x18ffc4) {
-			// AVGSET average temperature and humidity time interval
+			// AVRSET average temperature and humidity time interval
 			res = {
 				canid: msg.payload.canid,
 				epoch: Math.floor(msg.payload.timestamp/1000),
 				action: (msg.payload.canid & 0x000000ff),
-				type: 'avrset',
+				type: 'avrset'
 			};
 			if (msg.payload.data && msg.payload.data.length == 8) {
 				res.psn = decodePsn(node, msg);
@@ -343,7 +344,7 @@ module.exports = function(RED) {
 				canid: msg.payload.canid,
 				epoch: Math.floor(msg.payload.timestamp/1000),
 				action: (msg.payload.canid & 0x000000ff),
-				type: 'almtsetmax',
+				type: 'almtsetmax'
 			};
 			if (msg.payload.data && msg.payload.data.length == 8) {
 				res.psn = decodePsn(node, msg);
@@ -357,7 +358,7 @@ module.exports = function(RED) {
 				canid: msg.payload.canid,
 				epoch: Math.floor(msg.payload.timestamp/1000),
 				action: (msg.payload.canid & 0x000000ff),
-				type: 'almtsetmin',
+				type: 'almtsetmin'
 			};
 			if (msg.payload.data && msg.payload.data.length == 8) {
 				res.psn = decodePsn(node, msg);
@@ -371,7 +372,7 @@ module.exports = function(RED) {
 				canid: msg.payload.canid,
 				epoch: Math.floor(msg.payload.timestamp/1000),
 				action: (msg.payload.canid & 0x000000ff),
-				type: 'almhsetmax',
+				type: 'almhsetmax'
 			};
 			if (msg.payload.data && msg.payload.data.length == 8) {
 				res.psn = decodePsn(node, msg);
@@ -385,7 +386,7 @@ module.exports = function(RED) {
 				canid: msg.payload.canid,
 				epoch: Math.floor(msg.payload.timestamp/1000),
 				action: (msg.payload.canid & 0x000000ff),
-				type: 'almhsetmin',
+				type: 'almhsetmin'
 			};
 			if (msg.payload.data && msg.payload.data.length == 8) {
 				res.psn = decodePsn(node, msg);
@@ -399,12 +400,12 @@ module.exports = function(RED) {
 				canid: msg.payload.canid,
 				epoch: Math.floor(msg.payload.timestamp/1000),
 				action: (msg.payload.canid & 0x000000ff),
-				type: 'almio1set',
+				type: 'almio1set'
 			};
 			if (msg.payload.data && msg.payload.data.length == 8) {
 				res.psn = decodePsn(node, msg);
 				if (res.action > 1 && res.action < 5) {
-					res.max_io1 = msg.payload.data[4]
+					res.max_io1 = msg.payload.data[4];
 					res.min_io1 = msg.payload.data[5];
 				}
 			}
@@ -414,12 +415,12 @@ module.exports = function(RED) {
 				canid: msg.payload.canid,
 				epoch: Math.floor(msg.payload.timestamp/1000),
 				action: (msg.payload.canid & 0x000000ff),
-				type: 'almio2set',
+				type: 'almio2set'
 			};
 			if (msg.payload.data && msg.payload.data.length == 8) {
 				res.psn = decodePsn(node, msg);
 				if (res.action > 1 && res.action < 5) {
-					res.max_io2 = msg.payload.data[4]
+					res.max_io2 = msg.payload.data[4];
 					res.min_io2 = msg.payload.data[5];
 				}
 			}
@@ -429,7 +430,7 @@ module.exports = function(RED) {
 				canid: msg.payload.canid,
 				epoch: Math.floor(msg.payload.timestamp/1000),
 				action: (msg.payload.canid & 0x000000ff),
-				type: 'sensorcure',
+				type: 'sensorcure'
 			};
 			if (msg.payload.data && msg.payload.data.length == 8) {
 				res.psn = decodePsn(node, msg);
@@ -443,7 +444,7 @@ module.exports = function(RED) {
 				canid: msg.payload.canid,
 				epoch: Math.floor(msg.payload.timestamp/1000),
 				action: (msg.payload.canid & 0x000000ff),
-				type: 'maintset',
+				type: 'maintset'
 			};
 			if (msg.payload.data && msg.payload.data.length == 8) {
 				res.psn = decodePsn(node, msg);
@@ -656,8 +657,7 @@ module.exports = function(RED) {
 				rtr: false,
 				data: data
 			};
-		}
-		if ((canid == 0x18ffc501 || (msg.payload.type == 'almtsetmax' && msg.payload.action == 1))
+		} else if ((canid == 0x18ffc501 || (msg.payload.type == 'almtsetmax' && msg.payload.action == 1))
 			&& msg.payload.psn && msg.payload.psn.length == 8) {
 			// ALMTSETMAX: maximum temperature event threshold, query max_temp
 			let data = Array.from(Buffer.from(msg.payload.psn, 'hex')).concat(Array(4).fill(0));
@@ -827,8 +827,7 @@ module.exports = function(RED) {
 				rtr: false,
 				data: data
 			};
-		}	
-		if ((canid == 0x18ffcb03 || (msg.payload.type == 'sensorcure' && msg.payload.action == 3))
+		} else if ((canid == 0x18ffcb03 || (msg.payload.type == 'sensorcure' && msg.payload.action == 3))
 			&& msg.payload.psn && msg.payload.psn.length == 8 && msg.payload.heat_intst != null) {
 			let data = Array.from(Buffer.from(msg.payload.psn, 'hex'));
 			// SENSORCURE: sensor curing; set heater intensity, heater_intst
