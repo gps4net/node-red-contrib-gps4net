@@ -1,24 +1,48 @@
-
 module.exports = function(RED) {
 	'use strict'
 
 	function rhtDecode(config) {
 		RED.nodes.createNode(this, config);
 		var node = this;
+		node.rules = config.rules || [];
 		node.on('input', function(msg, send, done) {
-			if (msg && msg.payload && msg.payload.canid) msg.payload = decodeCanFrame(node, msg);
+			if (msg && msg.payload && msg.payload.canid) {
+				let res = decodeCanFrame(node, msg);
+				if (res && node.rules instanceof Array && node.rules.length) {
+					let out = new Array(node.rules).fill(null);
+					for (let i=0; i<node.rules.length; i++) {
+						let r = node.rules[i];
+						if ((res.psn && r.psn && res.psn == r.psn) || r.psn == 'FFFFFFFF') {
+							let cond = (res.type == 'insth' && ['ins_temp', 'ins_rh'].indexOf(r.metric) >= 0)
+								|| (res.type == 'insio' && ['ins_io1', 'ins_io2'].indexOf(r.metric) >= 0)
+								|| (res.type == 'avrth' && ['avg_temp', 'avg_rh'].indexOf(r.metric) >= 0)
+								|| (res.type == 'almt' && r.metric == 'alm_temp')
+								|| (res.type == 'almh' && r.metric == 'alm_rh')
+								|| (res.type == 'almio' && ['alm_io1', 'alm_io2'].indexOf(r.metric) >= 0);
+							if (cond) {
+								out[i] = { payload: res[r.metric] };
+							} else if (r.metric == 'msg') {
+								out[i] = { payload: res };
+							}
+						}
+					}
+					if (out.find(v => v instanceof Object)) {
+						node.send(out);
+					}
+				} else if (res) {
+					node.send({ payload: res });
+				}
+			}
 			if (done) done();
-	
 		});
 	}
 
 	RED.nodes.registerType('g4n03rht-decode', rhtDecode, {
 		// define the node's configuration properties
 		defaults: {
-			name: {
-				value: '',
-				required: true
-			},
+            name: {value: 'g4n03rht decode', required: true},
+            rules: {value: [{ psn: 'FFFFFFFF', metric: 'msg', }], required: true},
+            outputs: {value:1}
 		}
 	});
 
@@ -37,10 +61,7 @@ module.exports = function(RED) {
 	RED.nodes.registerType('g4n03rht-encode', rhtEncode, {
 		// define the node's configuration properties
 		defaults: {
-			name: {
-				value: '',
-				required: true
-			},
+			name: {value: 'g4n03rht encode', required: true},
 		}
 	});
 
@@ -455,18 +476,32 @@ module.exports = function(RED) {
 			}
 		}
 		// send rht message
-		if (res) node.send({ payload: res });
+		if (res) return res;
 	}
 
 	// decode device PSN from byte array
 	function decodePsn(node, msg) {
 		if (msg && msg.payload && msg.payload.data && msg.payload.data.length >= 4) {
-			return (
+			let psn = (
 				('0' + msg.payload.data[0].toString(16)).slice(-2)+
 				('0' + msg.payload.data[1].toString(16)).slice(-2)+
 				('0' + msg.payload.data[2].toString(16)).slice(-2)+
 				('0' + msg.payload.data[3].toString(16)).slice(-2)
 			).toUpperCase();
+			let context = node.context();
+			let psnList = context.get('psnList');
+			if (psnList instanceof Array) {
+				if (psnList.indexOf(psn) < 0) {
+					// add psn to psnList
+					psnList.push(psn);
+					context.set('psnList', psnList)
+				}
+			}
+			else {
+				psnList = [psn];
+				context.set('psnList', psnList)
+			}
+			return psn;
 		}                 
 	}
 
@@ -535,19 +570,62 @@ module.exports = function(RED) {
 			// SYSSET: system settings, program
 			let data = Array.from(Buffer.from(msg.payload.psn, 'hex'));
 			// set system config flags
-			if (msg.payload.snsr_ena) msg.payload.sys_cnf & 0x7f;
-			if (msg.payload.io1_mntc) msg.payload.sys_cnf | 0x40;
-			if (msg.payload.io2_mntc) msg.payload.sys_cnf | 0x20;
-			if (msg.payload.avg_val_evt) msg.payload.sys_cnf | 0x10;
-			if (msg.payload.temp_c_bcd) (msg.payload.sys_cnf & 0xfc) & 0x01;
-			if (msg.payload.temp_k_bin) msg.payload.sys_cnf & 0xfc;
+			if (msg.payload.snsr_ena == true) {
+				msg.payload.sys_cnf &= 0x7f;
+			} else if (msg.payload.snsr_ena == false) {
+				msg.payload.sys_cnf |= 0x80;
+			}
+			if (msg.payload.io1_mntc == true) {
+				msg.payload.sys_cnf |= 0x40;
+			} else if (msg.payload.io1_mntc == false) {
+				msg.payload.sys_cnf &= 0xbf;
+			}
+			if (msg.payload.io2_mntc == true) {
+				msg.payload.sys_cnf |= 0x20;
+			} else if (msg.payload.io2_mntc == false) {
+				msg.payload.sys_cnf &= 0xdf;
+			}
+			if (msg.payload.avg_val_evt == true) {
+				msg.payload.sys_cnf |= 0x10;
+			} else if (msg.payload.avg_val_evt == false) {
+				msg.payload.sys_cnf &= 0xef;
+			}
+			if (msg.payload.temp_k_bin == true) {
+				msg.payload.sys_cnf &= 0xfc;
+			} else if (msg.payload.temp_k_bin == false) {
+				msg.payload.sys_cnf = (msg.payload.sys_cnf & 0xfc) | 0x01;
+			}
 			// set alarm config flags
-			if (msg.payload.led_temp_alm) msg.payload.alm_cnf | 0x20;
-			if (msg.payload.led_rh_alm) msg.payload.alm_cnf | 0x10;
-			if (msg.payload.led_io_alm) msg.payload.alm_cnf | 0x8;
-			if (msg.payload.io_temp_alm) msg.payload.alm_cnf | 0x4;
-			if (msg.payload.io_rh_alm) msg.payload.alm_cnf | 0x2;
-			if (msg.payload.io_io_alm) msg.payload.alm_cnf | 0x1;
+			if (msg.payload.led_temp_alm == true) {
+				msg.payload.alm_cnf |= 0x20;
+			} else if (msg.payload.led_temp_alm == false) {
+				msg.payload.alm_cnf &= 0xdf;
+			}
+			if (msg.payload.led_rh_alm == true) {
+				msg.payload.alm_cnf |= 0x10;
+			} else if (msg.payload.led_rh_alm == false) {
+				msg.payload.alm_cnf &= 0xef;
+			}
+			if (msg.payload.led_io_alm == true) {
+				msg.payload.alm_cnf |= 0x8;
+			} else if (msg.payload.led_io_alm == false) {
+				msg.payload.alm_cnf &= 0xf7;
+			}
+			if (msg.payload.io_temp_alm == true) {
+				msg.payload.alm_cnf |= 0x4;
+			} else if (msg.payload.io_temp_alm == false) {
+				msg.payload.alm_cnf &= 0xfb;
+			}
+			if (msg.payload.io_rh_alm == true) {
+				msg.payload.alm_cnf |= 0x2;
+			} else if (msg.payload.io_rh_alm == false) {
+				msg.payload.alm_cnf &= 0xfd;
+			}
+			if (msg.payload.io_io_alm == true) {
+				msg.payload.alm_cnf |= 0x1;
+			} else if (msg.payload.io_io_alm == false) {
+				msg.payload.alm_cnf &= 0xfe;
+			}
 			// set io filter
 			if (msg.payload.io_fltr) msg.payload.io_fltr = Math.round(msg.payload.io_fltr/0.75);
 			let xpar = [
