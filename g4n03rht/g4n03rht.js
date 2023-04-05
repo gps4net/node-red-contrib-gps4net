@@ -40,9 +40,9 @@ module.exports = function(RED) {
 	RED.nodes.registerType('g4n03rht-decode', rhtDecode, {
 		// define the node's configuration properties
 		defaults: {
-            name: {value: 'g4n03rht decode', required: true},
-            rules: {value: [{ psn: 'FFFFFFFF', metric: 'msg', }], required: true},
-            outputs: {value:1}
+			name: {value: 'g4n03rht decode', required: true},
+			rules: {value: [{ psn: 'FFFFFFFF', metric: 'msg', }], required: true},
+			outputs: {value:1}
 		}
 	});
 
