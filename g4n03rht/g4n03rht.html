@@ -96,19 +96,6 @@
 							label: 'Metric',
 							icon: 'fa fa-filter',
 							options: metrics.map(v => ({value: v.k, label: v.l })),
-							// options: [
-							//     { value: 'ins_temp', label: 'Temperature' },
-							//     { value: 'ins_rh', label: 'Relative humidity' },
-							//     { value: 'ins_io1', label: 'IO1 voltage' },
-							//     { value: 'ins_io2', label: 'IO2 voltage' },
-							//     { value: 'avg_temp', label: 'Average temperature' },
-							//     { value: 'avg_rh', label: 'Average relative humidity' },
-							//     { value: 'alm_temp', label: 'Alarm temperature' },
-							//     { value: 'alm_rh', label: 'Alarm relative humidity' },
-							//     { value: 'alm_io1', label: 'IO1 alarm voltage' },
-							//     { value: 'alm_io2', label: 'IO2 alarm voltage' },
-							//     { value: 'msg', label: 'Full message' }
-							// ]
 						}],
 					});
 					$('<span/>',{style: 'margin-left: 5px;'}).appendTo(row).append(function () {
