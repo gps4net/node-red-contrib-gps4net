@@ -3,10 +3,12 @@
 	var metrics = [
 		{ k: 'ins_temp', l: 'Temperature' },
 		{ k: 'ins_rh', l: 'Relative humidity' },
+		{ k: 'ins_dwpt', l: 'Dew point' },
 		{ k: 'ins_io1', l: 'IO1 voltage' },
 		{ k: 'ins_io2', l: 'IO2 voltage' },
 		{ k: 'avg_temp', l: 'Average temperature' },
 		{ k: 'avg_rh', l: 'Average relative humidity' },
+		{ k: 'avg_dwpt', l: 'Average dew point' },
 		{ k: 'alm_temp', l: 'Alarm temperature' },
 		{ k: 'alm_rh', l: 'Alarm relative humidity' },
 		{ k: 'alm_io1', l: 'IO1 alarm voltage' },
@@ -192,8 +194,374 @@
 </script>
 
 <script type="text/html" data-help-name="g4n03rht-decode">
-	<p>A node that decodes CAN frames from G4N03RHT temperature and humidity
-	sensors to higher level data.</p>
+	<p><b>g4n03rht-decode</b> is a node that decodes CAN frames from G4N03RHT temperature
+	and humidity sensors to higher level data.</b>
+
+	<h3>Inputs</h3>
+	<ul class="node-properties">
+		<li>CAN frame
+			<dl class="message-properties">
+				<dt>payload <span class="property-type">object</span></dt>
+                <dd>the standard output of the command in the form of a 
+                    JSON object in <b>socketcan</b> format, with the following
+					content.
+					<pre>
+{
+	timestamp: 1680699437931,
+	ext: true,
+	canid: 0x18ff8100,
+	dlc: 8,
+	rtr: false,
+	data: [2,1,0,7,116,96,51,88]
+}
+					</pre>
+					<ul>
+						<li> <b>canid</b> - The standard or extended CAN id.</li>
+						<li> <b>ext</b> - Set to true if this is a extended id frame. False otherwise.</li>
+						<li> <b>rtr</b> - Specifies a remote transmission request frame if set to true.</li>
+						<li> <b>dlc</b> - Number of databytes.</li>
+						<li> <b>data</b> - An array with data or null or an empty array if no data.</li>
+						<li> <b>timestamp</b> - Relative timestamp in microseconds</li>
+					</ul>
+				</dd>
+			</dl>
+		</li>
+	</ul>
+
+	<h3>Outputs</h3>
+	<h4>Rules</h4>
+	<p>Each rule is a composite filter that sets up an additional output and has two settings:</p>
+	<ol>
+		<li> <b>PSN</b> - The sensor's PSN or <code>FFFFFFFF</code> for any of the sensors</li>
+		<li> <b>Metric</b> - The metric that one wants on the output: temperature, humidity, I/O voltage
+			values for the different scenarios: instantaneous samples, average values, alarm values when
+			a temperature, humidity or I/O alarm is triggered. By default the metric is set up to output
+			full message objects.
+		</li>
+	</ol>
+    <ul class="node-ports">
+		<li>Full message
+			<dl class="message-properties">
+				<dt>payload <span class="property-type">object | number</span></dt>
+				<dd>by default the node translates and outputs every message that is given on the output
+					in a JSON object with the following keys:
+					<ul>
+						<li> <b>psn</b> - The sensor's PSN (product serial number), 4 byte hex string.</li>
+						<li> <b>type</b> - The message type, string.</li>
+						<li> <b>epoch</b> - The UNIX epoch of the message, integer.</li>
+					</ul>
+					<br>
+					Additional keys will also be present depending on message type, described in the
+					<b>Unsolicited messages</b> and <b>Command messages</b> sections. If any other metric
+					than <em>Full message</em> is selected, the payload will contain an integer or a
+					floating pint number representing the selected metric's value. The <em>dew point</em>
+					metric os computed based on the temperature and humidity.
+				</dd>
+				<dt>topic <span class="property-type">string</span></dt>
+				<dd>the message topic is uses the following format:
+					<ul>
+						<li> <code>PSN</code> if the output is configured to supply the full message.</li>
+						<li> <code>PSN/metric</code> if the output is configured to supply a temperature,
+							humidity or I/O voltage value.
+						</li>
+					</ul>
+				</dd>
+			</dl>
+		</li>
+	</ul>
+	<h4>Unsolicited messages</h4>
+	<p>These messages are sent by sensors operating in reporting mode at configured intervals or when certain
+		events take place, for instance when an alarm triggers or when the sensor network is placed in a different
+		operating mode. Additional fields specific to each of the unsolicited message types are detailed below.</p>
+	<h5>insth</h5>
+	<p>Instantaneous temperature and humidity message</p>
+	<ul>
+		<li> <b>ins_temp</b> - The instantaneous temperature in &deg;C.</li>
+		<li> <b>ins_rh</b> - The instantaneous relative humidity in %.</li>
+	</ul>
+	<h5>avrth</h5>
+	<p>Average temperature and humidity message</p>
+	<ul>
+		<li> <b>avg_temp</b> - The average temperature in &deg;C.</li>
+		<li> <b>avg_rh</b> - The average relative humidity in %.</li>
+	</ul>
+	<h5>insio</h5>
+	<p>Instantaneous analog input voltage message</p>
+	<ul>
+		<li> <b>ins_io1</b> - The instantaneous voltage on the sensor's IO1 port in V.</li>
+		<li> <b>ins_io2</b> - The instantaneous voltage on the sensor's IO2 port in V.</li>
+	</ul>
+	<h5>almt</h5>
+	<p>Temperature alarm message</p>
+	<ul>
+		<li> <b>action</b> - Event type, integer.</li>
+		<ul>
+			<li>16 - temperature over maximum threshold</li>
+			<li>17 - temperature under maximum threshold</li>
+			<li>18 - temperature under minimum threshold</li>
+			<li>19 - temperature over minimum threshold</li>
+		</ul>
+		<li> <b>alm_temp</b> - The temperature in &deg;C upon triggering an alarm, float.</li>
+		<li> <b>max_temp_th</b> - Maximum temperature threshold in &deg;C, float.</li>
+		<li> <b>min_temp_th</b> - Minimum temperature threshold in &deg;C, float.</li>
+	</ul>
+	<h5>almh</h5>
+	<p>Relative humidity alarm message</p>
+	<ul>
+		<li> <b>action</b> - Event type, integer.</li>
+		<ul>
+			<li>32 - humidity over maximum threshold</li>
+			<li>33 - humidity under maximum threshold</li>
+			<li>34 - humidity under minimum threshold</li>
+			<li>35 - humidity over minimum threshold</li>
+		</ul>
+		<li> <b>alm_rh</b> - The relative humidity in % upon triggering an alarm, float.</li>
+		<li> <b>max_rh_th</b> - Maximum relative humidity threshold in %, float.</li>
+		<li> <b>min_rh_th</b> - Minimum relative humidity threshold in %, float.</li>
+	</ul>
+	<h5>almio</h5>
+	<p>Analog input voltage alarm message</p>
+	<ul>
+		<li> <b>action</b> - Event type, integer.</li>
+		<ul>
+			<li>48 - IO1 voltage over maximum threshold</li>
+			<li>49 - IO1 voltage under maximum threshold</li>
+			<li>50 - IO1 voltage under minimum threshold</li>
+			<li>51 - IO1 voltage over minimum threshold</li>
+			<li>52 - IO2 voltage over maximum threshold</li>
+			<li>53 - IO2 voltage under maximum threshold</li>
+			<li>54 - IO2 voltage under minimum threshold</li>
+			<li>55 - IO2 voltage over minimum threshold</li>
+		</ul>
+		<li> <b>alm_io1</b> - The IO1 voltage in V upon triggering an alarm, integer.</li>
+		<li> <b>alm_io2</b> - The IO2 voltage in V upon triggering an alarm, integer.</li>
+		<li> <b>max_io1_th</b> - Maximum IO1 voltage threshold in V, integer.</li>
+		<li> <b>min_io1_th</b> - Minimum IO1 voltage threshold in V, integer.</li>
+		<li> <b>max_io2_th</b> - Maximum IO2 voltage threshold in V, integer.</li>
+		<li> <b>min_io2_th</b> - Minimum IO2 voltage threshold in V, integer.</li>
+	</ul>
+	<h5>sysevn</h5>
+	<p>System events message</p>
+	<ul>
+		<li> <b>action</b> - Event type, integer.</li>
+		<ul>
+			<li>64 - reset or power on event detected</li>
+			<li>65 - programming mode enabled</li>
+			<li>66 - programming mode disabled</li>
+			<li>67 - maintenance mode enabled</li>
+			<li>68 - maintenance mode disabled</li>
+		</ul>
+		<li> <b>sys_cnf</b> - System configuration, integer. Options listed below:</li>
+		<ul>
+			<li>snsr_ena - sensor enabled</li>
+			<li>io1_mntc - assign IO1 as input for enabling maintenance mode using an external switch</li>
+			<li>io2_mntc - assign IO2 as input for enabling maintenance mode using an external switch</li>
+			<li>avg_val_evt - use average temperature and humidity values for alarm event detection</li>
+			<li>temp_c_bcd - sensor temperature format is &degC; in BCD</li>
+			<li>temp_k_bin - sensor temperature format is K x100 in binary</li>
+		</ul>
+		<li> <b>alm_cnf</b> - Alarm configuration, integer. Options listed below:</li>
+		<ul>
+			<li>led_temp_alm - enable LED blink when the temperature alarm is triggered</li>
+			<li>led_rh_alm - enable LED blink when the humidity alarm is triggered</li>
+			<li>led_io_alm - enable LED blink when the IO alarms is triggered</li>
+			<li>io_temp_alm - temperature events trigger the alarm's assigned IO</li>
+			<li>io_rh_alm - humidity events trigger the alarm's assigned IO</li>
+			<li>io_io_alm - IO events trigger the alarm's assigned IO</li>
+		</ul>
+		<li> <b>io_fltr</b> - Time interval in seconds for the IO voltage hold timer, float.</li>
+	</ul>
+	<h5>sysstat</h5>
+	<p>System status message</p>
+	<ul>
+		<li> <b>sys_stat</b> - System status, integer. Options listed below:</li>
+		<ul>
+			<li>ovr_max_temp_th - over maximum temperature threshold</li>
+			<li>und_min_temp_th - under minumum temperature threshold</li>
+			<li>ovr_max_rh_th - over maximum humidity threshold</li>
+			<li>und_min_rh_th - under minumum humidity threshold</li>
+			<li>ovr_max_io1_th - over maximum IO1 voltage threshold</li>
+			<li>und_min_io1_th - under minumum IO1 voltage threshold</li>
+			<li>ovr_max_io2_th - over maximum IO2 voltage threshold</li>
+			<li>und_min_io2_th - under minumum IO2 voltage threshold</li>
+			<li>snsr_act - sensor is active</li>
+			<li>alm_ind_led - the alarm condition is indicated by the LED, as indicated by the <b>alm_cnf</b> parameter</li>
+			<li>heat_act - the sensor's built-in heater is active</li>
+			<li>alm_ind_io - the alarm condition is indicated by an assigned IO, as indicated by the <b>alm_cnf</b> parameter</li>
+			<li>snsr_mtnc - sensor operating in maintenance mode</li>
+			<li>snsr_prog - sensor operating in programming mode</li>
+		</ul>
+	</ul>
+	<h4>Command messages</h4>
+	<p>These messages are sent to place the sensor network in programming mode or in reporting mode. When the network
+		is operating in programming mode, command messages are sent to query or program the different parameters for
+		each sensor. While operating in programming mode, each sensor also broadcasts unsolicited <b>prog</b> messages
+		with a particular action field. Additional fields specific to each of the command message types are detailed below.
+	</p>
+	<h5>prog</h5>
+	<p>Programming messages. The sensors network needs to be operating in programming mode in order to
+		respond to command messages.
+	<ul>
+		<li> <b>action</b> - Action type, integer.</li>
+		<ul>
+			<li>0 - wku: enable programming mode</li>
+			<li>1 - slp: disable programming mode</li>
+			<li>240 - keepalive: sent every 250 ms by the first sensor that received the wku command</li>
+			<li>241 - imalive: sent every 250 ms by each sensor that is operating in programming mode</li>
+		</ul>
+	</ul>
+	<h5>sysset</h5>
+	<p>System configuration messages. See the <b>sysevn</b> message above for details about the <b>sys_cnf</b>
+		and <b>alm_cnf</b> options. To change any of those options using action type 2, one needs to supply
+		the message type and all the paramaters listed below, in addition to the modified option.</p>
+	<ul>
+		<li> <b>action</b> - Action type, integer.</li>
+		<ul>
+			<li>0 - query parameters</li>
+			<li>1 - query response</li>
+			<li>2 - program parameters</li>
+			<li>3 - programming confirmation</li>
+		</ul>
+		<li> <b>sys_cnf</b> - System configuration, integer.</li>
+		<li> <b>alm_cnf</b> - Alarm configuration, integer.</li>
+		<li> <b>io_fltr</b> - Time interval in seconds for the IO voltage hold timer, float.</li>
+	</ul>
+	<h5>tmpcal</h5>
+	<p>Temperature calibration offset messages. Programming this parameter will add the value of the
+		calibration offset to the reported temperature. Be aware that the relative humidity and dew
+		point calculations are also negatively impacted by programming a non zero value.
+	</p>
+	<ul>
+		<li> <b>action</b> - Action type, integer.</li>
+		<ul>
+			<li>0 - query parameter</li>
+			<li>1 - query response</li>
+			<li>2 - program parameter</li>
+			<li>3 - programming confirmation</li>
+		</ul>
+		<li> <b>temp_cal_ofst</b> - Temperature calibration offset in &deg;C, float -327.68..+327.67</li>
+	</ul>
+	<h5>instset</h5>
+	<p>Broadcast and sampling interval for the instantaneous temperature and humidity message <b>insth</b>.</p>
+	<ul>
+		<li> <b>action</b> - Action type, integer.</li>
+		<ul>
+			<li>0 - query parameter</li>
+			<li>1 - query response</li>
+			<li>2 - program parameter</li>
+			<li>3 - programming confirmation</li>
+		</ul>
+		<li> <b>ins_int</b> - sampling interval in seconds, integer 0..16383.75</li>
+	</ul>
+	<h5>avrset</h5>
+	<p>Broadcast and averaging interval for the average temperature and humidity message <b>avrth</b>.</p>
+	<ul>
+		<li> <b>action</b> - Action type, integer.</li>
+		<ul>
+			<li>0 - query parameter</li>
+			<li>1 - query response</li>
+			<li>2 - program parameter</li>
+			<li>3 - programming confirmation</li>
+		</ul>
+		<li> <b>avg_int</b> - averaging interval in seconds, integer 0..655350</li>
+	</ul>
+	<h5>almtsetmax</h5>
+	<p>Maximum temperature threshold for triggering the <b>almt</b> alarm event messages.</p>
+	<ul>
+		<li> <b>action</b> - Action type, integer.</li>
+		<ul>
+			<li>0 - query parameter</li>
+			<li>1 - query response</li>
+			<li>2 - program parameter</li>
+			<li>3 - programming confirmation</li>
+		</ul>
+		<li> <b>max_temp</b> - maximum temperature threshold in &deg;C/K, float -273.15..382.2</li>
+	</ul>
+	<h5>almtsetmin</h5>
+	<p>Minimum temperature threshold for triggering the <b>almt</b> alarm event messages.</p>
+	<ul>
+		<li> <b>action</b> - Action type, integer.</li>
+		<ul>
+			<li>0 - query parameter</li>
+			<li>1 - query response</li>
+			<li>2 - program parameter</li>
+			<li>3 - programming confirmation</li>
+		</ul>
+		<li> <b>min_temp</b> - minimum temperature threshold in &deg;C/K, float -273.15..382.2</li>
+	</ul>
+	<h5>almhsetmax</h5>
+	<p>Maximum relative humidity threshold for triggering the <b>almh</b> alarm event messages.</p>
+	<ul>
+		<li> <b>action</b> - Action type, integer.</li>
+		<ul>
+			<li>0 - query parameter</li>
+			<li>1 - query response</li>
+			<li>2 - program parameter</li>
+			<li>3 - programming confirmation</li>
+		</ul>
+		<li> <b>max_rh</b> - maximum humidity threshold in %, float 0..100</li>
+	</ul>
+	<h5>almhsetmin</h5>
+	<p>Minimum relative humidity threshold for triggering the <b>almh</b> alarm event messages.</p>
+	<ul>
+		<li> <b>action</b> - Action type, integer.</li>
+		<ul>
+			<li>0 - query parameter</li>
+			<li>1 - query response</li>
+			<li>2 - program parameter</li>
+			<li>3 - programming confirmation</li>
+		</ul>
+		<li> <b>min_rh</b> - minimum humidity threshold in %, float 0..100</li>
+	</ul>
+	<h5>almio1set</h5>
+	<p>Maximum and minimum voltage thresholds for triggering the <b>alm_io1</b> alarm event messages.</p>
+	<ul>
+		<li> <b>action</b> - Action type, integer.</li>
+		<ul>
+			<li>0 - query parameter</li>
+			<li>1 - query response</li>
+			<li>2 - program parameter</li>
+			<li>3 - programming confirmation</li>
+		</ul>
+		<li> <b>max_io1</b> - maximum voltage threshold on IO1 in V, integer 0..99</li>
+		<li> <b>min_io1</b> - maximum voltage threshold on IO1 in V, integer 0..99</li>
+	</ul>
+	<h5>almio2set</h5>
+	<p>Maximum and minimum voltage thresholds for triggering the <b>alm_io2</b> alarm event messages.</p>
+	<ul>
+		<li> <b>action</b> - Action type, integer.</li>
+		<ul>
+			<li>0 - query parameter</li>
+			<li>1 - query response</li>
+			<li>2 - program parameter</li>
+			<li>3 - programming confirmation</li>
+		</ul>
+		<li> <b>max_io2</b> - maximum voltage threshold on IO2 in V, integer 0..99</li>
+		<li> <b>min_io2</b> - maximum voltage threshold on IO2 in V, integer 0..99</li>
+	</ul>
+	<h5>sensorcure</h5>
+	<p>Sensor curing messages. Activates the sensor's heating element.</p>
+	<ul>
+		<li> <b>action</b> - Action type, integer.</li>
+		<ul>
+			<li>2 - program parameter</li>
+			<li>3 - programming confirmation</li>
+		</ul>
+		<li> <b>heat_intst</b> - heater intensity, integer 0..15</li>
+	</ul>
+	<h5>maintset</h5>
+	<p>Maintenance mode triggering voltage threshold.</p>
+	<ul>
+		<li> <b>action</b> - Action type, integer.</li>
+		<ul>
+			<li>0 - query parameter</li>
+			<li>1 - query response</li>
+			<li>2 - program parameter</li>
+			<li>3 - programming confirmation</li>
+		</ul>
+		<li> <b>max_io2</b> - maximum voltage for triggering maintenance mode in V, integer 0..99</li>
+		<li> <b>min_io2</b> - minimum voltage for triggering maintenance mode in V, integer 0..99</li>
+	</ul>
 </script>
 
 <script type="text/html" data-template-name="g4n03rht-encode">

@@ -20,9 +20,31 @@ module.exports = function(RED) {
 								|| (res.type == 'almh' && r.metric == 'alm_rh')
 								|| (res.type == 'almio' && ['alm_io1', 'alm_io2'].indexOf(r.metric) >= 0);
 							if (cond) {
-								out[i] = { payload: res[r.metric] };
+								out[i] = {
+									payload: res[r.metric],
+									topic: [res.psn, r.metric].join('/')
+								};
+							} else if (res.type == 'insth' && r.metric == 'ins_dwpt') {
+								let b = 17.62;
+								let c = 243.12;
+								let gamma = Math.log(res.ins_rh/100) + b*res.ins_temp/(c + res.ins_temp);
+								out[i] = {
+									payload: Math.round(100*c*gamma/(b - gamma))/100,
+									topic: [res.psn, r.metric].join('/')
+								};
+							} else if (res.type == 'avrth' && r.metric == 'avg_dwpt') {
+								let b = 17.62;
+								let c = 243.12;
+								let gamma = Math.log(res.avg_rh/100) + b*res.avh_temp/(c + res.avg_temp);
+								out[i] = {
+									payload: Math.round(100*c*gamma/(b - gamma))/100,
+									topic: [res.psn, r.metric].join('/')
+								};
 							} else if (r.metric == 'msg') {
-								out[i] = { payload: res };
+								out[i] = {
+									payload: res,
+									topic: res.psn
+								};
 							}
 						}
 					}
@@ -118,14 +140,10 @@ module.exports = function(RED) {
 				res.alm_temp = (msg.payload.data[4]*256 + msg.payload.data[5])/100 - 273.15;
 				res.alm_temp = res.alm_temp.toFixed(2) * 1;
 				let temp_th = (msg.payload.data[6]*256 + msg.payload.data[7])/100 - 273.15;
-				if (res.action == 0x10) {
-					res.max_temp_ovr_th = temp_th.toFixed(2) * 1;
-				} else if (res.action == 0x11) {
-					res.max_temp_und_th = temp_th.toFixed(2) * 1
-				} else if (res.action == 0x12) {
-					res.min_temp_und_th = temp_th.toFixed(2) * 1
-				} else if (res.action == 0x13) {
-					res.min_temp_ovr_th = temp_th.toFixed(2) * 1
+				if ([0x10, 0x11].indexOf(res.action) >= 0) {
+					res.max_temp_th = temp_th.toFixed(2) * 1;
+				} else if ([0x12, 0x13].indexOf(res.action) >= 0) {
+					res.min_temp_th = temp_th.toFixed(2) * 1
 				}
 			}
 		} else if ((msg.payload.canid >> 8) == 0x18ff85) {
@@ -140,14 +158,10 @@ module.exports = function(RED) {
 				res.psn = decodePsn(node, msg);
 				res.alm_rh = (msg.payload.data[4]*100 + msg.payload.data[5])/100;
 				let rh_th = (msg.payload.data[6]*100 + msg.payload.data[7])/100;
-				if (res.action == 0x20) {
-					res.max_rh_ovr_th = rh_th;
-				} else if (res.action == 0x21) {
-					res.max_rh_und_th = rh_th;
-				} else if (res.action == 0x22) {
-					res.min_rh_und_th = rh_th;
-				} else if (res.action == 0x23) {
-					res.min_rh_ovr_th = rh_th;
+				if ([0x20, 0x21].indexOf(re.action >= 0)) {
+					res.max_rh_th = rh_th;
+				} else if ([0x22, 0x23].indexOf(re.action >= 0)) {
+					res.min_rh_th = rh_th;
 				}
 			}
 		} else if ((msg.payload.canid >> 8) == 0x18ff86) {
@@ -164,22 +178,14 @@ module.exports = function(RED) {
 				res.alm_io2 = msg.payload.data[5];
 				let io1_th = msg.payload.data[6];
 				let io2_th = msg.payload.data[7];
-				if (res.action == 0x30) {
-					res.max_io1_ovr_th = io1_th;
-				} else if (res.action == 0x31) {
-					res.max_io1_und_th = io1_th;
-				} else if (res.action == 0x32) {
-					res.min_io1_und_th = io1_th;
-				} else if (res.action == 0x33) {
-					res.min_io1_ovr_th = io1_th;
-				} else if (res.action == 0x34) {
-					res.max_io2_ovr_th = io2_th;
-				} else if (res.action == 0x35) {
-					res.max_io2_und_th = io2_th;
-				} else if (res.action == 0x36) {
-					res.min_io2_und_th = io2_th;
-				} else if (res.action == 0x37) {
-					res.min_io2_ovr_th = io2_th;
+				if ([0x30, 0x31].indexOf(res.action) >= 0) {
+					res.max_io1_th = io1_th;
+				} else if ([0x32, 0x33].indexOf(res.action) >= 0) {
+					res.min_io1_th = io1_th;
+				} else if ([0x34, 0x35].indexOf(res.action) >= 0) {
+					res.max_io2_th = io2_th;
+				} else if ([0x36, 0x37].indexOf(res.action) >= 0) {
+					res.min_io2_th = io2_th;
 				}
 			}
 		} else if ((msg.payload.canid >> 8) == 0x18ff87) {
@@ -237,7 +243,7 @@ module.exports = function(RED) {
 			if (msg.payload.data && msg.payload.data.length == 8) {
 				res.psn = decodePsn(node, msg);
 				res.sys_stat = msg.payload.data[4]*256 + msg.payload.data[5];
-				res.ovr_max_temp_ovr_th = ((res.sys_stat & 0x8000) >> 15) ? true : false;
+				res.ovr_max_temp_th = ((res.sys_stat & 0x8000) >> 15) ? true : false;
 				res.und_min_temp_th = ((res.sys_stat & 0x4000) >> 14) ? true : false;
 				res.ovr_max_rh_th = ((res.sys_stat & 0x2000) >> 13) ? true : false;
 				res.und_min_rh_th = ((res.sys_stat & 0x1000) >> 12) ? true : false;
@@ -416,7 +422,7 @@ module.exports = function(RED) {
 				}
 			}
 		} else if ((msg.payload.canid >> 8) == 0x18ffc9) {
-			// ALMIO1SET set maximum and minimum humidity event threshold
+			// ALMIO1SET set maximum and minimum IO1 voltage event threshold
 			res = {
 				canid: msg.payload.canid,
 				epoch: Math.floor(msg.payload.timestamp/1000),
@@ -431,7 +437,7 @@ module.exports = function(RED) {
 				}
 			}
 		} else if ((msg.payload.canid >> 8) == 0x18ffca) {
-			// ALMIO2SET set maximum and minimum humidity event threshold
+			// ALMIO2SET set maximum and minimum IO2 voltage event threshold
 			res = {
 				canid: msg.payload.canid,
 				epoch: Math.floor(msg.payload.timestamp/1000),
