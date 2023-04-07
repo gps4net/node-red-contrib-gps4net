@@ -12,15 +12,17 @@ Custom Node-RED nodes for GPS4NET
     payload object
     
     The input is in the form of a JSON object in **socketcan** format, with the following content:
-    
+
+    ```
     {
     	timestamp: 1680699437931,
     	ext: true,
     	canid: 0x18ff8100,
     	dlc: 8,
     	rtr: false,
-    	data: \[2,1,0,7,116,96,51,88\]
+        data: [2,1,0,7,116,96,51,88]
     }
+    ```
     					
     
     *   **canid** - The standard or extended CAN id.
@@ -69,22 +71,22 @@ These messages are sent by sensors operating in reporting mode at configured int
 
 Instantaneous temperature and humidity message
 
-*   **ins\_temp** - The instantaneous temperature in °C.
-*   **ins\_rh** - The instantaneous relative humidity in %.
+*   **ins_temp** - The instantaneous temperature in °C.
+*   **ins_rh** - The instantaneous relative humidity in %.
 
 ##### avrth
 
 Average temperature and humidity message
 
-*   **avg\_temp** - The average temperature in °C.
-*   **avg\_rh** - The average relative humidity in %.
+*   **avg_temp** - The average temperature in °C.
+*   **avg_rh** - The average relative humidity in %.
 
 ##### insio
 
 Instantaneous analog input voltage message
 
-*   **ins\_io1** - The instantaneous voltage on the sensor's IO1 port in V.
-*   **ins\_io2** - The instantaneous voltage on the sensor's IO2 port in V.
+*   **ins_io1** - The instantaneous voltage on the sensor's IO1 port in V.
+*   **ins_io2** - The instantaneous voltage on the sensor's IO2 port in V.
 
 ##### almt
 
@@ -96,9 +98,9 @@ Temperature alarm message
     *   18 - temperature under minimum threshold
     *   19 - temperature over minimum threshold
 
-*   **alm\_temp** - The temperature in °C upon triggering an alarm, float.
-*   **max\_temp\_th** - Maximum temperature threshold in °C, float.
-*   **min\_temp\_th** - Minimum temperature threshold in °C, float.
+*   **alm_temp** - The temperature in °C upon triggering an alarm, float.
+*   **max_temp_th** - Maximum temperature threshold in °C, float.
+*   **min_temp_th** - Minimum temperature threshold in °C, float.
 
 ##### almh
 
@@ -110,9 +112,9 @@ Relative humidity alarm message
     *   34 - humidity under minimum threshold
     *   35 - humidity over minimum threshold
 
-*   **alm\_rh** - The relative humidity in % upon triggering an alarm, float.
-*   **max\_rh\_th** - Maximum relative humidity threshold in %, float.
-*   **min\_rh\_th** - Minimum relative humidity threshold in %, float.
+*   **alm_rh** - The relative humidity in % upon triggering an alarm, float.
+*   **max_rh_th** - Maximum relative humidity threshold in %, float.
+*   **min_rh_th** - Minimum relative humidity threshold in %, float.
 
 ##### almio
 
@@ -128,12 +130,12 @@ Analog input voltage alarm message
     *   54 - IO2 voltage under minimum threshold
     *   55 - IO2 voltage over minimum threshold
 
-*   **alm\_io1** - The IO1 voltage in V upon triggering an alarm, integer.
-*   **alm\_io2** - The IO2 voltage in V upon triggering an alarm, integer.
-*   **max\_io1\_th** - Maximum IO1 voltage threshold in V, integer.
-*   **min\_io1\_th** - Minimum IO1 voltage threshold in V, integer.
-*   **max\_io2\_th** - Maximum IO2 voltage threshold in V, integer.
-*   **min\_io2\_th** - Minimum IO2 voltage threshold in V, integer.
+*   **alm_io1** - The IO1 voltage in V upon triggering an alarm, integer.
+*   **alm_io2** - The IO2 voltage in V upon triggering an alarm, integer.
+*   **max_io1_th** - Maximum IO1 voltage threshold in V, integer.
+*   **min_io1_th** - Minimum IO1 voltage threshold in V, integer.
+*   **max_io2_th** - Maximum IO2 voltage threshold in V, integer.
+*   **min_io2_th** - Minimum IO2 voltage threshold in V, integer.
 
 ##### sysevn
 
@@ -146,43 +148,43 @@ System events message
     *   67 - maintenance mode enabled
     *   68 - maintenance mode disabled
 
-*   **sys\_cnf** - System configuration, integer. Options listed below:
-    *   snsr\_ena - sensor enabled
-    *   io1\_mntc - assign IO1 as input for enabling maintenance mode using an external switch
-    *   io2\_mntc - assign IO2 as input for enabling maintenance mode using an external switch
-    *   avg\_val\_evt - use average temperature and humidity values for alarm event detection
-    *   temp\_c\_bcd - sensor temperature format is °C; in BCD
-    *   temp\_k\_bin - sensor temperature format is K x100 in binary
+*   **sys_cnf** - System configuration, integer. Options listed below:
+    *   snsr_ena - sensor enabled
+    *   io1_mntc - assign IO1 as input for enabling maintenance mode using an external switch
+    *   io2_mntc - assign IO2 as input for enabling maintenance mode using an external switch
+    *   avg_val_evt - use average temperature and humidity values for alarm event detection
+    *   temp_c_bcd - sensor temperature format is °C; in BCD
+    *   temp_k_bin - sensor temperature format is K x100 in binary
 
-*   **alm\_cnf** - Alarm configuration, integer. Options listed below:
-    *   led\_temp\_alm - enable LED blink when the temperature alarm is triggered
-    *   led\_rh\_alm - enable LED blink when the humidity alarm is triggered
-    *   led\_io\_alm - enable LED blink when the IO alarms is triggered
-    *   io\_temp\_alm - temperature events trigger the alarm's assigned IO
-    *   io\_rh\_alm - humidity events trigger the alarm's assigned IO
-    *   io\_io\_alm - IO events trigger the alarm's assigned IO
+*   **alm_cnf** - Alarm configuration, integer. Options listed below:
+    *   led_temp_alm - enable LED blink when the temperature alarm is triggered
+    *   led_rh_alm - enable LED blink when the humidity alarm is triggered
+    *   led_io_alm - enable LED blink when the IO alarms is triggered
+    *   io_temp_alm - temperature events trigger the alarm's assigned IO
+    *   io_rh_alm - humidity events trigger the alarm's assigned IO
+    *   io_io_alm - IO events trigger the alarm's assigned IO
 
-*   **io\_fltr** - Time interval in seconds for the IO voltage hold timer, float.
+*   **io_fltr** - Time interval in seconds for the IO voltage hold timer, float.
 
 ##### sysstat
 
 System status message
 
-*   **sys\_stat** - System status, integer. Options listed below:
-    *   ovr\_max\_temp\_th - over maximum temperature threshold
-    *   und\_min\_temp\_th - under minumum temperature threshold
-    *   ovr\_max\_rh\_th - over maximum humidity threshold
-    *   und\_min\_rh\_th - under minumum humidity threshold
-    *   ovr\_max\_io1\_th - over maximum IO1 voltage threshold
-    *   und\_min\_io1\_th - under minumum IO1 voltage threshold
-    *   ovr\_max\_io2\_th - over maximum IO2 voltage threshold
-    *   und\_min\_io2\_th - under minumum IO2 voltage threshold
-    *   snsr\_act - sensor is active
-    *   alm\_ind\_led - the alarm condition is indicated by the LED, as indicated by the **alm\_cnf** parameter
-    *   heat\_act - the sensor's built-in heater is active
-    *   alm\_ind\_io - the alarm condition is indicated by an assigned IO, as indicated by the **alm\_cnf** parameter
-    *   snsr\_mtnc - sensor operating in maintenance mode
-    *   snsr\_prog - sensor operating in programming mode
+*   **sys_stat** - System status, integer. Options listed below:
+    *   ovr_max_temp_th - over maximum temperature threshold
+    *   und_min_temp_th - under minumum temperature threshold
+    *   ovr_max_rh_th - over maximum humidity threshold
+    *   und_min_rh_th - under minumum humidity threshold
+    *   ovr_max_io1_th - over maximum IO1 voltage threshold
+    *   und_min_io1_th - under minumum IO1 voltage threshold
+    *   ovr_max_io2_th - over maximum IO2 voltage threshold
+    *   und_min_io2_th - under minumum IO2 voltage threshold
+    *   snsr_act - sensor is active
+    *   alm_ind_led - the alarm condition is indicated by the LED, as indicated by the **alm_cnf** parameter
+    *   heat_act - the sensor's built-in heater is active
+    *   alm_ind_io - the alarm condition is indicated by an assigned IO, as indicated by the **alm_cnf** parameter
+    *   snsr_mtnc - sensor operating in maintenance mode
+    *   snsr_prog - sensor operating in programming mode
 
 #### Command messages
 
@@ -200,7 +202,7 @@ Programming messages. The sensors network needs to be operating in programming m
 
 ##### sysset
 
-System configuration messages. See the **sysevn** message above for details about the **sys\_cnf** and **alm\_cnf** options. To change any of those options using action type 2, one needs to supply the message type and the **sys\_cnf**, **alm\_cnf** and **io\_fltr** in addition to the modified option.
+System configuration messages. See the **sysevn** message above for details about the **sys_cnf** and **alm_cnf** options. To change any of those options using action type 2, one needs to supply the message type and the **sys_cnf**, **alm_cnf** and **io_fltr** in addition to the modified option.
 
 *   **action** - Action type, integer.
     *   0 - query parameters
@@ -208,9 +210,9 @@ System configuration messages. See the **sysevn** message above for details abou
     *   2 - program parameters
     *   3 - programming confirmation
 
-*   **sys\_cnf** - System configuration, integer.
-*   **alm\_cnf** - Alarm configuration, integer.
-*   **io\_fltr** - Time interval in seconds for the IO voltage hold timer, float.
+*   **sys_cnf** - System configuration, integer.
+*   **alm_cnf** - Alarm configuration, integer.
+*   **io_fltr** - Time interval in seconds for the IO voltage hold timer, float.
 
 ##### tmpcal
 
@@ -222,7 +224,7 @@ Temperature calibration offset messages. Programming this parameter will add the
     *   2 - program parameter
     *   3 - programming confirmation
 
-*   **temp\_cal\_ofst** - Temperature calibration offset in °C, float -327.68..+327.67
+*   **temp_cal_ofst** - Temperature calibration offset in °C, float -327.68..+327.67
 
 ##### instset
 
@@ -234,7 +236,7 @@ Broadcast and sampling interval for the instantaneous temperature and humidity m
     *   2 - program parameter
     *   3 - programming confirmation
 
-*   **ins\_int** - sampling interval in seconds, integer 0..16383.75
+*   **ins_int** - sampling interval in seconds, integer 0..16383.75
 
 ##### avrset
 
@@ -246,7 +248,7 @@ Broadcast and averaging interval for the average temperature and humidity messag
     *   2 - program parameter
     *   3 - programming confirmation
 
-*   **avg\_int** - averaging interval in seconds, integer 0..655350
+*   **avg_int** - averaging interval in seconds, integer 0..655350
 
 ##### almtsetmax
 
@@ -258,7 +260,7 @@ Maximum temperature threshold for triggering the **almt** alarm event messages.
     *   2 - program parameter
     *   3 - programming confirmation
 
-*   **max\_temp\_th** - maximum temperature threshold in °C/K, float -273.15..382.2
+*   **max_temp_th** - maximum temperature threshold in °C/K, float -273.15..382.2
 
 ##### almtsetmin
 
@@ -270,7 +272,7 @@ Minimum temperature threshold for triggering the **almt** alarm event messages.
     *   2 - program parameter
     *   3 - programming confirmation
 
-*   **min\_temp\_th** - minimum temperature threshold in °C/K, float -273.15..382.2
+*   **min_temp_th** - minimum temperature threshold in °C/K, float -273.15..382.2
 
 ##### almhsetmax
 
@@ -282,7 +284,7 @@ Maximum relative humidity threshold for triggering the **almh** alarm event mess
     *   2 - program parameter
     *   3 - programming confirmation
 
-*   **max\_rh** - maximum humidity threshold in %, float 0..100
+*   **max_rh** - maximum humidity threshold in %, float 0..100
 
 ##### almhsetmin
 
@@ -294,11 +296,11 @@ Minimum relative humidity threshold for triggering the **almh** alarm event mess
     *   2 - program parameter
     *   3 - programming confirmation
 
-*   **min\_rh** - minimum humidity threshold in %, float 0..100
+*   **min_rh** - minimum humidity threshold in %, float 0..100
 
 ##### almio1set
 
-Maximum and minimum voltage thresholds for triggering the **alm\_io1** alarm event messages.
+Maximum and minimum voltage thresholds for triggering the **alm_io1** alarm event messages.
 
 *   **action** - Action type, integer.
     *   0 - query parameter
@@ -306,12 +308,12 @@ Maximum and minimum voltage thresholds for triggering the **alm\_io1** alarm eve
     *   2 - program parameter
     *   3 - programming confirmation
 
-*   **max\_io1\_th** - maximum voltage threshold on IO1 in V, integer 0..99
-*   **min\_io1\_th** - maximum voltage threshold on IO1 in V, integer 0..99
+*   **max_io1_th** - maximum voltage threshold on IO1 in V, integer 0..99
+*   **min_io1_th** - maximum voltage threshold on IO1 in V, integer 0..99
 
 ##### almio2set
 
-Maximum and minimum voltage thresholds for triggering the **alm\_io2** alarm event messages.
+Maximum and minimum voltage thresholds for triggering the **alm_io2** alarm event messages.
 
 *   **action** - Action type, integer.
     *   0 - query parameter
@@ -319,8 +321,8 @@ Maximum and minimum voltage thresholds for triggering the **alm\_io2** alarm eve
     *   2 - program parameter
     *   3 - programming confirmation
 
-*   **max\_io2\_th** - maximum voltage threshold on IO2 in V, integer 0..99
-*   **min\_io2\_th** - maximum voltage threshold on IO2 in V, integer 0..99
+*   **max_io2_th** - maximum voltage threshold on IO2 in V, integer 0..99
+*   **min_io2_th** - maximum voltage threshold on IO2 in V, integer 0..99
 
 ##### sensorcure
 
@@ -330,7 +332,7 @@ Sensor curing messages. Activates the sensor's heating element.
     *   2 - program parameter
     *   3 - programming confirmation
 
-*   **heat\_intst** - heater intensity, integer 0..15
+*   **heat_intst** - heater intensity, integer 0..15
 
 ##### maintset
 
@@ -342,8 +344,8 @@ Maintenance mode triggering voltage threshold.
     *   2 - program parameter
     *   3 - programming confirmation
 
-*   **max\_mntc** - maximum voltage for triggering maintenance mode in V, integer 0..99
-*   **min\_mntc** - minimum voltage for triggering maintenance mode in V, integer 0..99
+*   **max_mntc** - maximum voltage for triggering maintenance mode in V, integer 0..99
+*   **min_mntc** - minimum voltage for triggering maintenance mode in V, integer 0..99
 
 ## g4n03rht-encode
 
@@ -378,29 +380,29 @@ Programming messages. The sensors network needs to be operating in programming m
 
 ##### sysset
 
-System configuration messages. To change any of those options using action type 2, one needs to supply the message type and the **sys\_cnf**, **alm\_cnf** and **io\_fltr** in addition to the modified option.
+System configuration messages. To change any of those options using action type 2, one needs to supply the message type and the **sys_cnf**, **alm_cnf** and **io_fltr** in addition to the modified option.
 
 *   **action** - Action type, integer.
     *   0 - query parameters
     *   2 - program parameters
 
-*   **sys\_cnf** - System configuration, integer. Options listed below:
-    *   snsr\_ena - sensor enabled
-    *   io1\_mntc - assign IO1 as input for enabling maintenance mode using an external switch
-    *   io2\_mntc - assign IO2 as input for enabling maintenance mode using an external switch
-    *   avg\_val\_evt - use average temperature and humidity values for alarm event detection
-    *   temp\_c\_bcd - sensor temperature format is °C; in BCD
-    *   temp\_k\_bin - sensor temperature format is K x100 in binary
+*   **sys_cnf** - System configuration, integer. Options listed below:
+    *   snsr_ena - sensor enabled
+    *   io1_mntc - assign IO1 as input for enabling maintenance mode using an external switch
+    *   io2_mntc - assign IO2 as input for enabling maintenance mode using an external switch
+    *   avg_val_evt - use average temperature and humidity values for alarm event detection
+    *   temp_c_bcd - sensor temperature format is °C; in BCD
+    *   temp_k_bin - sensor temperature format is K x100 in binary
 
-*   **alm\_cnf** - Alarm configuration, integer. Options listed below:
-    *   led\_temp\_alm - enable LED blink when the temperature alarm is triggered
-    *   led\_rh\_alm - enable LED blink when the humidity alarm is triggered
-    *   led\_io\_alm - enable LED blink when the IO alarms is triggered
-    *   io\_temp\_alm - temperature events trigger the alarm's assigned IO
-    *   io\_rh\_alm - humidity events trigger the alarm's assigned IO
-    *   io\_io\_alm - IO events trigger the alarm's assigned IO
+*   **alm_cnf** - Alarm configuration, integer. Options listed below:
+    *   led_temp_alm - enable LED blink when the temperature alarm is triggered
+    *   led_rh_alm - enable LED blink when the humidity alarm is triggered
+    *   led_io_alm - enable LED blink when the IO alarms is triggered
+    *   io_temp_alm - temperature events trigger the alarm's assigned IO
+    *   io_rh_alm - humidity events trigger the alarm's assigned IO
+    *   io_io_alm - IO events trigger the alarm's assigned IO
 
-*   **io\_fltr** - Time interval in seconds for the IO voltage hold timer, float.
+*   **io_fltr** - Time interval in seconds for the IO voltage hold timer, float.
 
 ##### tmpcal
 
@@ -410,7 +412,7 @@ Temperature calibration offset messages. Programming this parameter will add the
     *   0 - query parameter
     *   2 - program parameter
 
-*   **temp\_cal\_ofst** - Temperature calibration offset in °C, float -327.68..+327.67
+*   **temp_cal_ofst** - Temperature calibration offset in °C, float -327.68..+327.67
 
 ##### instset
 
@@ -420,7 +422,7 @@ Broadcast and sampling interval for the instantaneous temperature and humidity m
     *   0 - query parameter
     *   2 - program parameter
 
-*   **ins\_int** - sampling interval in seconds, integer 0..16383.75
+*   **ins_int** - sampling interval in seconds, integer 0..16383.75
 
 ##### avrset
 
@@ -430,7 +432,7 @@ Broadcast and averaging interval for the average temperature and humidity messag
     *   0 - query parameter
     *   2 - program parameter
 
-*   **avg\_int** - averaging interval in seconds, integer 0..655350
+*   **avg_int** - averaging interval in seconds, integer 0..655350
 
 ##### almtsetmax
 
@@ -440,7 +442,7 @@ Maximum temperature threshold for triggering the **almt** alarm event messages.
     *   0 - query parameter
     *   2 - program parameter
 
-*   **max\_temp\_th** - maximum temperature threshold in °C/K, float -273.15..382.2
+*   **max_temp_th** - maximum temperature threshold in °C/K, float -273.15..382.2
 
 ##### almtsetmin
 
@@ -450,7 +452,7 @@ Minimum temperature threshold for triggering the **almt** alarm event messages.
     *   0 - query parameter
     *   2 - program parameter
 
-*   **min\_temp\_th** - minimum temperature threshold in °C/K, float -273.15..382.2
+*   **min_temp_th** - minimum temperature threshold in °C/K, float -273.15..382.2
 
 ##### almhsetmax
 
@@ -460,7 +462,7 @@ Maximum relative humidity threshold for triggering the **almh** alarm event mess
     *   0 - query parameter
     *   2 - program parameter
 
-*   **max\_rh** - maximum humidity threshold in %, float 0..100
+*   **max_rh** - maximum humidity threshold in %, float 0..100
 
 ##### almhsetmin
 
@@ -470,29 +472,29 @@ Minimum relative humidity threshold for triggering the **almh** alarm event mess
     *   0 - query parameter
     *   2 - program parameter
 
-*   **min\_rh** - minimum humidity threshold in %, float 0..100
+*   **min_rh** - minimum humidity threshold in %, float 0..100
 
 ##### almio1set
 
-Maximum and minimum voltage thresholds for triggering the **alm\_io1** alarm event messages.
+Maximum and minimum voltage thresholds for triggering the **alm_io1** alarm event messages.
 
 *   **action** - Action type, integer.
     *   0 - query parameter
     *   2 - program parameter
 
-*   **max\_io1\_th** - maximum voltage threshold on IO1 in V, integer 0..99
-*   **min\_io1\_th** - maximum voltage threshold on IO1 in V, integer 0..99
+*   **max_io1_th** - maximum voltage threshold on IO1 in V, integer 0..99
+*   **min_io1_th** - maximum voltage threshold on IO1 in V, integer 0..99
 
 ##### almio2set
 
-Maximum and minimum voltage thresholds for triggering the **alm\_io2** alarm event messages.
+Maximum and minimum voltage thresholds for triggering the **alm_io2** alarm event messages.
 
 *   **action** - Action type, integer.
     *   0 - query parameter
     *   2 - program parameter
 
-*   **max\_io2\_th** - maximum voltage threshold on IO2 in V, integer 0..99
-*   **min\_io2\_th** - maximum voltage threshold on IO2 in V, integer 0..99
+*   **max_io2_th** - maximum voltage threshold on IO2 in V, integer 0..99
+*   **min_io2_th** - maximum voltage threshold on IO2 in V, integer 0..99
 
 ##### sensorcure
 
@@ -501,7 +503,7 @@ Sensor curing messages. Activates the sensor's heating element.
 *   **action** - Action type, integer.
     *   2 - program parameter
 
-*   **heat\_intst** - heater intensity, integer 0..15
+*   **heat_intst** - heater intensity, integer 0..15
 
 ##### maintset
 
@@ -511,8 +513,8 @@ Maintenance mode triggering voltage threshold.
     *   0 - query parameter
     *   2 - program parameter
 
-*   **max\_mntc** - maximum voltage for triggering maintenance mode in V, integer 0..99
-*   **min\_mntc** - minimum voltage for triggering maintenance mode in V, integer 0..99
+*   **max_mntc** - maximum voltage for triggering maintenance mode in V, integer 0..99
+*   **min_mntc** - minimum voltage for triggering maintenance mode in V, integer 0..99
 
 ### Outputs
 
@@ -521,16 +523,17 @@ Maintenance mode triggering voltage threshold.
     payload object
     
     The output of this module in the form of a JSON object in **socketcan** format, with the following content:
-    
+
+    ```
     {
     	timestamp: 1680699437931,
     	ext: true,
     	canid: 0x18ff8100,
     	dlc: 8,
     	rtr: false,
-    	data: \[2,1,0,7,116,96,51,88\]
+        data: [2,1,0,7,116,96,51,88]
     }
-    					
+    ```
     
     *   **canid** - The standard or extended CAN id.
     *   **ext** - Set to true if this is a extended id frame. False otherwise.
