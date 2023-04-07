@@ -376,7 +376,7 @@ module.exports = function(RED) {
 			if (msg.payload.data && msg.payload.data.length == 8) {
 				res.psn = decodePsn(node, msg);
 				if (res.action > 1 && res.action < 5) {
-					res.max_temp = (msg.payload.data[4]*256 + msg.payload.data[5])/100 - 273.15;
+					res.max_temp_th = (msg.payload.data[4]*256 + msg.payload.data[5])/100 - 273.15;
 				}
 			}
 		} else if ((msg.payload.canid >> 8) == 0x18ffc6) {
@@ -390,7 +390,7 @@ module.exports = function(RED) {
 			if (msg.payload.data && msg.payload.data.length == 8) {
 				res.psn = decodePsn(node, msg);
 				if (res.action > 1 && res.action < 5) {
-					res.min_temp = (msg.payload.data[4]*256 + msg.payload.data[5])/100 - 273.15;
+					res.min_temp_th = (msg.payload.data[4]*256 + msg.payload.data[5])/100 - 273.15;
 				}
 			}
 		} else if ((msg.payload.canid >> 8) == 0x18ffc7) {
@@ -404,7 +404,7 @@ module.exports = function(RED) {
 			if (msg.payload.data && msg.payload.data.length == 8) {
 				res.psn = decodePsn(node, msg);
 				if (res.action > 1 && res.action < 5) {
-					res.max_rh = (msg.payload.data[4]*100 + msg.payload.data[5])/100;
+					res.max_rh_th = (msg.payload.data[4]*100 + msg.payload.data[5])/100;
 				}
 			}
 		} else if ((msg.payload.canid >> 8) == 0x18ffc8) {
@@ -418,7 +418,7 @@ module.exports = function(RED) {
 			if (msg.payload.data && msg.payload.data.length == 8) {
 				res.psn = decodePsn(node, msg);
 				if (res.action > 1 && res.action < 5) {
-					res.min_rh = (msg.payload.data[4]*100 + msg.payload.data[5])/100;
+					res.min_rh_th = (msg.payload.data[4]*100 + msg.payload.data[5])/100;
 				}
 			}
 		} else if ((msg.payload.canid >> 8) == 0x18ffc9) {
@@ -432,8 +432,8 @@ module.exports = function(RED) {
 			if (msg.payload.data && msg.payload.data.length == 8) {
 				res.psn = decodePsn(node, msg);
 				if (res.action > 1 && res.action < 5) {
-					res.max_io1 = msg.payload.data[4];
-					res.min_io1 = msg.payload.data[5];
+					res.max_io1_th = msg.payload.data[4];
+					res.min_io1_th = msg.payload.data[5];
 				}
 			}
 		} else if ((msg.payload.canid >> 8) == 0x18ffca) {
@@ -447,8 +447,8 @@ module.exports = function(RED) {
 			if (msg.payload.data && msg.payload.data.length == 8) {
 				res.psn = decodePsn(node, msg);
 				if (res.action > 1 && res.action < 5) {
-					res.max_io2 = msg.payload.data[4];
-					res.min_io2 = msg.payload.data[5];
+					res.max_io2_th = msg.payload.data[4];
+					res.min_io2_th = msg.payload.data[5];
 				}
 			}
 		} else if ((msg.payload.canid >> 8) == 0x18ffcb) {
@@ -476,8 +476,8 @@ module.exports = function(RED) {
 			if (msg.payload.data && msg.payload.data.length == 8) {
 				res.psn = decodePsn(node, msg);
 				if (res.action > 1 && res.action < 5) {
-					res.max_io2 = msg.payload.data[4]
-					res.min_io2 = msg.payload.data[5];
+					res.max_mntc = msg.payload.data[4]
+					res.min_mntc = msg.payload.data[5];
 				}
 			}
 		}
@@ -743,7 +743,7 @@ module.exports = function(RED) {
 			};
 		} else if ((canid == 0x18ffc501 || (msg.payload.type == 'almtsetmax' && msg.payload.action == 1))
 			&& msg.payload.psn && msg.payload.psn.length == 8) {
-			// ALMTSETMAX: maximum temperature event threshold, query max_temp
+			// ALMTSETMAX: maximum temperature event threshold, query max_temp_th
 			let data = Array.from(Buffer.from(msg.payload.psn, 'hex')).concat(Array(4).fill(0));
 			res = {
 				canid: msg.payload.canid || '0x18ffc501',
@@ -753,12 +753,12 @@ module.exports = function(RED) {
 				data: data
 			};
 		} else if ((canid == 0x18ffc503 || (msg.payload.type == 'almtsetmax' && msg.payload.action == 3))
-			&& msg.payload.psn && msg.payload.psn.length == 8 && msg.payload.max_temp != null) {
-			// ALMTSETMAX: maximum temperature event threshold, program max_temp
+			&& msg.payload.psn && msg.payload.psn.length == 8 && msg.payload.max_temp_th != null) {
+			// ALMTSETMAX: maximum temperature event threshold, program max_temp_th
 			let data = Array.from(Buffer.from(msg.payload.psn, 'hex'));
-			// set maximum temperature: (max_temp + 273.15)*100
-			let max_temp = Math.round((msg.payload.max_temp + 273.15)*100);
-			let xpar = ('0000'+(max_temp).toString(16)).slice(-4)+'0000';
+			// set maximum temperature: (max_temp_th + 273.15)*100
+			let max_temp_th = Math.round((msg.payload.max_temp_th + 273.15)*100);
+			let xpar = ('0000'+(max_temp_th).toString(16)).slice(-4)+'0000';
 			data = data.concat(Array.from(Buffer.from(xpar, 'hex')));
 			res = {
 				canid: msg.payload.canid || '0x18ffc503',
@@ -769,7 +769,7 @@ module.exports = function(RED) {
 			};
 		} else if ((canid == 0x18ffc601 || (msg.payload.type == 'almtsetmin' && msg.payload.action == 1))
 			&& msg.payload.psn && msg.payload.psn.length == 8) {
-			// ALMSTETMIN: minimum temperature event threshold, query min_temp
+			// ALMSTETMIN: minimum temperature event threshold, query min_temp_th
 			let data = Array.from(Buffer.from(msg.payload.psn, 'hex')).concat(Array(4).fill(0));
 			res = {
 				canid: msg.payload.canid || '0x18ffc601',
@@ -779,12 +779,12 @@ module.exports = function(RED) {
 				data: data
 			};
 		} else if ((canid == 0x18ffc603 || (msg.payload.type == 'almtsetmin' && msg.payload.action == 3))
-			&& msg.payload.psn && msg.payload.psn.length == 8 && msg.payload.min_temp != null) {
-			// ALMSTETMIN: minimum temperature event threshold, program min_temp
+			&& msg.payload.psn && msg.payload.psn.length == 8 && msg.payload.min_temp_th != null) {
+			// ALMSTETMIN: minimum temperature event threshold, program min_temp_th
 			let data = Array.from(Buffer.from(msg.payload.psn, 'hex'));
-			// set maximum temperature: (min_temp + 273.15)*100
-			let min_temp = Math.round((msg.payload.min_temp + 273.15)*100);
-			let xpar = ('0000'+(min_temp).toString(16)).slice(-4)+'0000';
+			// set maximum temperature: (min_temp_th + 273.15)*100
+			let min_temp_th = Math.round((msg.payload.min_temp_th + 273.15)*100);
+			let xpar = ('0000'+(min_temp_th).toString(16)).slice(-4)+'0000';
 			data = data.concat(Array.from(Buffer.from(xpar, 'hex')));
 			res = {
 				canid: msg.payload.canid || '0x18ffc603',
@@ -795,7 +795,7 @@ module.exports = function(RED) {
 			};
 		} else if ((canid == 0x18ffc701 || (msg.payload.type == 'almhsetmax' && msg.payload.action == 1))
 			&& msg.payload.psn && msg.payload.psn.length == 8) {
-			// ALMHSETMAX: maximum humidity event threshold, query max_rh
+			// ALMHSETMAX: maximum humidity event threshold, query max_rh_th
 			let data = Array.from(Buffer.from(msg.payload.psn, 'hex')).concat(Array(4).fill(0));
 			res = {
 				canid: msg.payload.canid || '0x18ffc701',
@@ -805,13 +805,13 @@ module.exports = function(RED) {
 				data: data
 			};
 		} else if ((canid == 0x18ffc703 || (msg.payload.type == 'almhsetmax' && msg.payload.action == 3))
-			&& msg.payload.psn && msg.payload.psn.length == 8 && msg.payload.max_rh != null) {
-			// ALMHSETMAX: maximum humidity event threshold, program max_rh
+			&& msg.payload.psn && msg.payload.psn.length == 8 && msg.payload.max_rh_th != null) {
+			// ALMHSETMAX: maximum humidity event threshold, program max_rh_th
 			let data = Array.from(Buffer.from(msg.payload.psn, 'hex'));
-			// set maximum humidity: max_rh*100
+			// set maximum humidity: max_rh_th*100
 			let apar = [
-				Math.abs(msg.payload.max_rh),
-				Math.abs(msg.payload.max_rh) - msg.payload.max_rh,
+				Math.abs(msg.payload.max_rh_th),
+				Math.abs(msg.payload.max_rh_th) - msg.payload.max_rh_th,
 				0,
 				0
 			];
@@ -825,7 +825,7 @@ module.exports = function(RED) {
 			};
 		} else if ((canid == 0x18ffc801 || (msg.payload.type == 'almhsetmin' && msg.payload.action == 1))
 			&& msg.payload.psn && msg.payload.psn.length == 8) {
-			// ALMHSETMIN: minimum humidity event threshold, query min_rh
+			// ALMHSETMIN: minimum humidity event threshold, query min_rh_th
 			let data = Array.from(Buffer.from(msg.payload.psn, 'hex')).concat(Array(4).fill(0));
 			res = {
 				canid: msg.payload.canid || '0x18ffc801',
@@ -835,13 +835,13 @@ module.exports = function(RED) {
 				data: data
 			};
 		} else if ((canid == 0x18ffc803 || (msg.payload.type == 'almhsetmin' && msg.payload.action == 3))
-			&& msg.payload.psn && msg.payload.psn.length == 8 && msg.payload.min_rh != null) {
-			// ALMHSETMIN: minimum humidity event threshold, program min_rh
+			&& msg.payload.psn && msg.payload.psn.length == 8 && msg.payload.min_rh_th != null) {
+			// ALMHSETMIN: minimum humidity event threshold, program min_rh_th
 			let data = Array.from(Buffer.from(msg.payload.psn, 'hex'));
-			// set minimum humidity: min_rh*100
+			// set minimum humidity: min_rh_th*100
 			let apar = [
-				Math.abs(msg.payload.min_rh),
-				Math.abs(msg.payload.min_rh) - msg.payload.min_rh,
+				Math.abs(msg.payload.min_rh_th),
+				Math.abs(msg.payload.min_rh_th) - msg.payload.min_rh_th,
 				0,
 				0
 			];
@@ -855,7 +855,7 @@ module.exports = function(RED) {
 			};
 		} else if ((canid == 0x18ffc901 || (msg.payload.type == 'almio1set' && msg.payload.action == 1))
 			&& msg.payload.psn && msg.payload.psn.length == 8) {
-			// ALMIO1SET: maximum and minimum IO1 event threshold, query max_io1, min_io1
+			// ALMIO1SET: maximum and minimum IO1 event threshold, query max_io1_th, min_io1_th
 			let data = Array.from(Buffer.from(msg.payload.psn, 'hex')).concat(Array(4).fill(0));
 			res = {
 				canid: msg.payload.canid || '0x18ffc901',
@@ -865,12 +865,12 @@ module.exports = function(RED) {
 				data: data
 			};
 		} else if ((canid == 0x18ffc903 || (msg.payload.type == 'almio1set' && msg.payload.action == 3))
-			&& msg.payload.psn && msg.payload.psn.length == 8 && msg.payload.min_io1 != null && msg.payload.max_io1 != null) {
-			// ALMIO1SET: maximum and minimum IO1 event threshold, program max_io1, min_io1
+			&& msg.payload.psn && msg.payload.psn.length == 8 && msg.payload.min_io1_th != null && msg.payload.max_io1_th != null) {
+			// ALMIO1SET: maximum and minimum IO1 event threshold, program max_io1_th, min_io1_th
 			let data = Array.from(Buffer.from(msg.payload.psn, 'hex'));
 			let apar = [
-				msg.payload.max_io1,
-				msg.payload.min_io1,
+				msg.payload.max_io1_th,
+				msg.payload.min_io1_th,
 				0,
 				0
 			];
@@ -884,7 +884,7 @@ module.exports = function(RED) {
 			};
 		} else if ((canid == 0x18ffca01 || (msg.payload.type == 'almio2set' && msg.payload.action == 1))
 			&& msg.payload.psn && msg.payload.psn.length == 8) {
-			// ALMIO2SET: maximum and minimum IO1 event threshold, query max_io2, min_io2
+			// ALMIO2SET: maximum and minimum IO1 event threshold, query max_io2_th, min_io2_th
 			let data = Array.from(Buffer.from(msg.payload.psn, 'hex')).concat(Array(4).fill(0));
 			res = {
 				canid: msg.payload.canid || '0x18ffca01',
@@ -894,12 +894,12 @@ module.exports = function(RED) {
 				data: data
 			};
 		} else if ((canid == 0x18ffca03 || (msg.payload.type == 'almio2set' && msg.payload.action == 3))
-			&& msg.payload.psn && msg.payload.psn.length == 8 && msg.payload.min_io2 != null && msg.payload.max_io2 != null) {
-			// ALMIO2SET: maximum and minimum IO1 event threshold, program max_io2, min_io2
+			&& msg.payload.psn && msg.payload.psn.length == 8 && msg.payload.min_io2_th != null && msg.payload.max_io2_th != null) {
+			// ALMIO2SET: maximum and minimum IO1 event threshold, program max_io2_th, min_io2_th
 			let data = Array.from(Buffer.from(msg.payload.psn, 'hex'));
 			let apar = [
-				msg.payload.max_io2,
-				msg.payload.min_io2,
+				msg.payload.max_io2_th,
+				msg.payload.min_io2_th,
 				0,
 				0
 			];
