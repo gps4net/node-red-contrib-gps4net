@@ -15,15 +15,14 @@ Custom Node-RED nodes for GPS4NET
 
     ```
     {
-    	timestamp: 1680699437931,
-    	ext: true,
-    	canid: 0x18ff8100,
-    	dlc: 8,
-    	rtr: false,
+        timestamp: 1680699437931,
+        ext: true,
+        canid: 0x18ff8100,
+        dlc: 8,
+        rtr: false,
         data: [2,1,0,7,116,96,51,88]
     }
     ```
-    					
     
     *   **canid** - The standard or extended CAN id.
     *   **ext** - Set to true if this is a extended id frame. False otherwise.
@@ -526,11 +525,11 @@ Maintenance mode triggering voltage threshold.
 
     ```
     {
-    	timestamp: 1680699437931,
-    	ext: true,
-    	canid: 0x18ff8100,
-    	dlc: 8,
-    	rtr: false,
+        timestamp: 1680699437931,
+        ext: true,
+        canid: 0x18ff8100,
+        dlc: 8,
+        rtr: false,
         data: [2,1,0,7,116,96,51,88]
     }
     ```
