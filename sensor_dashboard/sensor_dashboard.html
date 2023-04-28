@@ -1,0 +1,371 @@
+ <script type="text/javascript">
+
+  var outputTooltips = [
+    " complete msg out to decode node",
+    "enable_sensor",
+    "allow_maint_mode_io1",
+    "allow_maint_mode_io2",
+    "instant_average_val",
+    "kelvin_celsius_select",
+    "temp_led_blink",
+    "humidity_led_blink",
+    "io_led_blink",
+    "temp_io_event",
+    "humidity_io_event",
+    "io_event_alarm",
+    "io_filter",
+    "temp_cal",
+    "inst_threshold",
+    "avg_threshold",
+    "almt_set_max",
+    "almt_set_min",
+    "almh_set_max",
+    "almh_set_min",
+    "max_io1_threshold",
+    "min_io1_threshold",
+    "max_io2_threshold",
+    "min_io2_threshold",
+    "activate_sensor_cure",
+    "trigger_spinner",
+    "min_maintenance_interval",
+    "max_maintenance_interval",
+    "sensor_cure_active_monitor",
+    "sensor_maintenance_confirmation",
+    "dropdown_list",
+    "query/programming mode ready confirmation",
+    "sensor id label confirmation",
+    "reserved"
+  ];
+
+  RED.nodes.registerType('sensor_dashboard', {
+    category: 'GPS4NET',
+    color: '#87a940',
+    defaults: {
+      name: { value: "Sensors dashboard" }
+    },
+    inputs: 1,
+    outputs: 33,
+    icon: "icons/logo_gps4net.svg",
+    label: function () {
+      return this.name || "sensor_dashboard";
+    },
+    outputLabels: function(id) {
+    return outputTooltips[id];
+    },
+    labelStyle: function () {
+      return this.name ? 'node_label_italic' : '';
+    },
+    onadd: function() {
+      var node = this;
+      var portSpacing = 20; 
+      node.addOutputPort = function(port) {
+        var portGroup = node.outPortGroup.append("g")
+          .attr("class", "port_output")
+          .attr("gps4net-port-index", portIndex)
+          .attr("transform", "translate(" + ((portIndex + 1) * (portWidth + 2) - 5) + "," + (portSpacing * portIndex) + ")")
+      };
+    },
+    oneditprepare: function () {
+      // Initialize tooltips
+      $('.input-tooltip, .output-tooltip').tooltip();
+    }
+  });
+
+
+  
+  // Attach a mouseover event to the node outputs
+  $(document).on('mouseover', '.port_output', function () {
+    var outputIndex = $(this).index() - 1; // Subtract 1 to account for the input port
+    if (outputTooltips[outputIndex]) {
+      // Create a tooltip element
+      var tooltip = $('<div class="red-ui-flow-port-output">' + outputTooltips[outputIndex] + '</div>');
+      // Set the tooltip position
+      var position = $(this).offset();
+      tooltip.css({
+        position: 'absolute',
+        top: position.top + 20,
+        left: position.left + 10,
+        zIndex: 1000,
+        padding: '5px',
+        borderRadius: '3px',
+        background: '#333',
+        color: '#fff',
+      });
+      // Add the tooltip to the body
+      $('body').append(tooltip);
+      // Attach a mouseleave event to remove the tooltip
+      $(this).on('mouseleave', function () {
+        tooltip.remove();
+      });
+    }
+  });
+</script>
+
+<script type="text/html" data-template-name="sensor_dashboard">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name"><br>
+    </div>
+    </script>
+
+<!-- help and tips -->
+<script type="text/html" data-help-name="sensor_dashboard">
+    <h3>Sensor dashboard</h3>
+    <h2>Short description</h2>
+    <p>This node takes the data provided by the decode node and allows the reading and programming of a connected
+      temperature and humidity sensor using a simple dashboard.</p>
+    <p>The dashboard node is design to operate by reading existing paramenters of a specific sensor identified by PSN and then writing paramenters to that specific sensor.</p>  
+
+    <h3>Inputs</h3>
+    <p> The input node has a dual role. 
+        First role is to receive the messages comming from the g4n03rht-decode node. The messages recieved from the decode node fallow the JSON object comprised from a payload with different values and a topic. 
+    <ul class="node-properties">
+      <li>Message
+        <dl class="message-properties">
+          <dt>payload <span class="property-type">object</span></dt>
+            <dd>Incoming messages take the form of a JSON object with the following keys:
+<li> <b>canid</b> - The sensor's canid </li>
+                <li> <b>epoch</b> - The sensor's epoch </li>
+                <li> <b>type</b> - The message type, string.</li>
+              </ul>
+              <br>
+              Additional keys for parameters will also be present depending on message type as described in g4n03rht-decode.
+              These are described in the <b>g4n03rht</b> node.
+            </dd>
+        </dl>
+      </li>
+    </ul>
+    <p>The second role is to recieve the messages from the gui elements (or simple msg injected by user) and act accordingly by triggering sequences of messages sent to the encode node.</p>
+    <ul class="node-properties">
+      <li>Message
+        <dl class="message-properties">
+          <dt>topic <span class="property-type">object</span></dt>
+              <dd>Incoming messages will have a topic reflecting the ui element control type. 
+                <ul>
+                  <li> <b>example:</b> "sensor_enable"  </li>
+                <br>
+                Additional keys for parameters will also be present depending on message type.
+                These are described in the <b>g4n03rht</b> node.
+              </dd>
+          <dt>payload <span class="property-type">object</span></dt>
+          <dd>msg.payload will usually contain only the value or bolean coresponding to the topic
+            <ul>
+              <li> <b>value/boolean</b> </li>
+            </ul>
+            <br>
+          </dd>
+        </dl>
+      </li>
+    </ul>
+    <br>
+
+    <h3>Outputs</h3>
+    <p> The output of the first output is connected to the g4n03rht-encode and sends the messages needed to comunicate/program with the sensors.
+      The other outputs serve a simple message structure to generic gui elements.While the generic gui elements do not require a topic to recieve data and display it they do require they send data with a topic so they may be recognised from other messages using the input node.</p>
+    <ul class="node-properties">
+      <li>Message
+        <dl class="message-properties">
+          <dt>payload <span class="property-type">object</span></dt>
+            <dd>Incoming messages take the form of a JSON object with the following keys:
+              <ul>
+                <li> <b>psn</b> - The sensor's PSN </li>
+                <li> <b>canid</b> - The sensor's canid </li>
+                <li> <b>epoch</b> - The sensor's epoch </li>
+                <li> <b>type</b> - The message type, string.</li>
+              </ul>
+              <br>
+              Additional keys for parameters will also be present depending on message type as described in g4n03rht-decode.
+              These are described in the <b>g4n03rht</b> node.
+            </dd>
+        </dl>
+      </li>
+    </ul>
+
+
+    <h3><b>Topics and command sequence's executed</b></h4>
+    <p>The name of topics is described below toghether with the action sequence it triggers.</p>
+    <br>
+    <ul>
+      <li>Topic: "refresh", Payload: boolean</li>
+      <p> Using a boolean value of true / false it shall trigger a search of sensor psn's on the CAN network,
+         it shall clear all node variable, place the sensors in programming mode and listen to their response.
+          After the dropdown is populated with sensor id's it shall exit programming mode. </p>
+    </ul>
+    <ul>
+    <ul>
+      <li>Topic: "query_psn", Payload: boolean</li>
+      <p> Using a boolean value of true / false it shall trigger the query of a specific sensor, reading its configuration settings. </p>
+      <p> If the sensor in the CAN network is not in programming mode it shall enter programming mode, wait for the sensor to 
+      espond and the execute the queries on it's configuration.After its query sequence is done it shall exit programming mode. </p>
+    </ul>
+    <ul>
+    <ul>
+      <li>Topic: "begin_programming", Payload: boolean</li>
+      <p> Using a boolean value of true / false it shall trigger programming of a specific sensor using the settings displayed on the gui. </p>
+      <p> If the sensor in the CAN network is not in programming mode it shall enter programming mode, wait for the sensor
+        to respond and the execute the program the new values. 
+        After its programming sequence is done it shall exit programming mode. </p>
+    </ul>
+    <ul>
+    <li>Topic: "sensor_enable", Payload: boolean</li>
+      <p> Using a boolean value of true / false it shall trigger the change of node variable in order to form new program
+        message. </p>
+    </ul>
+    <ul>
+      <li>Topic: "maint_mode_io1", Payload: boolean</li>
+      <p> Using a boolean value of true / false it shall trigger the change of node variable in order to form new program
+        message. </p>
+    </ul>
+    <ul>
+      <li>Topic: "maint_mode_io2", Payload: boolean</li>
+      <p> Using a boolean value of true / false it shall trigger the change of node variable in order to form new program
+        message. </p>
+    </ul>
+    <ul>
+      <li>Topic: "instant_average_val", Payload: boolean</li>
+      <p> Using a boolean value of true / false it shall trigger the change of node variable in order to form new program
+        message. </p>
+    </ul>
+    <ul>
+      <li>Topic: "kelvin_celsius_select", Payload: boolean</li>
+      <p> Using a boolean value of true / false it shall trigger the change of node variable in order to form new program
+        message. </p>
+    </ul>
+    <ul>
+      <li>Topic: "temp_led_blink", Payload: boolean</li>
+      <p> Using a boolean value of true / false, it shall trigger the change of the node variable in order to form a new
+        program message. </p>
+    </ul>
+    <ul>
+      <li>Topic: "humidity_led_blink", Payload: boolean</li>
+      <p> Using a boolean value of true / false, it shall trigger the change of the node variable in order to form a new
+        program message. </p>
+    </ul>
+    <ul>
+      <li>Topic: "io_led_blink", Payload: boolean</li>
+      <p> Using a boolean value of true / false, it shall trigger the change of the node variable in order to form a new
+        program message. </p>
+    </ul>
+    <ul>
+      <li>Topic: "temp_io_event", Payload: boolean</li>
+      <p> Using a boolean value of true / false, it shall trigger the change of the node variable in order to form a new
+        program message. </p>
+    </ul>
+    <ul>
+      <li>Topic: "humidity_io_event", Payload: boolean</li>
+      <p> Using a boolean value of true / false, it shall trigger the change of the node variable in order to form a new
+        program message. </p>
+    </ul>
+    <ul>
+      <li>Topic: "io_event_alarm", Payload: boolean</li>
+      <p> Using a boolean value of true / false, it shall trigger the change of the node variable in order to form a new
+        program message. </p>
+    </ul>
+    <ul>
+      <li>Topic: "io_filter", Payload: numeric </li>
+      <p> Using a numeric value, io_filter is used to avoid false alarms the voltage must hold the cross-limit value 
+        for a specified time interval defined by this parameter. </p>
+    </ul>
+    <ul>
+      <li>Topic: "temp_cal", Payload: numeric </li>
+      <p> Using a numeric value, temperature calibration is always expressed in Kelvin*100 regardless the bit set in the parameter. 
+        The default value is 0 as the sensor is factory calibrated. </p>
+    </ul>
+    <ul>
+      <li>Topic: "inst_threshold", Payload: numeric </li>
+      <p> Using a numeric value, represents the value of the transmission interval of the instantaneous reading of temperature and humidity. </p>
+    </ul>
+    <ul>
+      <li>Topic: "avg_threshold", Payload: numeric </li>
+      <p> Using a numeric value, represents the transmission interval value and calculation of the average temperature and humidity. </p>
+    </ul>
+    <ul>
+      <li>Topic: "almt_set_max", Payload: numeric </li>
+      <p> Using a numeric value, represents the maximum temperature threshold used for triggering the alarm.</p>
+    </ul>
+    <ul>
+      <li>Topic: "almt_set_min", Payload: numeric </li>
+      <p> Using a numeric value, represents the minimum temperature threshold for triggering the temperature alarm. </p>
+    </ul>
+    <ul>
+      <li>Topic: "almh_set_max", Payload: numeric</li>
+      <p> Using a numeric value, represents the maximum threshold value for triggering the humidity alarm. </p>
+    </ul>
+    <ul>
+      <li>Topic: "almh_set_min", Payload: numeric</li>
+      <p> Using a numeric value, represents the minimum threshold value for triggering the humidity alarm. </p>
+    </ul>
+    <ul>
+      <li>Topic: "max_io1_th_threshold", Payload: numeric </li>
+      <p> Using a numeric value, represents the maximum threshold voltage value used for triggering the voltage alarm on IO1. </p>
+    </ul>
+    <ul>
+      <li>Topic: "min_io1_th_threshold", Payload: numeric</li>
+      <p> Using a numeric value, represents the minimum threshold voltage value used for triggering the voltage alarm on IO1.</p>
+    </ul>
+    <ul>
+      <li>Topic: "max_io2_th_threshold", Payload: numeric </li>
+      <p> Using a numeric value, represents the maximum threshold voltage value used for triggering the voltage alarm on IO2 </p>
+    </ul>
+    <ul>
+      <li>Topic: "min_io2_th_threshold", Payload: numeric</li>
+      <p> Using a numeric value, represents the minimum threshold voltage value used for triggering the voltage alarm on IO2. </p>
+    </ul>
+    <ul>
+      <li>Topic: "activate_sensor_cure", Payload: boolean</li> 
+      <p> Using a boolean value of true / false, it shall trigger starts a resistive element from the sensor that raises the sensor temperature to facilitate condensation evaporation. </p>
+    </ul>
+    <ul>
+      <li>Topic: "trigger_spinner", Payload: string</li>
+      <p> Using a string value of "working" : "done" it shall trigger the css element to indicate that a action is beeing performed, such as a read operation or a write operation. </p>
+    </ul>
+    <ul>
+      <li>Topic: "min_maintenance_interval", Payload: numeric </li>
+      <p> Using a numeric value, represents the minimum voltage threshold values for triggering the Maintenance Mode. </p>
+    </ul>
+    <ul>
+      <li>Topic: "max_maintenance_interval", Payload: numeric</li>
+      <p> Using a numeric value, represents the minimum voltage threshold values for triggering the Maintenance Mode. </p>
+    </ul>
+    <ul>
+      <li>Topic: "Sensor_cure_confirmation", Payload: boolean</li>
+      <p> Using a boolean value of true / false, it indicates the if the the sensors have entered curing mode.The sensors will exit curing mode themselfs after curing has finished. No matter what sensor is selected all of the sensors on the CAN network will enter maintenance mode. </p>
+    </ul>
+    <ul>
+      <li>Topic: "Sensor_maintenance_confirmation", Payload: boolean</li>
+      <p> Using a boolean value of true / false, it indicates the if the the sensors have entered maintenance mode. </p>
+    </ul>
+    <ul>
+      <li>Topic: "dropdown_list", Payload: array</li>
+      <p> Using an array of strings (detected sensor psn's), it allows the setting of the variable needed to program/ interogate a specific sensor. 
+        This list of arrays is re-generated by pressing the refresh button or at the start of the flow. 
+        The dashboard places the sensors comunicating on CAN in programming mode and waits for them to respond and adds them to the array.
+        Its shall check that no new psn announces itself by waiting for each sensor to enumerate 3 times and them exit programming mode,
+        allowing sensors to return to normal operation.  </p>
+      <p>   
+    </ul>
+    <ul>
+      <li>Topic: "Query/programming mode ready confirmation", Payload: boolean</li>
+      <p> Using a boolean value of true / false, it indicates the if the the selected sensor has entered programming mode. </p>
+    </ul>
+    <ul>
+      <li>Topic: "Sensor id label confirmation", Payload: string</li>
+      <p> Using a string value it displays the selected sensor psn. </p>
+    </ul>
+    <ul>
+      <li>Topic: "switch_programming_mode", Payload: boolean</li>
+      <p> Using a boolean value of true / false, it shall trigger entering programming mode manually, generally used for debuging purposes and not present in the example dashboard. </p>
+    </ul>
+
+    <h3><b>Additional notes</b></h3>
+    <p>The dashboard node works in conjunction with the g4n03rht-decode and g4n03rht-encode nodes, forming a system that
+      allows for easy sensor configuration and monitoring. </p>
+    <p>Please refer to the respective nodes for more detailed information about their functions and how they interact with
+      this node. </p>
+    <p>Ensure that your sensor and CAN network are properly set up and functioning correctly before using this node. </p>
+    <p>Proper usage of this node and the programming functions it provides will ensure optimal performance of your sensor
+      and network.
+
+
+
+</script>

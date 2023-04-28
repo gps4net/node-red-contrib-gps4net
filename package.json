@@ -24,7 +24,8 @@
     ],
     "node-red": {
         "nodes": {
-            "G4N03RHT": "g4n03rht/g4n03rht.js"
+            "G4N03RHT": "g4n03rht/g4n03rht.js",
+            "Sensor_dashboard": "sensor_dashboard/sensor_dashboard.js"
         }
     },
     "dependencies": {}

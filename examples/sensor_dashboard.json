@@ -1,0 +1,1417 @@
+[
+    {
+        "id": "023badb6773ed153",
+        "type": "tab",
+        "label": "Sensor DashboardExample",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "de24320ec1136bbe",
+        "type": "junction",
+        "z": "023badb6773ed153",
+        "x": 1660,
+        "y": 820,
+        "wires": [
+            [
+                "b230f6346246ce90"
+            ]
+        ]
+    },
+    {
+        "id": "6941f7d27d5dac54",
+        "type": "comment",
+        "z": "023badb6773ed153",
+        "name": "From GUI dashboard \\n Message payloads are taken from the gui elements \\n and used according to their topics.\\n A gui element must always transmit the following \\n msg structure in order to be recognised.\\n  msg = {\\n      payload: value,\\n      topic:topic_identifier_string\\n  }",
+        "info": "Message payloads are taken from the gui elements \\n\nand used according to their topics.\\n\nA gui element must always transmit the following \\n\nmsg structure in order to be recognised.\\n\n msg = {\\n\n     payload: value,\\n\n     topic:topic_identifier_string\\n\n }",
+        "x": 430,
+        "y": 780,
+        "wires": []
+    },
+    {
+        "id": "f4de6bdae23dc29c",
+        "type": "comment",
+        "z": "023badb6773ed153",
+        "name": "From  g4n03rht decode \\n Message payloads from g4n03rht decode node or \\n from any other source that transmits its payload \\n (such as Mqtt) are fed into sensor dashboard.",
+        "info": "Message payloads from g4n03rht decode node or \\n\nfrom any other source that transmits its payload \\n\n(such as Mqtt) are fed into sensor dashboard.",
+        "x": 440,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "efcbddadf50b9687",
+        "type": "ui_dropdown",
+        "z": "023badb6773ed153",
+        "name": "dropdown_list",
+        "label": "",
+        "tooltip": "",
+        "place": "Select psn",
+        "group": "f578b662a4d24e96",
+        "order": 1,
+        "width": 3,
+        "height": 1,
+        "passthru": true,
+        "multiple": false,
+        "options": [
+            {
+                "label": "",
+                "value": "",
+                "type": "str"
+            }
+        ],
+        "payload": "",
+        "topic": "dropdown_list_g",
+        "topicType": "str",
+        "className": "",
+        "x": 1400,
+        "y": 1520,
+        "wires": [
+            [
+                "de24320ec1136bbe"
+            ]
+        ]
+    },
+    {
+        "id": "a2673ead44f02f7b",
+        "type": "ui_button",
+        "z": "023badb6773ed153",
+        "name": "",
+        "group": "f578b662a4d24e96",
+        "order": 6,
+        "width": 3,
+        "height": 1,
+        "passthru": false,
+        "label": "Query selected Psn",
+        "tooltip": "Enter programming mode and query the selected PSN",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "query_psn",
+        "topicType": "str",
+        "x": 1410,
+        "y": 260,
+        "wires": [
+            [
+                "de24320ec1136bbe"
+            ]
+        ]
+    },
+    {
+        "id": "ce9fe0edfd8c5ab0",
+        "type": "ui_button",
+        "z": "023badb6773ed153",
+        "name": "",
+        "group": "f578b662a4d24e96",
+        "order": 7,
+        "width": 3,
+        "height": 1,
+        "passthru": false,
+        "label": "Program",
+        "tooltip": "Enter programming mode and program a queried psn",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "program_now",
+        "payloadType": "str",
+        "topic": "begin_programming",
+        "topicType": "str",
+        "x": 1440,
+        "y": 300,
+        "wires": [
+            [
+                "de24320ec1136bbe"
+            ]
+        ]
+    },
+    {
+        "id": "1588ea033362e5f6",
+        "type": "ui_button",
+        "z": "023badb6773ed153",
+        "name": "",
+        "group": "f578b662a4d24e96",
+        "order": 2,
+        "width": 2,
+        "height": 1,
+        "passthru": false,
+        "label": "Refresh",
+        "tooltip": "Refresh the list of the devices by listening to the CAN communications ",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "refresh_list",
+        "topicType": "str",
+        "x": 1440,
+        "y": 220,
+        "wires": [
+            [
+                "de24320ec1136bbe"
+            ]
+        ]
+    },
+    {
+        "id": "d1643dfa21f3508f",
+        "type": "ui_switch",
+        "z": "023badb6773ed153",
+        "name": "sensor_enable",
+        "label": "Enable Sensor",
+        "tooltip": "Enable the sensor, disabling it will stop its reports",
+        "group": "1dee7313e54d0019",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "decouple": "false",
+        "topic": "sensor_enable",
+        "topicType": "str",
+        "style": "",
+        "onvalue": "true",
+        "onvalueType": "bool",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "false",
+        "offvalueType": "bool",
+        "officon": "",
+        "offcolor": "",
+        "animate": false,
+        "className": "",
+        "x": 1420,
+        "y": 340,
+        "wires": [
+            [
+                "de24320ec1136bbe"
+            ]
+        ]
+    },
+    {
+        "id": "2020ef0e30bd5c88",
+        "type": "ui_switch",
+        "z": "023badb6773ed153",
+        "name": "maint_mode_io1",
+        "label": "Maintenance by external swich IO1",
+        "tooltip": "Allow maintenance mode by external swich IO1",
+        "group": "1dee7313e54d0019",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "decouple": "false",
+        "topic": "maint_mode_io1",
+        "topicType": "str",
+        "style": "",
+        "onvalue": "true",
+        "onvalueType": "bool",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "false",
+        "offvalueType": "bool",
+        "officon": "",
+        "offcolor": "",
+        "animate": false,
+        "className": "",
+        "x": 1410,
+        "y": 380,
+        "wires": [
+            [
+                "de24320ec1136bbe"
+            ]
+        ]
+    },
+    {
+        "id": "67ad5a3b2c9c6ae4",
+        "type": "ui_switch",
+        "z": "023badb6773ed153",
+        "name": "maint_mode_io2",
+        "label": "Maintenance mode by external swich IO2",
+        "tooltip": "Allow maintenance mode by external swich IO1",
+        "group": "1dee7313e54d0019",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "decouple": "false",
+        "topic": "maint_mode_io2",
+        "topicType": "str",
+        "style": "",
+        "onvalue": "true",
+        "onvalueType": "bool",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "false",
+        "offvalueType": "bool",
+        "officon": "",
+        "offcolor": "",
+        "animate": false,
+        "className": "",
+        "x": 1410,
+        "y": 420,
+        "wires": [
+            [
+                "de24320ec1136bbe"
+            ]
+        ]
+    },
+    {
+        "id": "cf00463125e23059",
+        "type": "ui_switch",
+        "z": "023badb6773ed153",
+        "name": "instant_average_val",
+        "label": "Instant values/Average values",
+        "tooltip": "Switch between instant and average values reports",
+        "group": "1dee7313e54d0019",
+        "order": 5,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "decouple": "false",
+        "topic": "instant_average_val",
+        "topicType": "str",
+        "style": "",
+        "onvalue": "true",
+        "onvalueType": "bool",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "false",
+        "offvalueType": "bool",
+        "officon": "",
+        "offcolor": "",
+        "animate": false,
+        "className": "",
+        "x": 1400,
+        "y": 460,
+        "wires": [
+            [
+                "de24320ec1136bbe"
+            ]
+        ]
+    },
+    {
+        "id": "fb74eecfef9e34d9",
+        "type": "ui_switch",
+        "z": "023badb6773ed153",
+        "name": "kelvin_celsius_select",
+        "label": "Celsius / Kelvin",
+        "tooltip": "Select between Celsius or Kelvin reporting, Kelvin is default.",
+        "group": "1dee7313e54d0019",
+        "order": 6,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "decouple": "false",
+        "topic": "kelvin_celsius_select",
+        "topicType": "str",
+        "style": "",
+        "onvalue": "true",
+        "onvalueType": "bool",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "false",
+        "offvalueType": "bool",
+        "officon": "",
+        "offcolor": "",
+        "animate": false,
+        "className": "",
+        "x": 1400,
+        "y": 500,
+        "wires": [
+            [
+                "de24320ec1136bbe"
+            ]
+        ]
+    },
+    {
+        "id": "26eb861f78ac4a9c",
+        "type": "ui_switch",
+        "z": "023badb6773ed153",
+        "name": "temp_led_blink",
+        "label": "Temperature LED blink",
+        "tooltip": "LED will blink when temperature alarm is triggered",
+        "group": "1dee7313e54d0019",
+        "order": 7,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "decouple": "false",
+        "topic": "temp_led_blink",
+        "topicType": "str",
+        "style": "",
+        "onvalue": "true",
+        "onvalueType": "bool",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "false",
+        "offvalueType": "bool",
+        "officon": "",
+        "offcolor": "",
+        "animate": false,
+        "className": "",
+        "x": 1420,
+        "y": 540,
+        "wires": [
+            [
+                "de24320ec1136bbe"
+            ]
+        ]
+    },
+    {
+        "id": "8c55197c0c43eb56",
+        "type": "ui_switch",
+        "z": "023badb6773ed153",
+        "name": "humidity_led_blink",
+        "label": "Humidity LED blink",
+        "tooltip": "LED will blink when humidity alarm is triggered",
+        "group": "1dee7313e54d0019",
+        "order": 8,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "decouple": "false",
+        "topic": "humidity_led_blink",
+        "topicType": "str",
+        "style": "",
+        "onvalue": "true",
+        "onvalueType": "bool",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "false",
+        "offvalueType": "bool",
+        "officon": "",
+        "offcolor": "",
+        "animate": false,
+        "className": "",
+        "x": 1410,
+        "y": 580,
+        "wires": [
+            [
+                "de24320ec1136bbe"
+            ]
+        ]
+    },
+    {
+        "id": "2520642f9faa917d",
+        "type": "ui_switch",
+        "z": "023badb6773ed153",
+        "name": "io_led_blink",
+        "label": "IO event LED blink",
+        "tooltip": "LED will blink when io alarm is triggered",
+        "group": "1dee7313e54d0019",
+        "order": 9,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "decouple": "false",
+        "topic": "io_led_blink",
+        "topicType": "str",
+        "style": "",
+        "onvalue": "true",
+        "onvalueType": "bool",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "false",
+        "offvalueType": "bool",
+        "officon": "",
+        "offcolor": "",
+        "animate": false,
+        "className": "",
+        "x": 1430,
+        "y": 620,
+        "wires": [
+            [
+                "de24320ec1136bbe"
+            ]
+        ]
+    },
+    {
+        "id": "a73a7bd3a59b7f73",
+        "type": "ui_switch",
+        "z": "023badb6773ed153",
+        "name": "temp_io_event",
+        "label": "Temp events trigger assigned IO",
+        "tooltip": "Temperature event triggers assigned IO",
+        "group": "1dee7313e54d0019",
+        "order": 10,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "decouple": "false",
+        "topic": "temp_io_event",
+        "topicType": "str",
+        "style": "",
+        "onvalue": "true",
+        "onvalueType": "bool",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "false",
+        "offvalueType": "bool",
+        "officon": "",
+        "offcolor": "",
+        "animate": false,
+        "className": "",
+        "x": 1420,
+        "y": 660,
+        "wires": [
+            [
+                "de24320ec1136bbe"
+            ]
+        ]
+    },
+    {
+        "id": "c7413208dde114cc",
+        "type": "ui_switch",
+        "z": "023badb6773ed153",
+        "name": "humidity_io_event",
+        "label": "Humidity events trigger assigned IO",
+        "tooltip": "Humidity event triggers assigned IO",
+        "group": "1dee7313e54d0019",
+        "order": 11,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "decouple": "false",
+        "topic": "humidity_io_event",
+        "topicType": "str",
+        "style": "",
+        "onvalue": "true",
+        "onvalueType": "bool",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "false",
+        "offvalueType": "bool",
+        "officon": "",
+        "offcolor": "",
+        "animate": false,
+        "className": "",
+        "x": 1410,
+        "y": 700,
+        "wires": [
+            [
+                "de24320ec1136bbe"
+            ]
+        ]
+    },
+    {
+        "id": "472e5b0cb842b5ea",
+        "type": "ui_switch",
+        "z": "023badb6773ed153",
+        "name": "io_event_alarm",
+        "label": "IO events trigger assigned IO",
+        "tooltip": "Io events trigger assigned IO",
+        "group": "1dee7313e54d0019",
+        "order": 12,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "decouple": "false",
+        "topic": "io_event_alarm",
+        "topicType": "str",
+        "style": "",
+        "onvalue": "true",
+        "onvalueType": "bool",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "false",
+        "offvalueType": "bool",
+        "officon": "",
+        "offcolor": "",
+        "animate": false,
+        "className": "",
+        "x": 1420,
+        "y": 740,
+        "wires": [
+            [
+                "de24320ec1136bbe"
+            ]
+        ]
+    },
+    {
+        "id": "ffa8b19d2b3ae7cc",
+        "type": "ui_numeric",
+        "z": "023badb6773ed153",
+        "name": "io_filter",
+        "label": "IO filter (sec)",
+        "tooltip": "In order to avoid false alarms the voltage must hold the cross-limit value \\n for a specified time interval defined by this parameter.",
+        "group": "1dee7313e54d0019",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "wrap": false,
+        "passthru": true,
+        "topic": "io_filter",
+        "topicType": "str",
+        "format": "{{msg.payload}}",
+        "min": 0,
+        "max": "99",
+        "step": "0.25",
+        "className": "",
+        "x": 1440,
+        "y": 780,
+        "wires": [
+            [
+                "de24320ec1136bbe"
+            ]
+        ]
+    },
+    {
+        "id": "2091855c0f536ae5",
+        "type": "ui_numeric",
+        "z": "023badb6773ed153",
+        "name": "temp_cal",
+        "label": "Temp calibration (Kelvin)",
+        "tooltip": "Temp calibration always in Kelvin*100, by default the sensor is factory calibrated.",
+        "group": "1dee7313e54d0019",
+        "order": 13,
+        "width": 0,
+        "height": 0,
+        "wrap": false,
+        "passthru": true,
+        "topic": "temp_cal",
+        "topicType": "str",
+        "format": "{{msg.payload}}",
+        "min": 0,
+        "max": 10,
+        "step": "0.10",
+        "className": "",
+        "x": 1440,
+        "y": 820,
+        "wires": [
+            [
+                "de24320ec1136bbe"
+            ]
+        ]
+    },
+    {
+        "id": "b6aae772a873ba2e",
+        "type": "ui_numeric",
+        "z": "023badb6773ed153",
+        "name": "inst_threshold",
+        "label": " Instant temp & humidity interval",
+        "tooltip": "Sets the reporting of  instantaneous temperature & humidity interval",
+        "group": "1dee7313e54d0019",
+        "order": 14,
+        "width": 0,
+        "height": 0,
+        "wrap": false,
+        "passthru": true,
+        "topic": "inst_threshold",
+        "topicType": "str",
+        "format": "{{msg.payload}}",
+        "min": 0,
+        "max": "99",
+        "step": "0.25",
+        "className": "",
+        "x": 1420,
+        "y": 860,
+        "wires": [
+            [
+                "de24320ec1136bbe"
+            ]
+        ]
+    },
+    {
+        "id": "580b68ccda57940e",
+        "type": "ui_numeric",
+        "z": "023badb6773ed153",
+        "name": "almt_set_max",
+        "label": "Max temp for alarm triggering (K)",
+        "tooltip": "Maximum temperature threshold for alarm triggering (K)",
+        "group": "625485029dc056ea",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "wrap": false,
+        "passthru": false,
+        "topic": "almt_set_max",
+        "topicType": "str",
+        "format": "{{msg.payload}}",
+        "min": 0,
+        "max": "99",
+        "step": "0.25",
+        "className": "",
+        "x": 1420,
+        "y": 940,
+        "wires": [
+            [
+                "de24320ec1136bbe"
+            ]
+        ]
+    },
+    {
+        "id": "891453e0f2a6492b",
+        "type": "ui_numeric",
+        "z": "023badb6773ed153",
+        "name": "almt_set_min",
+        "label": "Min temp for alarm triggering (K)",
+        "tooltip": "Minimum temperature threshold for alarm triggering (K)",
+        "group": "625485029dc056ea",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "wrap": false,
+        "passthru": true,
+        "topic": "almt_set_min",
+        "topicType": "str",
+        "format": "{{msg.payload}}",
+        "min": 0,
+        "max": "99",
+        "step": "0.25",
+        "className": "",
+        "x": 1430,
+        "y": 980,
+        "wires": [
+            [
+                "de24320ec1136bbe"
+            ]
+        ]
+    },
+    {
+        "id": "6fb13ef72747a0bf",
+        "type": "ui_numeric",
+        "z": "023badb6773ed153",
+        "name": "almh_set_max",
+        "label": "Max humidity for alarm triggering (%)",
+        "tooltip": "Maximum humidity threshold for alarm triggering (%)",
+        "group": "625485029dc056ea",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "wrap": false,
+        "passthru": false,
+        "topic": "almh_set_max",
+        "topicType": "str",
+        "format": "{{msg.payload}}",
+        "min": 0,
+        "max": "99",
+        "step": "0.25",
+        "className": "",
+        "x": 1420,
+        "y": 1020,
+        "wires": [
+            [
+                "de24320ec1136bbe"
+            ]
+        ]
+    },
+    {
+        "id": "2111e137a9791949",
+        "type": "ui_numeric",
+        "z": "023badb6773ed153",
+        "name": "almh_set_min",
+        "label": "Min humidity for alarm triggering (%)",
+        "tooltip": "Minimum humidity threshold for alarm triggering (%)",
+        "group": "625485029dc056ea",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "wrap": false,
+        "passthru": true,
+        "topic": "almh_set_min",
+        "topicType": "str",
+        "format": "{{msg.payload}}",
+        "min": 0,
+        "max": "99",
+        "step": "0.25",
+        "className": "",
+        "x": 1420,
+        "y": 1060,
+        "wires": [
+            [
+                "de24320ec1136bbe"
+            ]
+        ]
+    },
+    {
+        "id": "58ede2bc6d3c2261",
+        "type": "ui_numeric",
+        "z": "023badb6773ed153",
+        "name": "min_io1_threshold",
+        "label": "Min IO1 event threshold (V)",
+        "tooltip": "Minimum IO1 event threshold (V)",
+        "group": "625485029dc056ea",
+        "order": 5,
+        "width": 0,
+        "height": 0,
+        "wrap": false,
+        "passthru": true,
+        "topic": "min_io1_th_threshold",
+        "topicType": "str",
+        "format": "{{msg.payload}}",
+        "min": 0,
+        "max": "99",
+        "step": "0.25",
+        "className": "",
+        "x": 1410,
+        "y": 1140,
+        "wires": [
+            [
+                "de24320ec1136bbe"
+            ]
+        ]
+    },
+    {
+        "id": "62ff3640344c5ae0",
+        "type": "ui_numeric",
+        "z": "023badb6773ed153",
+        "name": "max_io1_threshold",
+        "label": "Max IO1 event threshold (V)",
+        "tooltip": "Maximum IO1 event threshold (V)",
+        "group": "625485029dc056ea",
+        "order": 6,
+        "width": 0,
+        "height": 0,
+        "wrap": false,
+        "passthru": true,
+        "topic": "max_io1_th_threshold",
+        "topicType": "str",
+        "format": "{{msg.payload}}",
+        "min": 0,
+        "max": "99",
+        "step": "0.25",
+        "className": "",
+        "x": 1410,
+        "y": 1100,
+        "wires": [
+            [
+                "de24320ec1136bbe"
+            ]
+        ]
+    },
+    {
+        "id": "a64345de6941aa07",
+        "type": "ui_numeric",
+        "z": "023badb6773ed153",
+        "name": "min_io2_threshold",
+        "label": "Min IO2 event threshold (V)",
+        "tooltip": "Minimum IO2 event threshold (V)",
+        "group": "625485029dc056ea",
+        "order": 7,
+        "width": 0,
+        "height": 0,
+        "wrap": false,
+        "passthru": true,
+        "topic": "min_io2_th_threshold",
+        "topicType": "str",
+        "format": "{{msg.payload}}",
+        "min": 0,
+        "max": "99",
+        "step": "0.25",
+        "className": "",
+        "x": 1410,
+        "y": 1220,
+        "wires": [
+            [
+                "de24320ec1136bbe"
+            ]
+        ]
+    },
+    {
+        "id": "3f209436fee5410f",
+        "type": "ui_numeric",
+        "z": "023badb6773ed153",
+        "name": "max_io2_threshold",
+        "label": "Max IO2 event threshold (V)",
+        "tooltip": "Maximum IO2 event threshold (V)",
+        "group": "625485029dc056ea",
+        "order": 8,
+        "width": 0,
+        "height": 0,
+        "wrap": false,
+        "passthru": false,
+        "topic": "max_io2_th_threshold",
+        "topicType": "str",
+        "format": "{{msg.payload}}",
+        "min": 0,
+        "max": "99",
+        "step": "0.25",
+        "className": "",
+        "x": 1410,
+        "y": 1180,
+        "wires": [
+            [
+                "de24320ec1136bbe"
+            ]
+        ]
+    },
+    {
+        "id": "7ab4cb8923b24371",
+        "type": "ui_numeric",
+        "z": "023badb6773ed153",
+        "name": "min maint interval",
+        "label": "Min maintanance interval (V)",
+        "tooltip": "",
+        "group": "106353cc18555b24",
+        "order": 5,
+        "width": 0,
+        "height": 0,
+        "wrap": true,
+        "passthru": true,
+        "topic": "min_maintenance_interval",
+        "topicType": "str",
+        "format": "{{msg.payload}}",
+        "min": 0,
+        "max": "99",
+        "step": "0.25",
+        "className": "",
+        "x": 1410,
+        "y": 1340,
+        "wires": [
+            [
+                "de24320ec1136bbe"
+            ]
+        ]
+    },
+    {
+        "id": "859604fa507d52fa",
+        "type": "ui_numeric",
+        "z": "023badb6773ed153",
+        "name": "max maint interval",
+        "label": "Max maintanance interval (V)",
+        "tooltip": "",
+        "group": "106353cc18555b24",
+        "order": 6,
+        "width": 0,
+        "height": 0,
+        "wrap": true,
+        "passthru": true,
+        "topic": "max_maintenance_interval",
+        "topicType": "str",
+        "format": "{{msg.payload}}",
+        "min": 0,
+        "max": "99",
+        "step": "0.25",
+        "className": "",
+        "x": 1410,
+        "y": 1380,
+        "wires": [
+            [
+                "de24320ec1136bbe"
+            ]
+        ]
+    },
+    {
+        "id": "67e5c91d703c7056",
+        "type": "ui_numeric",
+        "z": "023badb6773ed153",
+        "name": "avg_threshold",
+        "label": "Average temp & humidity time interval",
+        "tooltip": "Sets the reporting of  average temperature & humidity interval",
+        "group": "1dee7313e54d0019",
+        "order": 15,
+        "width": 0,
+        "height": 0,
+        "wrap": true,
+        "passthru": true,
+        "topic": "avg_threshold",
+        "topicType": "str",
+        "format": "{{msg.payload}}",
+        "min": 0,
+        "max": "300",
+        "step": "0.25",
+        "className": "",
+        "x": 1420,
+        "y": 900,
+        "wires": [
+            [
+                "de24320ec1136bbe"
+            ]
+        ]
+    },
+    {
+        "id": "b230f6346246ce90",
+        "type": "link out",
+        "z": "023badb6773ed153",
+        "name": "gui out",
+        "mode": "link",
+        "links": [
+            "5a29e4c23999255e"
+        ],
+        "x": 1725,
+        "y": 820,
+        "wires": []
+    },
+    {
+        "id": "5a29e4c23999255e",
+        "type": "link in",
+        "z": "023badb6773ed153",
+        "name": "gui in",
+        "links": [
+            "b230f6346246ce90"
+        ],
+        "x": 645,
+        "y": 700,
+        "wires": [
+            [
+                "b5d40f76a3c907d0"
+            ]
+        ]
+    },
+    {
+        "id": "61d79d84e99c388a",
+        "type": "ui_template",
+        "z": "023badb6773ed153",
+        "group": "f578b662a4d24e96",
+        "name": "spinner",
+        "order": 5,
+        "width": 1,
+        "height": 1,
+        "format": "<style>\n    .loader {\n    width: 36px;\n    height: 36px;\n    border-radius: 50%;\n    position: absolute;\n    animation: rotate 1s linear infinite\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    margin-left:5px;\n    margin-top:5px;\n    overflow:hidden;\n    }\n    .loader::before , .loader::after {\n    content: \"\";\n    box-sizing: border-box;\n    position: absolute;\n    inset: 0px;\n    border-radius: 50%;\n    border: 3px solid #FFF;\n    animation: prixClipFix 2s linear infinite ;\n    }\n    .loader::after{\n    border-color: #87a940;\n    animation: prixClipFix 2s linear infinite , rotate 0.5s linear infinite reverse;\n    inset: 3px;\n    }\n    \n    @keyframes rotate {\n    0% {transform: rotate(0deg)}\n    100% {transform: rotate(360deg)}\n    }\n    \n    @keyframes prixClipFix {\n    0% {clip-path:polygon(50% 50%,0 0,0 0,0 0,0 0,0 0)}\n    25% {clip-path:polygon(50% 50%,0 0,100% 0,100% 0,100% 0,100% 0)}\n    50% {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,100% 100%,100% 100%)}\n    75% {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,0 100%,0 100%)}\n    100% {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,0 100%,0 0)}\n    }\n</style>\n\n<div ng-if=\"msg.payload === 'working'\" class=\"loader\"></div>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "className": "",
+        "x": 1400,
+        "y": 1300,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "896fc6e2a8800885",
+        "type": "ui_template",
+        "z": "023badb6773ed153",
+        "group": "2a745e6b.07df92",
+        "name": "Dashboard Theme : Modern Dark",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "format": "<div>\n    <link href=\"https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700&display=swap\" rel=\"stylesheet\">\n    <style>\n        body {\n            --background: #212529;\n            --on-background: white;\n            --surface: #2d3136;\n            --on-surface: white;\n            --primary: var(--nr-dashboard-widgetColor);\n            --on-primary: white;\n            --secondary: var(--nr-dashboard-groupTextColor);\n            --accent: red;\n            --radius-s: 8px;\n            --font-weight-m: 300;\n            --font-weight-m: 500;\n            --font-weight-l: 700;\n            --space-s: 8px;\n            --space-m: 16px;\n            --space-l: 32px;\n        }\n\n        body.nr-dashboard-theme {\n            background-color: var(--background);\n            font-family: 'Montserrat', sans-serif;\n        }\n        .nr-dashboard-theme ui-card-panel {\n            background-color: var(--background);\n            border: 0;\n        }\n        .nr-dashboard-theme .nr-dashboard-button .md-button {\n            background-color: var(--primary);\n            border-radius: var(--radius-s);\n            padding: 8px !important;\n            line-height: inherit;\n            font-weight: var(--font-weight-l);\n            color: var(--on-primary);\n        }\n        .nr-dashboard-theme [ui-card-size=\"2x2\"].nr-dashboard-button .md-button {\n            display: flex;\n            flex-direction: column;\n            justify-content: center;\n            align-items: center;\n            white-space: pre-line;\n        }\n        \n        .nr-dashboard-theme .nr-dashboard-button .md-button ui-icon {\n                margin-bottom: 2px;\n        }\n        .nr-dashboard-theme .nr-dashboard-button .md-button:hover {\n            background-color: var(--secondary);\n        }\n        body.nr-dashboard-theme md-content md-card {\n            background-color: var(--surface);\n        }\n        md-card.md-default-theme, md-card {\n            border-radius: var(--radius-s);\n        }\n        .nr-dashboard-theme .nr-dashboard-gauge-titlel {\n            font-weight: var(--font-weight-l) !important;      \n        }\n        .nr-dashboard-theme ui-card-panel p.nr-dashboard-cardtitle {\n            font-weight: var(--font-weight-l);  \n            text-transform: capitalize;\n            color: var(--on-background);\n        }\n        .nr-dashboard-cardpanel > p {\n            margin-left: 0;\n            padding-left: 16px;\n        }\n        body.nr-dashboard-theme md-toolbar {\n            background-color: var(--surface);\n        }\n        .md-default-theme .md-datepicker-calendar, .md-datepicker-calendar,\n        .md-default-theme .md-calendar, .md-calendar{\n            background-color: var(--surface);\n            color: var(--on-surface);\n        }\n        .md-default-theme .md-datepicker-calendar-pane, .md-datepicker-calendar-pane{\n            border: 0;\n        }\n        .md-default-theme .md-calendar-month-label md-icon, .md-calendar-month-label md-icon, .md-default-theme .md-datepicker-input, .md-datepicker-input {\n            color: var(--on-surface);\n        }\n        body.nr-dashboard-theme md-content md-card {\n            color: var(--on-surface);\n        }\n        .nr-dashboard-theme .nr-dashboard-numeric .value {\n            background-color: var(--surface);\n            color: var(--on-surface);\n        }\n        .nr-dashboard-theme .nr-dashboard-dropdown md-select .md-select-value, .nr-dashboard-theme .nr-dashboard-dropdown md-select .md-select-value.md-select-placeholder {\n            color: var(--on-surface);\n            border-color: var(--on-surface);\n        }\n        .nr-dashboard-theme .nr-dashboard-dropdown .md-select-icon {\n            color: var(--on-surface);\n        }\n        .nr-dashboard-theme .nr-dashboard-date-picker md-input-container .md-input {\n            color: var(--on-surface);\n            border-color: var(--on-surface);\n        }\n        .nr-dashboard-theme .nr-dashboard-date-picker .md-datepicker-triangle-button .md-datepicker-expand-triangle {\n            border-top-color: var(--on-surface);\n        }\n        body.nr-dashboard-theme md-sidenav {\n            background-color: var(--surface);\n        }\n        md-list-item._md-button-wrap > div.md-button:first-child, md-list-item .md-list-item-inner {\n            background-color: var(--surface);\n        }\n        body.nr-dashboard-theme {\n        --nr-dashboard-unit: calc(var(--nr-dashboard-unit) - 0.625)!important;\n        }\n/* Center the input element */\n        .nr-dashboard-numeric input.value {\n        display: inline-block;\n        text-align: center;\n        }\n        .nr-dashboard-text p {\n        font-size:14px !important;\n        }\n        .nr-dashboard-value {\n        font-size: 14px !important;\n        }\n        input {\n        font-size:90% !important;\n        }\n        .nr-dashboard-numeric {\n        padding: 0 0 0 0px !important;\n        }\n        .nr-dashboard-numeric {\n        text-align: center;\n        }\n\n        .nr-dashboard-widget {\n        height: calc(24px + 6 * var(--nr-dashboard-unit));\n        }\n        .nr-dashboard-spacer {\n        height: calc(24px + 6 * var(--nr-dashboard-unit));\n        }\n        \n        .nr-dashboard-theme .nr-dashboard-button .md-button {\n        font-size: 12px;\n        }\n\n\n        .multistate-switch-wrapper{\n        height:2.4em!important;\n        }\n\n        .multistate-switch-slider{\n        height: 2em !important;\n        transform: translate(0.25em,-0.5em)!important;\n        }\n\n        .multistate-switch-round {\n        border-radius: 1.2em;\n        }\n        .nr-dashboard-template {\n        padding: 0px 0px !important;\n        }\n\n        .md-card{\n        padding: 0px 0px !important;\n        }\n\nelement.style {\nleft: 270px;\ntop: 0px;\nwidth: 48px;\nheight: 48px;\n}\n<style>\n    .nr-dashboard-theme .nr-dashboard-template {\n        background-color: #333333;\n    }\n\n    .nr-dashboard-cardcontainer>.visible {\n        opacity: 1;\n    }\n\n    <style>body.nr-dashboard-theme md-content md-card {\n        color: var(--on-surface);\n    }\n\n    <style>body.nr-dashboard-theme md-content md-card {\n        background-color: var(--surface);\n    }\n\n    <style>body.nr-dashboard-theme md-content md-card {\n        color: var(--on-surface);\n    }\n\n    <style>body.nr-dashboard-theme md-content md-card {\n        background-color: var(--surface);\n    }\n\n    <style>body.nr-dashboard-theme md-content md-card {\n        color: var(--on-surface);\n    }\n\n    <style>body.nr-dashboard-theme md-content md-card {\n        background-color: var(--surface);\n    }\n\n    <style>body.nr-dashboard-theme md-content md-card {\n        color: var(--on-surface);\n    }\n\n    <style>body.nr-dashboard-theme md-content md-card {\n        background-color: var(--surface);\n    }\n\n    <style>body.nr-dashboard-theme md-content md-card {\n        background-color: #333333;\n        color: #eeeeee;\n    }\n\n    <style>.nr-dashboard-template {\n    padding: 0px 0px !important;\n    }\n\n    </style>\n</div>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": false,
+        "templateScope": "global",
+        "className": "",
+        "x": 380,
+        "y": 1080,
+        "wires": [
+            []
+        ],
+        "icon": "node-red-dashboard/ui_colour_picker.png",
+        "info": "# Modern Dark Theme for node-red-dashboard\n\nInspired by Victor Lucachi with his [Node Red Dashboard Concept](https://dribbble.com/shots/10356530-Node-Red-Dashboard-Concept) on Dribbble. Thank you for your work.\n\n## Customize\n\n1. Go on dashboard customisation tab (At the right of Debug Console).\n2. Select the style `Dark`.\n3. Pick the color you want. Example `#66B5F8`\n\n## Buttons\n\nUse `2x2` size for buttons with icon and text on the screenshot"
+    },
+    {
+        "id": "6445f9c925494d3f",
+        "type": "ui_text",
+        "z": "023badb6773ed153",
+        "group": "f578b662a4d24e96",
+        "order": 4,
+        "width": 5,
+        "height": 1,
+        "name": "",
+        "label": "",
+        "format": "{{msg.payload}}",
+        "layout": "row-left",
+        "className": "",
+        "x": 1370,
+        "y": 1640,
+        "wires": []
+    },
+    {
+        "id": "584a561673d5a71e",
+        "type": "comment",
+        "z": "023badb6773ed153",
+        "name": "Dark theme for gui, delete if unwanted or customise if needed",
+        "info": "",
+        "x": 460,
+        "y": 1040,
+        "wires": []
+    },
+    {
+        "id": "59f35dcd1dea9d30",
+        "type": "comment",
+        "z": "023badb6773ed153",
+        "name": "To g4n03rht encode or to any other standard transport protocol that reaches it. (ex: mqtt). \\n The first node output or output 0 is always reserved for this purpouse.",
+        "info": "The first node output or output 0 is always reserved for this purpouse.",
+        "x": 1650,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "3099e4655071a19e",
+        "type": "comment",
+        "z": "023badb6773ed153",
+        "name": "Node outputs are as fallows: \\n \\n 0 -output to g4n03rht encode - for this output no topic is neccesary \\n \\n These topics are neccesary for the GUI elements and so is the order: \\n 1 -\"sensor_enable\" \\n 2 -\"maint_mode_io1\" \\n 3 -\"maint_mode_io2\" \\n 4 -\"instant_average_val\"\\n 5 -\"kelvin_celsius_select\"\\n 6 -\"temp_led_blink\"\\n 7 -\"humidity_led_blink\"\\n 8 -\"io_led_blink\"\\n 9 -\"temp_io_event\"\\n 10 -\"humidity_io_event\"\\n 11-\"io_event_alarm\"\\n 12-\"io_filter\"\\n 13-\"temp_cal\"\\n 14-\"inst_threshold\"\\n 15-\"avg_threshold\"\\n 16-\"almt_set_max\"\\n 17-\"almt_set_min\"\\n 18-\"almh_set_max\"\\n 19-\"almh_set_min\"\\n 20-\"max_io1_th_threshold\"\\n 21-\"min_io1_th_threshold\"\\n 22-\"max_io2_th_threshold\"\\n 23-\"min_io2_th_threshold\"\\n 24-\"activate_sensor_cure\"\\n 25-\"trigger_spinner\"\\n 26-\"min_maintenance_interval\"\\n 27-\"max_maintenance_interval\"\\n 28- Sensor_cure_confirmation \\n 29- Sensor_maintenance_confirmation \\n 30-\"dropdown_list\" \\n 31- Query/programming mode ready confirmation \\n 32- Sensor id label confirmation \\n *confirmations are not topic bound since they do not connect back to the dashboard node\t\\n *programming mode switch is available for manual debuging and uses the topic \"switch_programming_mode\"",
+        "info": "Node outputs are as fallows: \\n\n\\n\n0 -output to g4n03rht encode - for this output no topic is neccesary \\n\n\\n\nThese topics are neccesary for the GUI elements and so is the order: \\n\n1 -\"sensor_enable\" \\n\n2 -\"maint_mode_io1\" \\n\n3 -\"maint_mode_io2\" \\n\n4 -\"instant_average_val\"\\n\n5 -\"kelvin_celsius_select\"\\n\n6 -\"temp_led_blink\"\\n\n7 -\"humidity_led_blink\"\\n\n8 -\"io_led_blink\"\\n\n9 -\"temp_io_event\"\\n\n10 -\"humidity_io_event\"\\n\n11-\"io_event_alarm\"\\n\n12-\"io_filter\"\\n\n13-\"temp_cal\"\\n\n14-\"inst_threshold\"\\n\n15-\"avg_threshold\"\\n\n16-\"almt_set_max\"\\n\n17-\"almt_set_min\"\\n\n18-\"almh_set_max\"\\n\n19-\"almh_set_min\"\\n\n20-\"max_io1_th_threshold\"\\n\n21-\"min_io1_th_threshold\"\\n\n22-\"max_io2_th_threshold\"\\n\n23-\"min_io2_th_threshold\"\\n\n24-\"activate_sensor_cure\"\\n\n25-\"trigger_spinner\"\\n\n26-\"min_maintenance_interval\"\\n\n27-\"max_maintenance_interval\"\\n\n28- Sensor_cure_confirmation \\n\n29- Sensor_maintenance_confirmation \\n\n30-\"dropdown_list\" \\n\n31- Query/programming mode ready confirmation \\n\n32- Sensor id label confirmation \\n\n*confirmations are not topic bound since they do not connect back to the dashboard node\t\\n\n*programming mode switch is available for manual debuging and uses the topic \"switch_programming_mode\"",
+        "x": 2130,
+        "y": 680,
+        "wires": []
+    },
+    {
+        "id": "b5d40f76a3c907d0",
+        "type": "sensor_dashboard",
+        "z": "023badb6773ed153",
+        "name": "Sensors dashboard",
+        "x": 870,
+        "y": 540,
+        "wires": [
+            [
+                "a7e2d47538357eec"
+            ],
+            [
+                "d1643dfa21f3508f"
+            ],
+            [
+                "2020ef0e30bd5c88"
+            ],
+            [
+                "67ad5a3b2c9c6ae4"
+            ],
+            [
+                "cf00463125e23059"
+            ],
+            [
+                "fb74eecfef9e34d9"
+            ],
+            [
+                "26eb861f78ac4a9c"
+            ],
+            [
+                "8c55197c0c43eb56"
+            ],
+            [
+                "2520642f9faa917d"
+            ],
+            [
+                "a73a7bd3a59b7f73"
+            ],
+            [
+                "c7413208dde114cc"
+            ],
+            [
+                "472e5b0cb842b5ea"
+            ],
+            [
+                "ffa8b19d2b3ae7cc"
+            ],
+            [
+                "2091855c0f536ae5"
+            ],
+            [
+                "b6aae772a873ba2e"
+            ],
+            [
+                "67e5c91d703c7056"
+            ],
+            [
+                "580b68ccda57940e"
+            ],
+            [
+                "891453e0f2a6492b"
+            ],
+            [
+                "6fb13ef72747a0bf"
+            ],
+            [
+                "2111e137a9791949"
+            ],
+            [
+                "62ff3640344c5ae0"
+            ],
+            [
+                "58ede2bc6d3c2261"
+            ],
+            [
+                "3f209436fee5410f"
+            ],
+            [
+                "a64345de6941aa07"
+            ],
+            [
+                "7dc2046b15643742"
+            ],
+            [
+                "61d79d84e99c388a"
+            ],
+            [
+                "7ab4cb8923b24371"
+            ],
+            [
+                "859604fa507d52fa"
+            ],
+            [
+                "314c206eef93c53a"
+            ],
+            [
+                "be26b8bede410da0"
+            ],
+            [
+                "efcbddadf50b9687"
+            ],
+            [
+                "5e825b181d7b4b6c"
+            ],
+            [
+                "6445f9c925494d3f"
+            ]
+        ]
+    },
+    {
+        "id": "a7e2d47538357eec",
+        "type": "link out",
+        "z": "023badb6773ed153",
+        "name": "link out 2",
+        "mode": "link",
+        "links": [],
+        "x": 1295,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "87ee2e7d64f6adf5",
+        "type": "link in",
+        "z": "023badb6773ed153",
+        "name": "link in 3",
+        "links": [],
+        "x": 645,
+        "y": 440,
+        "wires": [
+            [
+                "b5d40f76a3c907d0"
+            ]
+        ]
+    },
+    {
+        "id": "7dc2046b15643742",
+        "type": "ui_switch",
+        "z": "023badb6773ed153",
+        "name": "",
+        "label": "Sensor cure switch",
+        "tooltip": "Switches the sensors to curing mode. The sensors will heat to  evaporate  excess humidity and will exit maintanace mode after they are done.",
+        "group": "106353cc18555b24",
+        "order": 3,
+        "width": 5,
+        "height": 1,
+        "passthru": true,
+        "decouple": "false",
+        "topic": "activate_sensor_cure",
+        "topicType": "str",
+        "style": "",
+        "onvalue": "true",
+        "onvalueType": "bool",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "false",
+        "offvalueType": "bool",
+        "officon": "",
+        "offcolor": "",
+        "animate": false,
+        "className": "",
+        "x": 1410,
+        "y": 1260,
+        "wires": [
+            [
+                "de24320ec1136bbe"
+            ]
+        ]
+    },
+    {
+        "id": "314c206eef93c53a",
+        "type": "ui_template",
+        "z": "023badb6773ed153",
+        "group": "106353cc18555b24",
+        "name": "sensor cure confirmation",
+        "order": 4,
+        "width": 1,
+        "height": 1,
+        "format": "<style>\n    .loader {\n    width: 36px;\n    height: 36px;\n    border-radius: 50%;\n    position: absolute;\n    animation: rotate 1s linear infinite\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    margin-left:5px;\n    margin-top:5px;\n    overflow:hidden;\n    }\n    .loader::before , .loader::after {\n    content: \"\";\n    box-sizing: border-box;\n    position: absolute;\n    inset: 0px;\n    border-radius: 50%;\n    border: 3px solid #FFF;\n    animation: prixClipFix 2s linear infinite ;\n    }\n    .loader::after{\n    border-color: #87a940;\n    animation: prixClipFix 2s linear infinite , rotate 0.5s linear infinite reverse;\n    inset: 3px;\n    }\n    \n    @keyframes rotate {\n    0% {transform: rotate(0deg)}\n    100% {transform: rotate(360deg)}\n    }\n    \n    @keyframes prixClipFix {\n    0% {clip-path:polygon(50% 50%,0 0,0 0,0 0,0 0,0 0)}\n    25% {clip-path:polygon(50% 50%,0 0,100% 0,100% 0,100% 0,100% 0)}\n    50% {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,100% 100%,100% 100%)}\n    75% {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,0 100%,0 100%)}\n    100% {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,0 100%,0 0)}\n    }\n</style>\n\n<div ng-if=\"msg.payload === 'working'\" class=\"loader\"></div>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "className": "",
+        "x": 1430,
+        "y": 1440,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "be26b8bede410da0",
+        "type": "ui_template",
+        "z": "023badb6773ed153",
+        "group": "106353cc18555b24",
+        "name": "sensor maintenance confirmation",
+        "order": 2,
+        "width": 1,
+        "height": 1,
+        "format": "<style>\n.status-label {\ntext-align: left;\n}\n\n.loader {\nwidth: 36px;\nheight: 36px;\nborder-radius: 50%;\nposition: absolute;\nanimation: rotate 1s linear infinite;\ndisplay: flex;\nalign-items: center;\njustify-content: center;\n    margin-left:5px;\n    margin-top:5px;\n    overflow:hidden;\n}\n.loader::before , .loader::after {\ncontent: \"\";\nbox-sizing: border-box;\nposition: absolute;\ninset: 0px;\nborder-radius: 50%;\nborder: 3px solid #FFF;\nanimation: prixClipFix 2s linear infinite ;\n}\n.loader::after{\nborder-color: #87a940;\nanimation: prixClipFix 2s linear infinite , rotate 0.5s linear infinite reverse;\ninset: 3px;\n}\n\n@keyframes rotate {\n0% {transform: rotate(0deg)}\n100% {transform: rotate(360deg)}\n}\n\n@keyframes prixClipFix {\n0% {clip-path:polygon(50% 50%,0 0,0 0,0 0,0 0,0 0)}\n25% {clip-path:polygon(50% 50%,0 0,100% 0,100% 0,100% 0,100% 0)}\n50% {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,100% 100%,100% 100%)}\n75% {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,0 100%,0 100%)}\n100% {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,0 100%,0 0)}\n}\n</style>\n\n<div ng-if=\"msg.payload === 'working'\">\n    <p class=\"status-label\">ON</p>\n    <div class=\"loader\"></div>\n</div>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "className": "",
+        "x": 1460,
+        "y": 1480,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "5e825b181d7b4b6c",
+        "type": "ui_template",
+        "z": "023badb6773ed153",
+        "group": "f578b662a4d24e96",
+        "name": "sensor ready for query",
+        "order": 3,
+        "width": 1,
+        "height": 1,
+        "format": "<style>\n    .loader {\n    width: 36px;\n    height: 36px;\n    border-radius: 50%;\n    position: absolute;\n    animation: rotate 1s linear infinite\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    margin-left:5px;\n    margin-top:5px;\n    overflow:hidden;\n    }\n    .loader::before , .loader::after {\n    content: \"\";\n    box-sizing: border-box;\n    position: absolute;\n    inset: 0px;\n    border-radius: 50%;\n    border: 3px solid #FFF;\n    animation: prixClipFix 2s linear infinite ;\n    }\n    .loader::after{\n    border-color: #87a940;\n    animation: prixClipFix 2s linear infinite , rotate 0.5s linear infinite reverse;\n    inset: 3px;\n    }\n    \n    @keyframes rotate {\n    0% {transform: rotate(0deg)}\n    100% {transform: rotate(360deg)}\n    }\n    \n    @keyframes prixClipFix {\n    0% {clip-path:polygon(50% 50%,0 0,0 0,0 0,0 0,0 0)}\n    25% {clip-path:polygon(50% 50%,0 0,100% 0,100% 0,100% 0,100% 0)}\n    50% {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,100% 100%,100% 100%)}\n    75% {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,0 100%,0 100%)}\n    100% {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,0 100%,0 0)}\n    }\n</style>\n\n<div ng-if=\"msg.payload === 'working'\" class=\"loader\"></div>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": false,
+        "templateScope": "local",
+        "className": "",
+        "x": 1420,
+        "y": 1560,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "0338184d3963be1e",
+        "type": "ui_switch",
+        "z": "023badb6773ed153",
+        "name": "",
+        "label": "Programming mode",
+        "tooltip": "",
+        "group": "f0fda1e7.d1d76",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "decouple": "false",
+        "topic": "switch_programming_mode",
+        "topicType": "str",
+        "style": "",
+        "onvalue": "true",
+        "onvalueType": "bool",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "false",
+        "offvalueType": "bool",
+        "officon": "",
+        "offcolor": "",
+        "animate": false,
+        "className": "",
+        "x": 1410,
+        "y": 1600,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "a06106a2b85b2171",
+        "type": "ui_text",
+        "z": "023badb6773ed153",
+        "group": "106353cc18555b24",
+        "order": 1,
+        "width": 5,
+        "height": 1,
+        "name": "",
+        "label": "Sensor maintenance status",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1780,
+        "y": 1480,
+        "wires": []
+    },
+    {
+        "id": "f578b662a4d24e96",
+        "type": "ui_group",
+        "name": "Device selection",
+        "tab": "f9fee606c0928d07",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": true,
+        "className": ""
+    },
+    {
+        "id": "1dee7313e54d0019",
+        "type": "ui_group",
+        "name": "Sensor Config",
+        "tab": "f9fee606c0928d07",
+        "order": 2,
+        "disp": true,
+        "width": "6",
+        "collapse": true,
+        "className": ""
+    },
+    {
+        "id": "625485029dc056ea",
+        "type": "ui_group",
+        "name": "Alarm thresholds",
+        "tab": "f9fee606c0928d07",
+        "order": 3,
+        "disp": true,
+        "width": "6",
+        "collapse": true,
+        "className": ""
+    },
+    {
+        "id": "106353cc18555b24",
+        "type": "ui_group",
+        "name": "Sensor maintenance",
+        "tab": "f9fee606c0928d07",
+        "order": 4,
+        "disp": true,
+        "width": "6",
+        "collapse": true,
+        "className": ""
+    },
+    {
+        "id": "2a745e6b.07df92",
+        "type": "ui_group",
+        "name": "Default",
+        "tab": "e63bce2d.68925",
+        "order": 5,
+        "disp": true,
+        "width": "6",
+        "collapse": true
+    },
+    {
+        "id": "f0fda1e7.d1d76",
+        "type": "ui_group",
+        "name": "",
+        "tab": "10fce37c.85a72d",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "f9fee606c0928d07",
+        "type": "ui_tab",
+        "name": "Sensor Dashboard",
+        "icon": "dashboard",
+        "order": 3,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "e63bce2d.68925",
+        "type": "ui_tab",
+        "name": "Denon",
+        "icon": "dashboard",
+        "order": 16,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "10fce37c.85a72d",
+        "type": "ui_tab",
+        "name": "Tab 3",
+        "icon": "dashboard",
+        "order": 1,
+        "disabled": true,
+        "hidden": true
+    }
+]
