@@ -222,22 +222,24 @@ module.exports = function (RED) {
 								payload: false,
 							};
 							programmingMode = false;
-							node.context().flow.set("programmingMode", programmingMode);
+
 							enterProgramingMode(node, newmsg0);
+							node.context().flow.set("programmingMode", programmingMode);
 						}
 					}
 				}
 			}
 		} catch {
 			if (programmingMode) {
-				//enterprogramming node
+				//exiting node
 				let newmsg0 = {
 					topic: "switch_programming_mode",
 					payload: false,
 				};
 				programmingMode = false;
-				node.context().flow.set("programmingMode", programmingMode);
+
 				enterProgramingMode(node, newmsg0);
+				node.context().flow.set("programmingMode", programmingMode);
 			}
 		}
 	}
@@ -809,6 +811,7 @@ module.exports = function (RED) {
 					psn = "none";
 					clear_gui(node, msg);
 				}
+				node.context().flow.set("stopPopulate", true);
 				let label = "Sensor id: " + psnSelected;
 
 				let msgToLabel = {
@@ -834,11 +837,10 @@ module.exports = function (RED) {
 				var currentPsn = lastReadPsn[0].psn;
 				if (currentPsn === psnSelected) {
 					// You can now use the 'currentPsn' variable as needed
-					node.warn("Current psn:", currentPsn);
+
 					// Check if the 'read' value of the current element is true
 					if (lastReadPsn[0].read === true) {
 						// Do something if the 'read' value is true
-						node.warn("i have read this file");
 					}
 
 					if (!programmingMode) {
@@ -1106,53 +1108,68 @@ module.exports = function (RED) {
 		try {
 			var type = msg.payload.type;
 		} catch {}
+		try {
+			var inst = msg.payload.heat_intst;
+		} catch {}
+		try {
+			var mtnc = msg.payload.snsr_mtnc;
+			var act = msg.payload.heat_act;
+		} catch {}
 
-		if (psnSelected !== undefined && psnSelected !== "") {
-			if (type === "sensorcure" && action === 4 && msg.payload.heat_intst === 0) {
-				triggerSpinnerCure(node, true);
-				triggerSpinnerMaintenance(node, true);
-			} else {
-				triggerSpinnerMaintenance(node, false);
-				triggerSpinnerCure(node, false);
-			}
+		// if (psnSelected !== undefined && psnSelected !== "") {
+		if (type === "sensorcure" && action === 4 && inst === 0) {
+			triggerSpinnerCure(node, true);
+			triggerSpinnerMaintenance(node, true);
+		} else {
+			triggerSpinnerMaintenance(node, false);
+			triggerSpinnerCure(node, false);
 		}
+		// }
 
-		if (psnSelected !== undefined && psnSelected !== "") {
-			if (msg.payload.type === "sysstat" && msg.payload.snsr_mtnc === true && msg.payload.heat_act === true) {
-				triggerSpinnerCure(node, true);
-				triggerSpinnerMaintenance(node, true);
-			} else {
-				triggerSpinnerMaintenance(node, false);
-				triggerSpinnerCure(node, false);
-			}
+		// if (psnSelected !== undefined && psnSelected !== "") {
+		if (msg.payload.type === "sysstat" && mtnc === true && act === true) {
+			triggerSpinnerCure(node, true);
+			triggerSpinnerMaintenance(node, true);
+		} else {
+			triggerSpinnerMaintenance(node, false);
+			triggerSpinnerCure(node, false);
 		}
+		// }
 	}
 
-	function activate_sensor_cure(node, msg) {
+	async function activate_sensor_cure(node, msg) {
 		if (msg.topic === "activate_sensor_cure") {
 			try {
 				var previousValueCure = node.context().flow.get("previousValueCure") || false;
+				var programmingMode = node.context().flow.get("programmingMode") || false;
+				var psnSelected = node.context().flow.get("psnSelected");
 			} catch {}
-			if (msg.payload !== previousValueCure) {
-				try {
-					var psnSelected = node.context().flow.get("psnSelected");
-				} catch {}
-				if (msg.payload == true) {
-					msg.payload = {
-						psn: psnSelected,
-						type: "sensorcure",
-						action: 3,
-						heat_intst: 15,
-					};
-					sendToOutput(node, 0, msg);
-				}
-				// Store the current payload value as the previous value for future comparisons
-				node.context().flow.set("previousValueCure", msg.payload);
+
+			if (msg.payload == true) {
+				let newmsg0 = {
+					topic: "switch_programming_mode",
+					payload: true,
+				};
+				enterProgramingMode(node, newmsg0);
+
+				msg.payload = {
+					psn: psnSelected,
+					type: "sensorcure",
+					action: 3,
+					heat_intst: 15,
+				};
+
+				await delay(2000);
+				setTimeout(() => {
+					sendToOutput(node, 0, msg.payload);
+				}, 4000);
 			}
+			// Store the current payload value as the previous value for future comparisons
+			// node.context().flow.set("previousValueCure", msg.payload);
 		}
 	}
+
 	function clear_gui(node, msg) {
-		node.warn("should clear gui");
 		try {
 			node.context().flow.set("sys_cnf", 0);
 			node.context().flow.set("alm_cnf", 0);
