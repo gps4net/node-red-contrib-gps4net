@@ -406,7 +406,7 @@ System configuration messages. To change any of those options using action type 
     -   io1_mntc - assign IO1 as input for enabling maintenance mode using an external switch
     -   io2_mntc - assign IO2 as input for enabling maintenance mode using an external switch
     -   avg_val_evt - use average temperature and humidity values for alarm event detection
-    -   temp_c_bcd - sensor temperature format is °C; in BCD
+    -   temp_c_bcd - sensor temperature format is °C in BCD
     -   temp_k_bin - sensor temperature format is K x100 in binary
 
 -   **alm_cnf** - Alarm configuration, integer. Options listed below:
