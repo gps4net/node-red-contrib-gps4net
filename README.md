@@ -575,7 +575,8 @@ Maintenance mode triggering voltage threshold.
 
 The dashboard node is design to operate by reading existing parameters of a specific sensor identified by PSN and then writing parameters to that specific sensor.
 
-###Inputs
+### Inputs
+
 The input node has a dual role. First role is to receive the messages coming from the g4n03rht-decode node. The messages received from the decode node follow the JSON object comprised from a payload with different values and a topic.
 
 Incoming messages take the form of a JSON object with the following keys:
@@ -612,7 +613,8 @@ will usually contain only the value or boolean corresponding to the topic
 	}
 ```
 
-###Outputs
+### Outputs
+
 The output of the first output is connected to the **g4n03rht-encode** and sends the messages needed to comunicate/program with the sensors. The other outputs serve a simple message structure to generic gui elements.While the generic gui elements do not require a topic to receive data and display it they do require they send data with a topic so they may be recognised from other messages using the input node.
 
 -**Message**
@@ -630,7 +632,8 @@ type:"The message type, string"
 
 Additional keys for parameters will also be present depending on message type as described in **g4n03rht-decode**. These are described in the **g4n03rht-decode node**.
 
-###Topics and command sequence's executed triggered by GUI elements
+### Topics and command sequence's executed triggered by GUI elements
+
 The name of topics is described below toghether with the action sequence it triggers.
 
 ```
@@ -887,7 +890,8 @@ Using a string value it displays the selected sensor psn.
 Using a boolean value of true / false, it shall trigger entering programming mode manually, generally used for debuging purposes and not present in the example dashboard.
 Corresponds to the **prog** type of message as described in **g4n03rht-decode**.
 
-###Additional notes
+### Additional notes
+
 The dashboard node works in conjunction with the **g4n03rht-decode** and **g4n03rht-encode** nodes, forming a system that allows for easy sensor configuration and monitoring.
 
 Please refer to the respective nodes for more detailed information about their functions and how they interact with this node.
