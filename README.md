@@ -661,7 +661,7 @@ If the sensor in the CAN network is not in programming mode it shall enter progr
 
 Using a boolean value of true / false it shall trigger the change of node variable in order to form new program message.
 It enables the sensor reporting.
-~Corresponds to the **sysset** type of message, and its a value of the payload as described in **g4n03rht-decode**.~
+Corresponds to the **sysset** type of message, and its a value of the payload as described in **g4n03rht-decode**.
 
 ```
 	Topic: "maint_mode_io1", Payload: boolean
@@ -669,7 +669,7 @@ It enables the sensor reporting.
 
 Using a boolean value of true / false it shall trigger the change of node variable in order to form new program message.
 If Io1 is triggered it will place the sensor in maintanence mode.
-~Corresponds to the **sysset** type of message, and its a value of the payload as described in **g4n03rht-decode**.~
+Corresponds to the **sysset** type of message, and its a value of the payload as described in **g4n03rht-decode**.
 
 ```
 	Topic: "maint_mode_io2", Payload: boolean
@@ -677,7 +677,7 @@ If Io1 is triggered it will place the sensor in maintanence mode.
 
 Using a boolean value of true / false it shall trigger the change of node variable in order to form new program message.
 If Io2 is triggered it will place the sensor in maintanence mode.
-~Corresponds to the **sysset** type of message, and its a value of the payload as described in **g4n03rht-decode**.~
+Corresponds to the **sysset** type of message, and its a value of the payload as described in **g4n03rht-decode**.
 
 ```
 	Topic: "instant_average_val", Payload: boolean
@@ -685,7 +685,7 @@ If Io2 is triggered it will place the sensor in maintanence mode.
 
 Using a boolean value of true / false it shall trigger the change of node variable in order to form new program message.
 Changes between instant time reporting or average time reporting.
-~Corresponds to the **sysset** type of message, and its a value of the payload as described in **g4n03rht-decode**.~
+Corresponds to the **sysset** type of message, and its a value of the payload as described in **g4n03rht-decode**.
 
 ```
 	Topic: "kelvin_celsius_select", Payload: boolean
@@ -693,7 +693,7 @@ Changes between instant time reporting or average time reporting.
 
 Using a boolean value of true / false it shall trigger the change of node variable in order to form new program message.
 Changes between kelvin (default) or celsius reporting. False for celsius , true for Kelvin.
-~Corresponds to the **sysset** type of message, and its a value of the payload as described in **g4n03rht-decode**.~
+Corresponds to the **sysset** type of message, and its a value of the payload as described in **g4n03rht-decode**.
 
 ```
 	Topic: "temp_led_blink", Payload: boolean
@@ -701,7 +701,7 @@ Changes between kelvin (default) or celsius reporting. False for celsius , true 
 
 Using a boolean value of true / false, it shall trigger the change of the node variable in order to form a new program message.
 Changes if the led should blink if temperature threshold are exceeded.
-~Corresponds to the **sysset** type of message, and its a value of the payload as described in **g4n03rht-decode**.~
+Corresponds to the **sysset** type of message, and its a value of the payload as described in **g4n03rht-decode**.
 
 ```
 	Topic: "humidity_led_blink", Payload: boolean
@@ -709,126 +709,126 @@ Changes if the led should blink if temperature threshold are exceeded.
 
 Using a boolean value of true / false, it shall trigger the change of the node variable in order to form a new program message.
 Changes if the led should blink if humidity thresholds are exceeded.
-~Corresponds to the **sysset** type of message, and its a value of the payload as described in **g4n03rht-decode**.~
+Corresponds to the **sysset** type of message, and its a value of the payload as described in **g4n03rht-decode**.
 
 ```
 	Topic: "io_led_blink", Payload: boolean
 ```
 
 Using a boolean value of true / false, it shall trigger the change of the node variable in order to form a new program message.
-~Corresponds to the **sysset** type of message, and its a value of the payload as described in **g4n03rht-decode**.~
+Corresponds to the **sysset** type of message, and its a value of the payload as described in **g4n03rht-decode**.
 
 ```
 	Topic: "temp_io_event", Payload: boolean
 ```
 
 Using a boolean value of true / false, it shall trigger the change of the node variable in order to form a new program message.
-~Corresponds to the **sysset** type of message, and its a value of the payload as described in **g4n03rht-decode**.~
+Corresponds to the **sysset** type of message, and its a value of the payload as described in **g4n03rht-decode**.
 
 ```
 	Topic: "humidity_io_event", Payload: boolean
 ```
 
 Using a boolean value of true / false, it shall trigger the change of the node variable in order to form a new program message.
-~Corresponds to the **sysset** type of message, and its a value of the payload as described in **g4n03rht-decode**.~
+Corresponds to the **sysset** type of message, and its a value of the payload as described in **g4n03rht-decode**.
 
 ```
 	Topic: "io_event_alarm", Payload: boolean
 ```
 
 Using a boolean value of true / false, it shall trigger the change of the node variable in order to form a new program message.
-~Corresponds to the **sysset** type of message, and its a value of the payload as described in **g4n03rht-decode**.~
+Corresponds to the **sysset** type of message, and its a value of the payload as described in **g4n03rht-decode**.
 
 ```
 	Topic: "io_filter", Payload: numeric
 ```
 
 Using a numeric value, io_filter is used to avoid false alarms the voltage must hold the cross-limit value for a specified time interval defined by this parameter.
-~Corresponds to the **io_fltr** type of message as described in **g4n03rht-decode**.~
+Corresponds to the **io_fltr** type of message as described in **g4n03rht-decode**.
 
 ```
 	Topic: "temp_cal", Payload: numeric
 ```
 
 Using a numeric value, temperature calibration is always expressed in Kelvin\*100 regardless the bit set in the parameter. The default value is 0 as the sensor is factory calibrated.
-~Corresponds to the **tmpcal** type of message as described in **g4n03rht-decode**.~
+Corresponds to the **tmpcal** type of message as described in **g4n03rht-decode**.
 
 ```
 	Topic: "inst_threshold", Payload: numeric
 ```
 
 Using a numeric value, represents the value of the transmission interval of the instantaneous reading of temperature and humidity.
-~Corresponds to the **instset** type of message as described in **g4n03rht-decode**.~
+Corresponds to the **instset** type of message as described in **g4n03rht-decode**.
 
 ```
 	Topic: "avg_threshold", Payload: numeric
 ```
 
 Using a numeric value, represents the transmission interval value and calculation of the average temperature and humidity.
-~Corresponds to the **avrset** type of message as described in **g4n03rht-decode**.~
+Corresponds to the **avrset** type of message as described in **g4n03rht-decode**.
 
 ```
 	Topic: "almt_set_max", Payload: numeric
 ```
 
 Using a numeric value, represents the maximum temperature threshold used for triggering the alarm.
-~Corresponds to the **almtsetmax** type of message as described in **g4n03rht-decode**.~
+Corresponds to the **almtsetmax** type of message as described in **g4n03rht-decode**.
 
 ```
 	Topic: "almt_set_min", Payload: numeric
 ```
 
 Using a numeric value, represents the minimum temperature threshold for triggering the temperature alarm.
-~Corresponds to the **almtsetmin** type of message as described in **g4n03rht-decode**.~
+Corresponds to the **almtsetmin** type of message as described in **g4n03rht-decode**.
 
 ```
 	Topic: "almh_set_max", Payload: numeric
 ```
 
 Using a numeric value, represents the maximum threshold value for triggering the humidity alarm.
-~Corresponds to the **almhsetmax** type of message as described in **g4n03rht-decode**.~
+Corresponds to the **almhsetmax** type of message as described in **g4n03rht-decode**.
 
 ```
 	Topic: "almh_set_min", Payload: numeric
 ```
 
 Using a numeric value, represents the minimum threshold value for triggering the humidity alarm.
-~Corresponds to the **almhsetmin** type of message as described in **g4n03rht-decode**.~
+Corresponds to the **almhsetmin** type of message as described in **g4n03rht-decode**.
 
 ```
 	Topic: "max_io1_th_threshold", Payload: numeric
 ```
 
 Using a numeric value, represents the maximum threshold voltage value used for triggering the voltage alarm on IO1.
-~Corresponds to the **almio1set** type of message as described in **g4n03rht-decode**.~
+Corresponds to the **almio1set** type of message as described in **g4n03rht-decode**.
 
 ```
 	Topic: "min_io1_th_threshold", Payload: numeric
 ```
 
 Using a numeric value, represents the minimum threshold voltage value used for triggering the voltage alarm on IO1.
-~Corresponds to the **almio1set** type of message as described in **g4n03rht-decode**.~
+Corresponds to the **almio1set** type of message as described in **g4n03rht-decode**.
 
 ```
 	Topic: "max_io2_th_threshold", Payload: numeric
 ```
 
 Using a numeric value, represents the maximum threshold voltage value used for triggering the voltage alarm on IO2.
-~Corresponds to the **almio2set** type of message as described in **g4n03rht-decode**.~
+Corresponds to the **almio2set** type of message as described in **g4n03rht-decode**.
 
 ```
 	Topic: "min_io2_th_threshold", Payload: numeric
 ```
 
 Using a numeric value, represents the minimum threshold voltage value used for triggering the voltage alarm on IO2.
-~Corresponds to the **almio2set** type of message as described in **g4n03rht-decode**.~
+Corresponds to the **almio2set** type of message as described in **g4n03rht-decode**.
 
 ```
 	Topic: "activate_sensor_cure", Payload: boolean
 ```
 
 Using a boolean value of true / false, it shall trigger starts a resistive element from the sensor that raises the sensor temperature to facilitate condensation evaporation.
-~Corresponds to the **sensorcure** type of message as described in **g4n03rht-decode**.~
+Corresponds to the **sensorcure** type of message as described in **g4n03rht-decode**.
 
 ```
 	Topic: "trigger_spinner", Payload: string
@@ -841,14 +841,14 @@ Using a string value of "working" : "done" it shall trigger the css element to i
 ```
 
 Using a numeric value, represents the minimum voltage threshold values for triggering the Maintenance Mode.
-~Corresponds to the **maintset** type of message as described in **g4n03rht-decode**.~
+Corresponds to the **maintset** type of message as described in **g4n03rht-decode**.
 
 ```
 	Topic: "max_maintenance_interval", Payload: numeric
 ```
 
 Using a numeric value, represents the minimum voltage threshold values for triggering the Maintenance Mode.
-~Corresponds to the **maintset** type of message as described in **g4n03rht-decode**.~
+Corresponds to the **maintset** type of message as described in **g4n03rht-decode**.
 
 ```
 	Topic: "Sensor_cure_confirmation", Payload: boolean
@@ -885,7 +885,7 @@ Using a string value it displays the selected sensor psn.
 ```
 
 Using a boolean value of true / false, it shall trigger entering programming mode manually, generally used for debuging purposes and not present in the example dashboard.
-~Corresponds to the **prog** type of message as described in **g4n03rht-decode**.~
+Corresponds to the **prog** type of message as described in **g4n03rht-decode**.
 
 ###Additional notes
 The dashboard node works in conjunction with the **g4n03rht-decode** and **g4n03rht-encode** nodes, forming a system that allows for easy sensor configuration and monitoring.
