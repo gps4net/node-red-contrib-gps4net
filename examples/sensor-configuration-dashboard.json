@@ -2,7 +2,7 @@
     {
         "id": "023badb6773ed153",
         "type": "tab",
-        "label": "Sensor DashboardExample",
+        "label": "Sensor Configuration Dashboard Example",
         "disabled": false,
         "info": "",
         "env": []
@@ -33,10 +33,10 @@
         "id": "f4de6bdae23dc29c",
         "type": "comment",
         "z": "023badb6773ed153",
-        "name": "From  g4n03rht decode \\n Message payloads from g4n03rht decode node or \\n from any other source that transmits its payload \\n (such as Mqtt) are fed into sensor dashboard.",
-        "info": "Message payloads from g4n03rht decode node or \\n\nfrom any other source that transmits its payload \\n\n(such as Mqtt) are fed into sensor dashboard.",
+        "name": "From  g4n-rht-decode \\n Message payloads from g4n03rht decode node or \\n from any other source that transmits its payload \\n (such as Mqtt) are fed into sensor dashboard.",
+        "info": "Message payloads from g4n-rht-decode node or \\n\nfrom any other source that transmits its payload \\n\n(such as Mqtt) are fed into sensor dashboard.",
         "x": 440,
-        "y": 440,
+        "y": 420,
         "wires": []
     },
     {
@@ -65,7 +65,7 @@
         "topicType": "str",
         "className": "",
         "x": 1400,
-        "y": 1520,
+        "y": 1500,
         "wires": [
             [
                 "de24320ec1136bbe"
@@ -82,7 +82,7 @@
         "width": 3,
         "height": 1,
         "passthru": false,
-        "label": "Query selected Psn",
+        "label": "Query Device",
         "tooltip": "Enter programming mode and query the selected PSN",
         "color": "",
         "bgcolor": "",
@@ -92,7 +92,7 @@
         "payloadType": "str",
         "topic": "query_psn",
         "topicType": "str",
-        "x": 1410,
+        "x": 1420,
         "y": 260,
         "wires": [
             [
@@ -110,7 +110,7 @@
         "width": 3,
         "height": 1,
         "passthru": false,
-        "label": "Program",
+        "label": "Program Device",
         "tooltip": "Enter programming mode and program a queried psn",
         "color": "",
         "bgcolor": "",
@@ -120,7 +120,7 @@
         "payloadType": "str",
         "topic": "begin_programming",
         "topicType": "str",
-        "x": 1440,
+        "x": 1420,
         "y": 300,
         "wires": [
             [
@@ -960,13 +960,13 @@
         "order": 5,
         "width": 1,
         "height": 1,
-        "format": "<style>\n    .loader {\n    width: 36px;\n    height: 36px;\n    border-radius: 50%;\n    position: absolute;\n    animation: rotate 1s linear infinite\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    margin-left:5px;\n    margin-top:5px;\n    overflow:hidden;\n    }\n    .loader::before , .loader::after {\n    content: \"\";\n    box-sizing: border-box;\n    position: absolute;\n    inset: 0px;\n    border-radius: 50%;\n    border: 3px solid #FFF;\n    animation: prixClipFix 2s linear infinite ;\n    }\n    .loader::after{\n    border-color: #87a940;\n    animation: prixClipFix 2s linear infinite , rotate 0.5s linear infinite reverse;\n    inset: 3px;\n    }\n    \n    @keyframes rotate {\n    0% {transform: rotate(0deg)}\n    100% {transform: rotate(360deg)}\n    }\n    \n    @keyframes prixClipFix {\n    0% {clip-path:polygon(50% 50%,0 0,0 0,0 0,0 0,0 0)}\n    25% {clip-path:polygon(50% 50%,0 0,100% 0,100% 0,100% 0,100% 0)}\n    50% {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,100% 100%,100% 100%)}\n    75% {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,0 100%,0 100%)}\n    100% {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,0 100%,0 0)}\n    }\n</style>\n\n<div ng-if=\"msg.payload === 'working'\" class=\"loader\"></div>",
+        "format": "<style>\n    .loader {\n    width: 36px;\n    height: 36px;\n    border-radius: 50%;\n    position: absolute;\n    animation: rotate 1s linear infinite\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    margin-left:5px;\n    margin-top:5px;\n    overflow:hidden;\n    }\n    .loader::before , .loader::after {\n    content: \"\";\n    box-sizing: border-box;\n    position: absolute;\n    inset: 0px;\n    border-radius: 50%;\n    border: 3px solid #FFF;\n    animation: prixClipFix 2s linear infinite ;\n    }\n    .loader::after{\n    border-color: #87a940;\n    animation: prixClipFix 2s linear infinite , rotate 0.5s linear infinite reverse;\n    inset: 3px;\n    }\n    \n    @keyframes rotate {\n    0% {transform: rotate(0deg)}\n    100% {transform: rotate(360deg)}\n    }\n    \n    @keyframes prixClipFix {\n    0% {clip-path:polygon(50% 50%,0 0,0 0,0 0,0 0,0 0)}\n    25% {clip-path:polygon(50% 50%,0 0,100% 0,100% 0,100% 0,100% 0)}\n    50% {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,100% 100%,100% 100%)}\n    75% {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,0 100%,0 100%)}\n    100% {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,0 100%,0 0)}\n    }\n</style>\n\n<div ng-if=\"msg.payload === 'working'\" class=\"loader\" title=\"Indicates if devices are in programming mode.\" ng-mouseover=\"showTooltip = true\" ng-mouseleave=\"showTooltip = false\">\n<span class=\"tooltip\" ng-show=\"showTooltip\">Indicates if devices are in programming mode.</span>\n</div>\n<style>\n    .loader {\n        /* existing styles */\n    }\n\n    .tooltip {\n        visibility: hidden;\n        background-color: #555;\n        color: #fff;\n        text-align: center;\n        padding: 5px 0;\n        border-radius: 6px;\n        position: absolute;\n        z-index: 1;\n        bottom: 125%;\n        /* position the tooltip above the loader */\n        left: 50%;\n        margin-left: -60px;\n        /* center the tooltip */\n        opacity: 0;\n        transition: opacity 0.3s;\n    }\n\n    .loader:hover .tooltip {\n        visibility: visible;\n        opacity: 1;\n    }\n</style>",
         "storeOutMessages": true,
         "fwdInMessages": true,
         "resendOnRefresh": true,
         "templateScope": "local",
         "className": "",
-        "x": 1400,
+        "x": 1380,
         "y": 1300,
         "wires": [
             []
@@ -1009,7 +1009,7 @@
         "layout": "row-left",
         "className": "",
         "x": 1370,
-        "y": 1640,
+        "y": 1620,
         "wires": []
     },
     {
@@ -1026,9 +1026,9 @@
         "id": "59f35dcd1dea9d30",
         "type": "comment",
         "z": "023badb6773ed153",
-        "name": "To g4n03rht encode or to any other standard transport protocol that reaches it. (ex: mqtt). \\n The first node output or output 0 is always reserved for this purpouse.",
+        "name": "To g4n-rht--encode or to any other standard transport protocol that reaches it. (ex: mqtt). \\n The first node output or output 0 is always reserved for this purpouse.",
         "info": "The first node output or output 0 is always reserved for this purpouse.",
-        "x": 1650,
+        "x": 1640,
         "y": 80,
         "wires": []
     },
@@ -1046,8 +1046,8 @@
         "id": "b5d40f76a3c907d0",
         "type": "sensor_dashboard",
         "z": "023badb6773ed153",
-        "name": "Sensors dashboard",
-        "x": 870,
+        "name": "Sensors configuration dashboard",
+        "x": 920,
         "y": 540,
         "wires": [
             [
@@ -1169,7 +1169,7 @@
         "name": "link in 3",
         "links": [],
         "x": 645,
-        "y": 440,
+        "y": 420,
         "wires": [
             [
                 "b5d40f76a3c907d0"
@@ -1219,14 +1219,14 @@
         "order": 4,
         "width": 1,
         "height": 1,
-        "format": "<style>\n    .loader {\n    width: 36px;\n    height: 36px;\n    border-radius: 50%;\n    position: absolute;\n    animation: rotate 1s linear infinite\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    margin-left:5px;\n    margin-top:5px;\n    overflow:hidden;\n    }\n    .loader::before , .loader::after {\n    content: \"\";\n    box-sizing: border-box;\n    position: absolute;\n    inset: 0px;\n    border-radius: 50%;\n    border: 3px solid #FFF;\n    animation: prixClipFix 2s linear infinite ;\n    }\n    .loader::after{\n    border-color: #87a940;\n    animation: prixClipFix 2s linear infinite , rotate 0.5s linear infinite reverse;\n    inset: 3px;\n    }\n    \n    @keyframes rotate {\n    0% {transform: rotate(0deg)}\n    100% {transform: rotate(360deg)}\n    }\n    \n    @keyframes prixClipFix {\n    0% {clip-path:polygon(50% 50%,0 0,0 0,0 0,0 0,0 0)}\n    25% {clip-path:polygon(50% 50%,0 0,100% 0,100% 0,100% 0,100% 0)}\n    50% {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,100% 100%,100% 100%)}\n    75% {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,0 100%,0 100%)}\n    100% {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,0 100%,0 0)}\n    }\n</style>\n\n<div ng-if=\"msg.payload === 'working'\" class=\"loader\"></div>",
+        "format": "<style>\n    .loader {\n    width: 36px;\n    height: 36px;\n    border-radius: 50%;\n    position: absolute;\n    animation: rotate 1s linear infinite\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    margin-left:5px;\n    margin-top:5px;\n    overflow:hidden;\n    }\n    .loader::before , .loader::after {\n    content: \"\";\n    box-sizing: border-box;\n    position: absolute;\n    inset: 0px;\n    border-radius: 50%;\n    border: 3px solid #FFF;\n    animation: prixClipFix 2s linear infinite ;\n    }\n    .loader::after{\n    border-color: #87a940;\n    animation: prixClipFix 2s linear infinite , rotate 0.5s linear infinite reverse;\n    inset: 3px;\n    }\n    \n    @keyframes rotate {\n    0% {transform: rotate(0deg)}\n    100% {transform: rotate(360deg)}\n    }\n    \n    @keyframes prixClipFix {\n    0% {clip-path:polygon(50% 50%,0 0,0 0,0 0,0 0,0 0)}\n    25% {clip-path:polygon(50% 50%,0 0,100% 0,100% 0,100% 0,100% 0)}\n    50% {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,100% 100%,100% 100%)}\n    75% {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,0 100%,0 100%)}\n    100% {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,0 100%,0 0)}\n    }\n</style>\n\n<div ng-if=\"msg.payload === 'working'\" class=\"loader\"   title=\"Indicates if the selected device is in maintanance.\"  ></div>",
         "storeOutMessages": true,
         "fwdInMessages": true,
         "resendOnRefresh": true,
         "templateScope": "local",
         "className": "",
         "x": 1430,
-        "y": 1440,
+        "y": 1420,
         "wires": [
             []
         ]
@@ -1247,7 +1247,7 @@
         "templateScope": "local",
         "className": "",
         "x": 1460,
-        "y": 1480,
+        "y": 1460,
         "wires": [
             []
         ]
@@ -1261,14 +1261,14 @@
         "order": 3,
         "width": 1,
         "height": 1,
-        "format": "<style>\n    .loader {\n    width: 36px;\n    height: 36px;\n    border-radius: 50%;\n    position: absolute;\n    animation: rotate 1s linear infinite\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    margin-left:5px;\n    margin-top:5px;\n    overflow:hidden;\n    }\n    .loader::before , .loader::after {\n    content: \"\";\n    box-sizing: border-box;\n    position: absolute;\n    inset: 0px;\n    border-radius: 50%;\n    border: 3px solid #FFF;\n    animation: prixClipFix 2s linear infinite ;\n    }\n    .loader::after{\n    border-color: #87a940;\n    animation: prixClipFix 2s linear infinite , rotate 0.5s linear infinite reverse;\n    inset: 3px;\n    }\n    \n    @keyframes rotate {\n    0% {transform: rotate(0deg)}\n    100% {transform: rotate(360deg)}\n    }\n    \n    @keyframes prixClipFix {\n    0% {clip-path:polygon(50% 50%,0 0,0 0,0 0,0 0,0 0)}\n    25% {clip-path:polygon(50% 50%,0 0,100% 0,100% 0,100% 0,100% 0)}\n    50% {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,100% 100%,100% 100%)}\n    75% {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,0 100%,0 100%)}\n    100% {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,0 100%,0 0)}\n    }\n</style>\n\n<div ng-if=\"msg.payload === 'working'\" class=\"loader\"></div>",
+        "format": "<style>\n    .loader {\n    width: 36px;\n    height: 36px;\n    border-radius: 50%;\n    position: absolute;\n    animation: rotate 1s linear infinite\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    margin-left:5px;\n    margin-top:5px;\n    overflow:hidden;\n    }\n    .loader::before , .loader::after {\n    content: \"\";\n    box-sizing: border-box;\n    position: absolute;\n    inset: 0px;\n    border-radius: 50%;\n    border: 3px solid #FFF;\n    animation: prixClipFix 2s linear infinite ;\n    }\n    .loader::after{\n    border-color: #87a940;\n    animation: prixClipFix 2s linear infinite , rotate 0.5s linear infinite reverse;\n    inset: 3px;\n    }\n    \n    @keyframes rotate {\n    0% {transform: rotate(0deg)}\n    100% {transform: rotate(360deg)}\n    }\n    \n    @keyframes prixClipFix {\n    0% {clip-path:polygon(50% 50%,0 0,0 0,0 0,0 0,0 0)}\n    25% {clip-path:polygon(50% 50%,0 0,100% 0,100% 0,100% 0,100% 0)}\n    50% {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,100% 100%,100% 100%)}\n    75% {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,0 100%,0 100%)}\n    100% {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,0 100%,0 0)}\n    }\n</style>\n\n<div ng-if=\"msg.payload === 'working'\" class=\"loader\"  title=\"Indicates if the device is queried or programmed.\"   ></div>",
         "storeOutMessages": true,
         "fwdInMessages": true,
         "resendOnRefresh": false,
         "templateScope": "local",
         "className": "",
         "x": 1420,
-        "y": 1560,
+        "y": 1540,
         "wires": [
             []
         ]
@@ -1300,7 +1300,7 @@
         "animate": false,
         "className": "",
         "x": 1410,
-        "y": 1600,
+        "y": 1580,
         "wires": [
             []
         ]
@@ -1319,7 +1319,7 @@
         "layout": "row-spread",
         "className": "",
         "x": 1780,
-        "y": 1480,
+        "y": 1460,
         "wires": []
     },
     {
@@ -1390,7 +1390,7 @@
     {
         "id": "f9fee606c0928d07",
         "type": "ui_tab",
-        "name": "Sensor Dashboard",
+        "name": "Device Configuration",
         "icon": "dashboard",
         "order": 3,
         "disabled": false,
