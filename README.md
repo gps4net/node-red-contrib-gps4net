@@ -664,7 +664,7 @@ If the sensor in the CAN bus is not in programming mode, it shall be switched to
 
 ```
 {
-	topic: "sensor_enable",
+    topic: "sensor_enable",
     payload: true|false
 }
 ```
@@ -673,7 +673,7 @@ If the sensor in the CAN bus is not in programming mode, it shall be switched to
 
 ```
 {
-	topic: "maint_mode_io1",
+    topic: "maint_mode_io1",
     payload: true|false
 }
 ```
@@ -682,7 +682,7 @@ If the sensor in the CAN bus is not in programming mode, it shall be switched to
 
 ```
 {
-	topic: "maint_mode_io2",
+    topic: "maint_mode_io2",
     payload: true|false
 }
 ```
@@ -692,7 +692,7 @@ If the sensor in the CAN bus is not in programming mode, it shall be switched to
 
 ```
 {
-	topic: "instant_average_val",
+    topic: "instant_average_val",
     payload: true|false
 }
 ```
@@ -701,7 +701,7 @@ If the sensor in the CAN bus is not in programming mode, it shall be switched to
 
 ```
 {
-	topic: "kelvin_celsius_select",
+    topic: "kelvin_celsius_select",
     payload: true|false
 }
 ```
@@ -711,7 +711,7 @@ If the sensor in the CAN bus is not in programming mode, it shall be switched to
 
 ```
 {
-	topic: "temp_led_blink",
+    topic: "temp_led_blink",
     payload: true|false
 }
 ```
@@ -721,7 +721,7 @@ Toggles if the LED should blink when one of the temperature thresholds is exceed
 
 ```
 {
-	topic: "humidity_led_blink",
+    topic: "humidity_led_blink",
     payload: true|false
 }
 ```
@@ -730,7 +730,7 @@ Toggles if the LED should blink when one of the humidity thresholds is exceeded.
 
 ```
 {
-	topic: "io_led_blink",
+    topic: "io_led_blink",
     payload: true|false
 }
 ```
@@ -740,7 +740,7 @@ Toggles if the LED should blink when one of the I/O voltage thresholds is exceed
 
 ```
 {
-	topic: "temp_io_event",
+    topic: "temp_io_event",
     payload: true|false
 }
 ```
@@ -749,7 +749,7 @@ Toggles if an I/O event is triggered when one of the temperature thresholds is e
 
 ```
 {
-	topic: "humidity_io_event",
+    topic: "humidity_io_event",
     payload: true|false
 }
 ```
@@ -758,7 +758,7 @@ Toggles if an I/O event is triggered when one of the humidity thresholds is exce
 
 ```
 {
-	topic: "io_event_alarm",
+    topic: "io_event_alarm",
     payload: true|false
 }
 ```
@@ -767,7 +767,7 @@ Toggles if an I/O event is triggered when one of the I/O voltage thresholds is e
 
 ```
 {
-	topic: "io_filter",
+    topic: "io_filter",
     payload: numeric
 }
 ```
@@ -776,7 +776,7 @@ The `io_filter` value (in seconds) is used to avoid false alarms. The voltage mu
 
 ```
 {
-	topic: "temp_cal",
+    topic: "temp_cal",
     payload: numeric
 }
 ```
@@ -785,7 +785,7 @@ The `temp_cal` temperature calibration offset is always expressed in in °C/K re
 
 ```
 {
-	topic: "inst_threshold",
+    topic: "inst_threshold",
     payload: numeric
 }
 ```
@@ -794,7 +794,7 @@ The `inst_threshold` parameter represents the sampling and transmission interval
 
 ```
 {
-	topic: "avg_threshold",
+    topic: "avg_threshold",
     payload: numeric
 }
 ```
@@ -803,7 +803,7 @@ The `avg_threshold` represents the averaging and transmission interval (in secon
 
 ```
 {
-	topic: "almt_set_max",
+    topic: "almt_set_max",
     payload: numeric
 }
 ```
@@ -812,7 +812,7 @@ The `almt_set_max` parameter represents the maximum temperature threshold (in °
 
 ```
 {
-	topic: "almt_set_min",
+    topic: "almt_set_min",
     payload: numeric
 }
 ```
@@ -821,7 +821,7 @@ The `almt_set_min` parameter represents the minimum temperature threshold (in °
 
 ```
 {
-	topic: "almh_set_max",
+    topic: "almh_set_max",
     payload: numeric
 }
 ```
@@ -831,7 +831,7 @@ This issues a message of the **almhsetmax** type, with its content as described 
 
 ```
 {
-	topic: "almh_set_min",
+    topic: "almh_set_min",
     payload: numeric
 }
 ```
@@ -841,7 +841,7 @@ This issues a message of the **almhsetmin** type, with its content as described 
 
 ```
 {
-	topic: "max_io1_th_threshold",
+    topic: "max_io1_th_threshold",
     payload: numeric
 }
 ```
@@ -850,7 +850,7 @@ The `max_io1_th_threshold` parameter represents the maximum IO1 voltage threshol
 
 ```
 {
-	topic: "min_io1_th_threshold",
+    topic: "min_io1_th_threshold",
     payload: numeric
 }
 ```
@@ -860,7 +860,7 @@ The `min_io1_th_threshold` parameter represents the minimum IO1 voltage threshol
 
 ```
 {
-	topic: "max_io2_th_threshold",
+    topic: "max_io2_th_threshold",
     payload: numeric
 }
 ```
@@ -869,7 +869,7 @@ The `max_io2_th_threshold` parameter represents the maximum IO2 voltage threshol
 
 ```
 {
-	topic: "min_io2_th_threshold",
+    topic: "min_io2_th_threshold",
     payload: numeric
 }
 ```
@@ -878,7 +878,7 @@ The `min_io2_th_threshold` parameter represents the minimum IO2 voltage threshol
 
 ```
 {
-	topic: "activate_sensor_cure",
+    topic: "activate_sensor_cure",
     payload: true|false
 }
 ```
@@ -887,7 +887,7 @@ This toggles a resistive element in the sensor that heats it in order to facilit
 
 ```
 {
-	topic: "trigger_spinner",
+    topic: "trigger_spinner",
     payload: string
 }
 ```
@@ -896,7 +896,7 @@ Using a string value of `working` or `done` it shall trigger the spinner element
 
 ```
 {
-	topic: "min_maintenance_interval",
+    topic: "min_maintenance_interval",
     payload: numeric
 }
 ```
@@ -905,7 +905,7 @@ The `min_maintenance_interval` represents the minimum voltage threshold value (i
 
 ```
 {
-	topic: "max_maintenance_interval",
+    topic: "max_maintenance_interval",
     payload: numeric
 }
 ```
@@ -914,7 +914,7 @@ The `min_maintenance_interval` represents the maximum voltage threshold value (i
 
 ```
 {
-	topic: "sensor_cure_confirmation",
+    topic: "sensor_cure_confirmation",
     payload: boolean
 }
 ```
@@ -923,7 +923,7 @@ The `sensor_cure_confirmation` parameter indicates the if the sensor has entered
 
 ```
 {
-	topic: "sensor_maintenance_confirmation",
+    topic: "sensor_maintenance_confirmation",
     payload: boolean
 }
 ```
@@ -933,7 +933,7 @@ No matter whch sensor is selected, all of the sensors on the CAN bus will enter 
 
 ```
 {
-	topic: "dropdown_list",
+    topic: "dropdown_list",
     payload: array
 }
 ```
@@ -942,7 +942,7 @@ This control allows the querying or programming of a specific sensor, using an a
 
 ```
 {
-	topic: "query/programming mode ready confirmation", payload: true|false
+    topic: "query/programming mode ready confirmation", payload: true|false
 }
 ```
 
@@ -950,7 +950,7 @@ This control indicates whether the selected sensor has entered programming mode.
 
 ```
 {
-	topic: "sensor id label confirmation",
+    topic: "sensor id label confirmation",
     payload: string
 }
 ```
@@ -959,7 +959,7 @@ This control displays the selected sensor's PSN.
 
 ```
 {
-	topic: "switch_programming_mode",
+    topic: "switch_programming_mode",
     payload: true|false
 }
 ```
