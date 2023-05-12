@@ -1,0 +1,509 @@
+ <script type="text/javascript">
+  var outputTooltips = [
+    " complete msg out to decode node",
+    "enable_sensor",
+    "allow_maint_mode_io1",
+    "allow_maint_mode_io2",
+    "instant_average_val",
+    "kelvin_celsius_select",
+    "temp_led_blink",
+    "humidity_led_blink",
+    "io_led_blink",
+    "temp_io_event",
+    "humidity_io_event",
+    "io_event_alarm",
+    "io_filter",
+    "temp_cal",
+    "inst_threshold",
+    "avg_threshold",
+    "almt_set_max",
+    "almt_set_min",
+    "almh_set_max",
+    "almh_set_min",
+    "max_io1_threshold",
+    "min_io1_threshold",
+    "max_io2_threshold",
+    "min_io2_threshold",
+    "activate_sensor_cure",
+    "trigger_spinner",
+    "min_maintenance_interval",
+    "max_maintenance_interval",
+    "sensor_cure_active_monitor",
+    "sensor_maintenance_confirmation",
+    "dropdown_list",
+    "query/programming mode ready confirmation",
+    "sensor id label confirmation",
+    "reserved"
+  ];
+  RED.nodes.registerType('g4nrht-dashboard', {
+    category: 'GPS4NET',
+    color: '#87a940',
+    defaults: {
+      name: { value: "Sensors dashboard" }
+    },
+    inputs: 1,
+    outputs: 33,
+    icon: "icons/logo.svg",
+    label: function () {
+      return this.name || "g4nrht-dashboard";
+    },
+    outputLabels: function(id) {
+    return outputTooltips[id];
+    },
+    labelStyle: function () {
+      return this.name ? 'node_label_italic' : '';
+    },
+    onadd: function() {
+      var node = this;
+      var portSpacing = 20;
+      node.addOutputPort = function(port) {
+        var portGroup = node.outPortGroup.append("g")
+          .attr("class", "port_output")
+          .attr("gps4net-port-index", portIndex)
+          .attr("transform", "translate(" + ((portIndex + 1) * (portWidth + 2) - 5) + "," + (portSpacing * portIndex) + ")")
+      };
+    },
+    oneditprepare: function () {
+      // Initialize tooltips
+      $('.input-tooltip, .output-tooltip').tooltip();
+    }
+  });
+
+
+  // Attach a mouseover event to the node outputs
+  $(document).on('mouseover', '.port_output', function () {
+    var outputIndex = $(this).index() - 1; // Subtract 1 to account for the input port
+    if (outputTooltips[outputIndex]) {
+      // Create a tooltip element
+      var tooltip = $('<div class="red-ui-flow-port-output">' + outputTooltips[outputIndex] + '</div>');
+      // Set the tooltip position
+      var position = $(this).offset();
+      tooltip.css({
+        position: 'absolute',
+        top: position.top + 20,
+        left: position.left + 10,
+        zIndex: 1000,
+        padding: '5px',
+        borderRadius: '3px',
+        background: '#333',
+        color: '#fff',
+      });
+      // Add the tooltip to the body
+      $('body').append(tooltip);
+      // Attach a mouseleave event to remove the tooltip
+      $(this).on('mouseleave', function () {
+        tooltip.remove();
+      });
+    }
+  });
+</script>
+<script type="text/html" data-template-name="g4nrht-dashboard">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name"><br>
+    </div>
+    </script>
+<!-- help and tips -->
+<script type="text/markdown" data-help-name="g4nrht-dashboard">
+  ## g4nrht-dashboard
+  **g4nrht-dashboard** takes the data provided by the decode node and allows the reading and programming of a connected temperature and humidity sensor using a simple dashboard.
+
+  The dashboard node is design to operate by reading existing parameters of a specific sensor identified by PSN and then writing parameters to that specific sensor.
+
+  ### Inputs
+
+  The input node has a dual role. First role is to receive the messages coming from the g4nrht-decode node. The messages received from the decode node follow the JSON object comprised from a payload with different values and a topic.
+
+  Incoming messages take the form of a JSON object with the following keys:
+  **payload**:
+
+  -   Message
+
+      payload object
+
+      Input message payload takes the form of a JSON object with the following keys:
+
+      -   **psn** - The sensor's PSN (product serial number), 4 byte hex string.
+      -   **canid** - The sample's CAN ID, optional.
+      -   **epoch** - The sample's epoch time, 4 byte integer.
+      -   **type** - The message type, string.
+
+      Additional keys for parameters will also be present depending on message type as described in g4nrht-decode. These are described in the **g4nrht-decode** node.
+
+  The second role is to receive the messages from the GUI elements (or simple messages injected by user) and act accordingly by triggering sequences of messages sent to the encode node.
+  The messages have a structure that follows these rules:
+
+  -   **Message**
+
+      - **topic** - Incoming messages will have a topic reflecting the ui element control type usually a string type.
+      - **payload** - will usually contain only the numeric or boolean value corresponding to the topic
+
+  ### Outputs
+
+  The output of the first output is connected to the **g4nrht-encode** and sends the messages needed to comunicate/program with the sensors. The other outputs serve a simple message structure to generic gui elements.While the generic gui elements do not require a topic to receive data and display it they do require they send data with a topic so they may be recognised from other messages using the input node.
+
+  - **Message**
+
+      payload object
+
+      Output message payload takes the form of a JSON object with the following keys:
+
+      -   **psn** - The sensor's PSN (product serial number), 4 byte hex string.
+      -   **canid** - The sample's CAN ID, optional.
+      -   **epoch** - The sample's epoch time, 4 byte integer.
+      -   **type** - The message type, string.
+
+  Additional keys for parameters will also be present depending on message type as described in **g4nrht-decode**.
+
+  ```
+  {
+    topic: "sensor_enable",
+    payload: true|false
+  }
+  ```
+
+  ### Topics and command sequences triggered by GUI elements
+
+  The name of topics is described below, along with the action sequence it triggers.
+
+  ```
+  {
+    topic: "refresh",
+    payload: true|false
+  }
+  ```
+
+  Using a boolean value of `true` or `false` shall trigger a search of sensor PSNs on the CAN bus, shall clear all node variables, place the sensors in programming mode and wait for their response. After the dropdown is filled with sensor PSNs, it shall exit the programming mode.
+
+  ```
+  {
+    topic: "query_psn",
+    payload: true|false
+  }
+  ```
+
+  Using a boolean value of `true` or `false` shall trigger the query of a specific sensor, reading its configuration settings.
+
+  If the sensor in the CAN bus is not in programming mode, it shall be switched to programming mode. After the sensor's response, commands shall be sent to query  its configuration. Finally, when the query sequence is complete the sensor will be switched back to reporting mode.
+
+  ```
+  {
+    topic: "begin_programming",
+    payload: true|false
+  }
+  ```
+
+  Using a boolean value of `true` or `false` shall trigger programming of a specific sensor using the settings displayed on the GUI.
+
+  If the sensor in the CAN bus is not in programming mode, it shall be switched to programming mode. After the sensor's response, commands shall be sent to query  its configuration. Finally, when the query sequence is complete the sensor will be switched back to reporting mode.
+
+  ```
+  {
+    topic: "sensor_enable",
+    payload: true|false
+  }
+  ```
+
+  The `sensor_enable` message enables sensor reporting. This issues a message of the **sysset** type, with its content as described in **g4nrht-decode**.
+
+  ```
+  {
+    topic: "maint_mode_io1",
+    payload: true|false
+  }
+  ```
+
+  If IO1 is triggered it will place the sensor into maintanence mode. This issues a message of the **sysset** type, with its content as described in **g4nrht-decode**.
+
+  ```
+  {
+    topic: "maint_mode_io2",
+    payload: true|false
+  }
+  ```
+
+  If IO2 is triggered it will place the sensor into maintanence mode. This issues a message of the **sysset** type, with its content as described in **g4nrht-decode**.
+
+  ```
+  {
+    topic: "instant_average_val",
+    payload: true|false
+  }
+  ```
+
+  Changes between instantaneous or average value reporting. This issues a message of the **sysset** type, with its content as described in **g4nrht-decode**.
+
+  ```
+  {
+    topic: "kelvin_celsius_select",
+    payload: true|false
+  }
+  ```
+
+  Changes between Kelvin (default) or Celsius temperature reporting. False for celsius, true for Kelvin. This issues a message of the **sysset** type, with its content as described in **g4nrht-decode**.
+
+  ```
+  {
+    topic: "temp_led_blink",
+    payload: true|false
+  }
+  ```
+
+  Toggles if the LED should blink when one of the temperature thresholds is exceeded. This issues a message of the **sysset** type, with its content as described in **g4nrht-decode**.
+
+  ```
+  {
+    topic: "humidity_led_blink",
+    payload: true|false
+  }
+  ```
+
+  Toggles if the LED should blink when one of the humidity thresholds is exceeded. This issues a message of the **sysset** type, with its content as described in **g4nrht-decode**.
+
+  ```
+  {
+    topic: "io_led_blink",
+    payload: true|false
+  }
+  ```
+
+  Toggles if the LED should blink when one of the I/O voltage thresholds is exceeded. This issues a message of the **sysset** type, with its content as described in **g4nrht-decode**.
+
+  ```
+  {
+    topic: "temp_io_event",
+    payload: true|false
+  }
+  ```
+
+  Toggles if an I/O event is triggered when one of the temperature thresholds is exceeded. This issues a message of the **sysset** type, with its content as described in **g4nrht-decode**.
+
+  ```
+  {
+    topic: "humidity_io_event",
+    payload: true|false
+  }
+  ```
+
+  Toggles if an I/O event is triggered when one of the humidity thresholds is exceeded. This issues a message of the **sysset** type, with its content as described in **g4nrht-decode**.
+
+  ```
+  {
+    topic: "io_event_alarm",
+    payload: true|false
+  }
+  ```
+
+  Toggles if an I/O event is triggered when one of the I/O voltage thresholds is exceeded. This issues a message of the **sysset** type, with its content as described in **g4nrht-decode**.
+
+  ```
+  {
+    topic: "io_filter",
+    payload: numeric
+  }
+  ```
+
+  The `io_filter` value (in seconds) is used to avoid false alarms. The voltage must hold the cross-limit value for a specified time interval defined by this parameter. This issues a message of the **sysset** type, with its content as described in **g4nrht-decode**.
+
+  ```
+  {
+    topic: "temp_cal",
+    payload: numeric
+  }
+  ```
+
+  The `temp_cal` temperature calibration offset is always expressed in in °C/K regardless the bit set in the parameter. The default value is 0 as the sensor is factory calibrated. This issues a message of the **tmpcal** type, with its content as described in **g4nrht-decode**.
+
+  ```
+  {
+    topic: "inst_threshold",
+    payload: numeric
+  }
+  ```
+
+  The `inst_threshold` parameter represents the sampling and transmission interval (in seconds) of the instantaneous temperature and humidity. This issues a message of the **instset** type, with its content as described in **g4nrht-decode**.
+
+  ```
+  {
+    topic: "avg_threshold",
+    payload: numeric
+  }
+  ```
+
+  The `avg_threshold` represents the averaging and transmission interval (in seconds) of the average temperature and humidity. This issues a message of the **avrset** type, with its content as described in **g4nrht-decode**.
+
+  ```
+  {
+    topic: "almt_set_max",
+    payload: numeric
+  }
+  ```
+
+  The `almt_set_max` parameter represents the maximum temperature threshold (in °C/K) used for triggering the alarm. This issues a message of the **almtsetmax** type, with its content as described in **g4nrht-decode**.
+
+  ```
+  {
+    topic: "almt_set_min",
+    payload: numeric
+  }
+  ```
+
+  The `almt_set_min` parameter represents the minimum temperature threshold (in °C/K) used for triggering the alarm. This issues a message of the **almtsetmin** type, with its content as described in **g4nrht-decode**.
+
+  ```
+  {
+    topic: "almh_set_max",
+    payload: numeric
+  }
+  ```
+
+  The `almh_set_max` parameter represents the maximum humidity threshold (in %) used for triggering the alarm.
+  This issues a message of the **almhsetmax** type, with its content as described in **g4nrht-decode**.
+
+  ```
+  {
+    topic: "almh_set_min",
+    payload: numeric
+  }
+  ```
+
+  The `almh_set_min` parameter represents the minimum humidity threshold (in %) used for triggering the alarm.
+  This issues a message of the **almhsetmin** type, with its content as described in **g4nrht-decode**.
+
+  ```
+  {
+    topic: "max_io1_th_threshold",
+    payload: numeric
+  }
+  ```
+
+  The `max_io1_th_threshold` parameter represents the maximum IO1 voltage threshold (in V) used for triggering the alarm. This issues a message of the **almio1set** type, with its content as described in **g4nrht-decode**.
+
+  ```
+  {
+    topic: "min_io1_th_threshold",
+    payload: numeric
+  }
+  ```
+
+  The `min_io1_th_threshold` parameter represents the minimum IO1 voltage threshold (in V) used for triggering the alarm. This issues a message of the **almio1set** type, with its content as described in **g4nrht-decode**.
+
+  ```
+  {
+    topic: "max_io2_th_threshold",
+    payload: numeric
+  }
+  ```
+
+  The `max_io2_th_threshold` parameter represents the maximum IO2 voltage threshold (in V) used for triggering the alarm. This issues a message of the **almio2set** type, with its content as described in **g4nrht-decode**.
+
+  ```
+  {
+    topic: "min_io2_th_threshold",
+    payload: numeric
+  }
+  ```
+
+  The `min_io2_th_threshold` parameter represents the minimum IO2 voltage threshold (in V) used for triggering the alarm. This issues a message of the **almio2set** type, with its content as described in **g4nrht-decode**.
+
+  ```
+  {
+    topic: "activate_sensor_cure",
+    payload: true|false
+  }
+  ```
+
+  This toggles a resistive element in the sensor that heats it in order to facilitate condensation evaporation o that it does not adversely influence humidity readings.  This issues a message of the **sensorcure** type, with its content as described in **g4nrht-decode**.
+
+  ```
+  {
+    topic: "trigger_spinner",
+    payload: string
+  }
+  ```
+
+  Using a string value of `working` or `done` it shall trigger the spinner element to indicate that an action is being performed on the sensor, such as a read or write operation.
+
+  ```
+  {
+    topic: "min_maintenance_interval",
+    payload: numeric
+  }
+  ```
+
+  The `min_maintenance_interval` represents the minimum voltage threshold value (in V) for triggering maintenance mode. This issues message of the **maintset** type, with its content as described in **g4nrht-decode**.
+
+  ```
+  {
+    topic: "max_maintenance_interval",
+    payload: numeric
+  }
+  ```
+
+  The `min_maintenance_interval` represents the maximum voltage threshold value (in V) for triggering maintenance mode. This issues message of the **maintset** type, with its content as described in **g4nrht-decode**.
+
+  ```
+  {
+    topic: "sensor_cure_confirmation",
+    payload: boolean
+  }
+  ```
+
+  The `sensor_cure_confirmation` parameter indicates the if the sensor has entered curing mode. The sensor switch curing mode off by themselves after completion.
+
+  ```
+  {
+    topic: "sensor_maintenance_confirmation",
+    payload: boolean
+  }
+  ```
+
+  The `sensor_maintenance_confirmation` parameter indicates the if the sensor has entered mainenance mode.
+  No matter whch sensor is selected, all of the sensors on the CAN bus will enter maintenance mode.
+
+  ```
+  {
+    topic: "dropdown_list",
+    payload: array
+  }
+  ```
+
+  This control allows the querying or programming of a specific sensor, using an array of strings (detected sensor PSNs). This list is always generated at the start of the flow or by pressing the refresh button. The dashboard places the sensors on the CAN bus in programming mode and waits for their responses to add them to the list. It checks that no new PSN announces itself by waiting for each sensor to announce itself three times and then exits programming mode, allowing sensors to return to normal operation.
+
+  ```
+  {
+    topic: "query/programming mode ready confirmation",
+    payload: true|false
+  }
+  ```
+
+  This control indicates whether the selected sensor has entered programming mode.
+
+  ```
+  {
+    topic: "sensor id label confirmation",
+    payload: string
+  }
+  ```
+
+  This control displays the sqlected sensor's PSN.
+
+  ```
+  {
+    topic: "switch_programming_mode",
+    payload: true|false
+  }
+  ```
+
+  This control triggers programming mode manually. It's generally used for debuging purposes and not present in the example dashboard. This issues a message of the **prog** type, with its content as described in **g4nrht-decode**.
+
+  ### Additional notes
+
+  The dashboard node works in conjunction with the **g4nrht-decode** and **g4nrht-encode** nodes, forming a system that allows for easy sensor configuration and monitoring.
+
+  Please refer to the respective nodes for more detailed information about their functions and how they interact with this node.
+
+  Ensure that your sensor and CAN bus are properly set up and functioning correctly before using this node.
+
+  Proper usage of this node and the programming functions it provides will ensure optimal performance of your sensor and network.
+</script>

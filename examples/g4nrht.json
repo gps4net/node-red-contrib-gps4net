@@ -15,56 +15,7 @@
         "y": 520,
         "wires": [
             [
-                "87bfdbe573e6ee60"
-            ]
-        ]
-    },
-    {
-        "id": "03b6c46b4ea4a009",
-        "type": "g4n03rht-decode",
-        "z": "ee9ead34d272aa8c",
-        "name": "g4n03rht decode",
-        "rules": [
-            {
-                "psn": "02010001",
-                "metric": "ins_temp"
-            },
-            {
-                "psn": "02010001",
-                "metric": "ins_rh"
-            },
-            {
-                "psn": "02010001",
-                "metric": "ins_dwpt"
-            },
-            {
-                "psn": "FFFFFFFF",
-                "metric": "msg"
-            }
-        ],
-        "outputs": 4,
-        "x": 750,
-        "y": 320,
-        "wires": [
-            [],
-            [],
-            [],
-            [
-                "88936243e0b90e72",
-                "bfd0c8c55d6bf840"
-            ]
-        ]
-    },
-    {
-        "id": "87bfdbe573e6ee60",
-        "type": "g4n03rht-encode",
-        "z": "ee9ead34d272aa8c",
-        "name": "g4n03rht encode",
-        "x": 750,
-        "y": 520,
-        "wires": [
-            [
-                "9412c8e7b6330c6a"
+                "887b6149489c9e29"
             ]
         ]
     },
@@ -157,7 +108,7 @@
         "wires": [
             [],
             [
-                "87bfdbe573e6ee60"
+                "887b6149489c9e29"
             ]
         ]
     },
@@ -168,8 +119,8 @@
         "name": "link out 1",
         "mode": "link",
         "links": [],
-        "x": 1075,
-        "y": 340,
+        "x": 1065,
+        "y": 320,
         "wires": []
     },
     {
@@ -182,7 +133,7 @@
         "y": 320,
         "wires": [
             [
-                "03b6c46b4ea4a009"
+                "4132aeb1cf92dcf1"
             ]
         ]
     },
@@ -213,8 +164,8 @@
         "z": "ee9ead34d272aa8c",
         "name": "To dashboard or any other node that requires the full msg.payload",
         "info": "",
-        "x": 1360,
-        "y": 340,
+        "x": 1350,
+        "y": 320,
         "wires": []
     },
     {
@@ -267,7 +218,7 @@
         "y": 640,
         "wires": [
             [
-                "87bfdbe573e6ee60"
+                "887b6149489c9e29"
             ]
         ]
     },
@@ -290,5 +241,39 @@
         "x": 190,
         "y": 160,
         "wires": []
+    },
+    {
+        "id": "4132aeb1cf92dcf1",
+        "type": "g4nrht-decode",
+        "z": "ee9ead34d272aa8c",
+        "name": "g4nrht decode",
+        "rules": [
+            {
+                "psn": "FFFFFFFF",
+                "metric": "msg"
+            }
+        ],
+        "outputs": 1,
+        "x": 760,
+        "y": 320,
+        "wires": [
+            [
+                "88936243e0b90e72",
+                "bfd0c8c55d6bf840"
+            ]
+        ]
+    },
+    {
+        "id": "887b6149489c9e29",
+        "type": "g4nrht-encode",
+        "z": "ee9ead34d272aa8c",
+        "name": "g4nrht encode",
+        "x": 760,
+        "y": 520,
+        "wires": [
+            [
+                "9412c8e7b6330c6a"
+            ]
+        ]
     }
 ]

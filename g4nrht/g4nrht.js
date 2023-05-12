@@ -59,10 +59,10 @@ module.exports = function(RED) {
 		});
 	}
 
-	RED.nodes.registerType('g4n03rht-decode', rhtDecode, {
+	RED.nodes.registerType('g4nrht-decode', rhtDecode, {
 		// define the node's configuration properties
 		defaults: {
-			name: {value: 'g4n03rht decode', required: true},
+			name: {value: 'g4nrht decode', required: true},
 			rules: {value: [{ psn: 'FFFFFFFF', metric: 'msg', }], required: true},
 			outputs: {value:1}
 		}
@@ -80,10 +80,10 @@ module.exports = function(RED) {
 		});
 	}
 
-	RED.nodes.registerType('g4n03rht-encode', rhtEncode, {
+	RED.nodes.registerType('g4nrht-encode', rhtEncode, {
 		// define the node's configuration properties
 		defaults: {
-			name: {value: 'g4n03rht encode', required: true},
+			name: {value: 'g4nrht encode', required: true},
 		}
 	});
 

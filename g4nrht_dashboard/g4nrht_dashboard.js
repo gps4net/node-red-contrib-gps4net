@@ -1287,7 +1287,7 @@ module.exports = function (RED) {
 		}
 	}
 
-	RED.nodes.registerType("sensor_dashboard", sensorRead, {
+	RED.nodes.registerType("g4nrht-dashboard", sensorRead, {
 		// Define the node's configuration properties
 		defaults: {
 			name: { value: "", required: true },
