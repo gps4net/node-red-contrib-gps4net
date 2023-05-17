@@ -1,10 +1,79 @@
 # node-red-contrib-gps4net
 
-Custom Node-RED nodes for GPS4NET
+## Description
 
-## g4nrht-decode
+This repository contains custom Node-RED nodes for GPS4NET, designed to manage the G4NRHT family of temperature and humidity sensors. These nodes facilitate communication over the CAN-BUS.
 
-**g4nrht-decode** is a node that decodes CAN frames from G4NRHT temperature and humidity sensors to higher level data.
+The nodes **g4nrht-decode** and **g4nrht-encode** are responsible for these communication aspects. They translate the interactions into usable Node-RED messages that can be used for monitoring or configuring networks of sensors.
+
+The node **g4nrht-dashboard** provides a GUI interface for browsers. It leverages the **g4nrht-decode** and **g4nrht-encode** nodes to configure the network of sensors connected to it.
+
+## Dependencies
+
+No dependencies are required to install these nodes. However, for these nodes to function, a working CAN-BUS connection must be provided via any transport protocol (e.g., MQTT).
+
+## Dependencies
+
+There are no dependencies needed for installing these nodes.
+However for the functioning of these nodes there must be a working CAN-BUS connection provided via any transport protocol (MQTT etc).
+
+### Installation & Configuration
+
+To install the nodes and use the provided examples, you can install them via the Manage Palette -> Install (tab) -> Search for "gps4net" and click "install".
+
+![Installatin via pallete](/images/install.png)
+Alternatively, you can install by running the following command in your terminal:
+
+```
+npm install node-red-contrib-gps4net
+```
+
+## Usage for g4nrht-decode and g4nrht encode nodes
+
+Examples are provided with the import function to help you get started.
+
+Usually, the two nodes are used together. The **g4nrht-decode** function is responsible for translating (decoding) CAN frames to higher-level data, such as messages with a topic and payload that can be used in any Node-RED flow.
+
+The **g4nrht-encode** does the opposite, receiving high-level messages tailored for the RHT sensors and translating them into CAN frames to be used for configuring the temperature and humidity sensors.
+
+**g4nrht-decode** is a node that decodes CAN frames from G4NRHT temperature and humidity sensors to higher-level data.
+
+![Adding example flows](/images/import_examples.png)
+
+The provided example flow gives a working example that must be connected to a CAN-BUS network, either directly or via any other transmission protocol that transports the CAN frames, such as MQTT.
+
+![Example of the flow](/images/decode_example.png)
+
+In this example, we have removed the links for in and out CAN-BUS communication with socketcan connections, but these can be easily substituted for MQTT connections or any other type.
+
+![Example of the G4NRHT decode and encode nodes connected using socket can](/images/decode_socketcan_example.png)
+
+When used together, these nodes can extract meaningful real-time data that can be parsed, graphed, stored, and tailored to any use case. To support this, the **g4nrht-decode** node has rules that can be applied to parse its output to a specific payload if we are only interested in a few parameters. The rules can sort by PSN (product serial number) if one is specified, or can apply filter rules to all sensors as described below. The outputs will be generated as you create new rules so that you can directly use the filtered message.
+
+![Example of rht-decode rules](/images/decode_settings_rules.png)
+
+## Usage of the g4nrht-dashboard
+
+The **g4nrht-dashboard** has a fully functioning GUI dashboard implemented that uses the **g4nrht** encode and decode nodes as its inputs and outputs. Its example can be imported in the same way as described above, and the comments will guide you in linking the two flows together.
+
+![Image of the g4nrht-dashboard node](/images/dashboard_flow.png)
+
+The node exposes all the available configuration functionality of a **g4nrht sensor** and is ready to use as soon as it is linked to the **g4nrht example** provided. The GUI is built with native Node-RED GUI components that can be changed with any tailored solution as long as the topic conditions described in the outputs/input section are met. The node comes with an HTML template as a color theme that can be customized according to your needs.
+
+![Image of the dashboard deployed on local host](/images/dashboard_configuration_ui.png)
+
+-   The core functionality relies on querying (reading) the configuration of a sensor and writing it (programing it). The dashboard simplifies this process and provides a graphical interface.
+
+-   **Refresh** the node will place the devices on the network in programming node and listen to their messages. This shall trigger the psn list to be built. A graphical
+    After a shor while 30-40sec the device enumeration should be complete. The sensors will be commanded to exit programming mode after 5 minutes of innactivity.
+    -   While reading the list / in programming mode a spinner will be displayed at the right of the button.
+-   **Query device** selecting the desired PSN and quering (reading the device), the node will trigger a enter programming mode and wait for the selected device to answer. After the device has responded succesfully it will send query messages to the **g4nrht-encode** that will be translated into can frames and interpret the answers it receives from **g4nrht-decode**, it shall do so until all the configuration parameters are queried. Then it will exit programming mode.
+    -   While querying a spinner will apear near the refresh button (signifing the network is in programming mode) and near the selected PSN.
+-   **Program device** After the parameters have been read, the user can then change them and press the program device button a enter programming mode will be sent via the encode node and after the sensor responds that it is in programming mode a sequence of programming messages will be sent with confirmation. After each programming step is confirmed the sensors will be transmitted exit programming mode can frame.
+    -   While programming a spinner will apear near the refresh button (signifing the network is in programming mode) and near the selected PSN.
+-   The exact composing of messages and their topics is described in the inputs/outputs of the **g4nrht-dashboard** section.
+
+## **g4nrht-decode**
 
 ### Inputs
 
@@ -600,14 +669,14 @@ The messages have a structure that follows these rules:
 
 -   **Message**
 
-    - **topic** - Incoming messages will have a topic reflecting the ui element control type usually a string type.
-    - **payload** - will usually contain only the numeric or boolean value corresponding to the topic
+    -   **topic** - Incoming messages will have a topic reflecting the ui element control type usually a string type.
+    -   **payload** - will usually contain only the numeric or boolean value corresponding to the topic
 
 ### Outputs
 
 The output of the first output is connected to the **g4nrht-encode** and sends the messages needed to comunicate/program with the sensors. The other outputs serve a simple message structure to generic gui elements.While the generic gui elements do not require a topic to receive data and display it they do require they send data with a topic so they may be recognised from other messages using the input node.
 
-- **Message**
+-   **Message**
 
     payload object
 
@@ -649,7 +718,7 @@ Using a boolean value of `true` or `false` shall trigger a search of sensor PSNs
 
 Using a boolean value of `true` or `false` shall trigger the query of a specific sensor, reading its configuration settings.
 
-If the sensor in the CAN bus is not in programming mode, it shall be switched to programming mode. After the sensor's response, commands shall be sent to query  its configuration. Finally, when the query sequence is complete the sensor will be switched back to reporting mode.
+If the sensor in the CAN bus is not in programming mode, it shall be switched to programming mode. After the sensor's response, commands shall be sent to query its configuration. Finally, when the query sequence is complete the sensor will be switched back to reporting mode.
 
 ```
 {
@@ -660,7 +729,7 @@ If the sensor in the CAN bus is not in programming mode, it shall be switched to
 
 Using a boolean value of `true` or `false` shall trigger programming of a specific sensor using the settings displayed on the GUI.
 
-If the sensor in the CAN bus is not in programming mode, it shall be switched to programming mode. After the sensor's response, commands shall be sent to query  its configuration. Finally, when the query sequence is complete the sensor will be switched back to reporting mode.
+If the sensor in the CAN bus is not in programming mode, it shall be switched to programming mode. After the sensor's response, commands shall be sent to query its configuration. Finally, when the query sequence is complete the sensor will be switched back to reporting mode.
 
 ```
 {
@@ -669,7 +738,7 @@ If the sensor in the CAN bus is not in programming mode, it shall be switched to
 }
 ```
 
- The `sensor_enable` message enables sensor reporting. This issues a message of the **sysset** type, with its content as described in **g4nrht-decode**.
+The `sensor_enable` message enables sensor reporting. This issues a message of the **sysset** type, with its content as described in **g4nrht-decode**.
 
 ```
 {
@@ -678,7 +747,7 @@ If the sensor in the CAN bus is not in programming mode, it shall be switched to
 }
 ```
 
- If IO1 is triggered it will place the sensor into maintanence mode. This issues a message of the **sysset** type, with its content as described in **g4nrht-decode**.
+If IO1 is triggered it will place the sensor into maintanence mode. This issues a message of the **sysset** type, with its content as described in **g4nrht-decode**.
 
 ```
 {
@@ -687,8 +756,7 @@ If the sensor in the CAN bus is not in programming mode, it shall be switched to
 }
 ```
 
- If IO2 is triggered it will place the sensor into maintanence mode. This issues a message of the **sysset** type, with its content as described in **g4nrht-decode**.
-
+If IO2 is triggered it will place the sensor into maintanence mode. This issues a message of the **sysset** type, with its content as described in **g4nrht-decode**.
 
 ```
 {
@@ -697,7 +765,7 @@ If the sensor in the CAN bus is not in programming mode, it shall be switched to
 }
 ```
 
- Changes between instantaneous or average value reporting. This issues a message of the **sysset** type, with its content as described in **g4nrht-decode**.
+Changes between instantaneous or average value reporting. This issues a message of the **sysset** type, with its content as described in **g4nrht-decode**.
 
 ```
 {
@@ -706,8 +774,7 @@ If the sensor in the CAN bus is not in programming mode, it shall be switched to
 }
 ```
 
- Changes between Kelvin (default) or Celsius temperature reporting. False for celsius, true for Kelvin. This issues a message of the **sysset** type, with its content as described in **g4nrht-decode**.
-
+Changes between Kelvin (default) or Celsius temperature reporting. False for celsius, true for Kelvin. This issues a message of the **sysset** type, with its content as described in **g4nrht-decode**.
 
 ```
 {
@@ -716,7 +783,6 @@ If the sensor in the CAN bus is not in programming mode, it shall be switched to
 }
 ```
 
- 
 Toggles if the LED should blink when one of the temperature thresholds is exceeded. This issues a message of the **sysset** type, with its content as described in **g4nrht-decode**.
 
 ```
@@ -736,7 +802,6 @@ Toggles if the LED should blink when one of the humidity thresholds is exceeded.
 ```
 
 Toggles if the LED should blink when one of the I/O voltage thresholds is exceeded. This issues a message of the **sysset** type, with its content as described in **g4nrht-decode**.
-
 
 ```
 {
@@ -857,7 +922,6 @@ The `max_io1_th_threshold` parameter represents the maximum IO1 voltage threshol
 
 The `min_io1_th_threshold` parameter represents the minimum IO1 voltage threshold (in V) used for triggering the alarm. This issues a message of the **almio1set** type, with its content as described in **g4nrht-decode**.
 
-
 ```
 {
     topic: "max_io2_th_threshold",
@@ -883,7 +947,7 @@ The `min_io2_th_threshold` parameter represents the minimum IO2 voltage threshol
 }
 ```
 
-This toggles a resistive element in the sensor that heats it in order to facilitate condensation evaporation o that it does not adversely influence humidity readings.  This issues a message of the **sensorcure** type, with its content as described in **g4nrht-decode**.
+This toggles a resistive element in the sensor that heats it in order to facilitate condensation evaporation o that it does not adversely influence humidity readings. This issues a message of the **sensorcure** type, with its content as described in **g4nrht-decode**.
 
 ```
 {
@@ -919,7 +983,7 @@ The `min_maintenance_interval` represents the maximum voltage threshold value (i
 }
 ```
 
-The `sensor_cure_confirmation` parameter indicates the if the sensor has entered curing mode. The sensor switch curing mode off by themselves after completion. 
+The `sensor_cure_confirmation` parameter indicates the if the sensor has entered curing mode. The sensor switch curing mode off by themselves after completion.
 
 ```
 {

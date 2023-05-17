@@ -33,10 +33,10 @@
         "id": "f4de6bdae23dc29c",
         "type": "comment",
         "z": "023badb6773ed153",
-        "name": "From  g4n-rht-decode \\n Message payloads from g4n03rht decode node or \\n from any other source that transmits its payload \\n (such as Mqtt) are fed into sensor dashboard.",
-        "info": "Message payloads from g4n-rht-decode node or \\n\nfrom any other source that transmits its payload \\n\n(such as Mqtt) are fed into sensor dashboard.",
+        "name": "From  g4nrht-decode \\n Message payloads from g4nrht decode node or \\n from any other source that transmits its payload \\n (such as Mqtt) are fed into sensor dashboard. \\n Connect to link out 1 in the G4NRHT example provided",
+        "info": "Message payloads from g4nrht-decode node or \\n\nfrom any other source that transmits its payload \\n\n(such as Mqtt) are fed into sensor dashboard.",
         "x": 440,
-        "y": 420,
+        "y": 320,
         "wires": []
     },
     {
@@ -947,7 +947,7 @@
         "y": 700,
         "wires": [
             [
-                "b5d40f76a3c907d0"
+                "bdad1263b8c2ae28"
             ]
         ]
     },
@@ -973,46 +973,6 @@
         ]
     },
     {
-        "id": "896fc6e2a8800885",
-        "type": "ui_template",
-        "z": "023badb6773ed153",
-        "group": "2a745e6b.07df92",
-        "name": "Dashboard Theme : Modern Dark",
-        "order": 2,
-        "width": 0,
-        "height": 0,
-        "format": "<div>\n    <link href=\"https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700&display=swap\" rel=\"stylesheet\">\n    <style>\n        body {\n            --background: #212529;\n            --on-background: white;\n            --surface: #2d3136;\n            --on-surface: white;\n            --primary: var(--nr-dashboard-widgetColor);\n            --on-primary: white;\n            --secondary: var(--nr-dashboard-groupTextColor);\n            --accent: red;\n            --radius-s: 8px;\n            --font-weight-m: 300;\n            --font-weight-m: 500;\n            --font-weight-l: 700;\n            --space-s: 8px;\n            --space-m: 16px;\n            --space-l: 32px;\n        }\n\n        body.nr-dashboard-theme {\n            background-color: var(--background);\n            font-family: 'Montserrat', sans-serif;\n        }\n        .nr-dashboard-theme ui-card-panel {\n            background-color: var(--background);\n            border: 0;\n        }\n        .nr-dashboard-theme .nr-dashboard-button .md-button {\n            background-color: var(--primary);\n            border-radius: var(--radius-s);\n            padding: 8px !important;\n            line-height: inherit;\n            font-weight: var(--font-weight-l);\n            color: var(--on-primary);\n        }\n        .nr-dashboard-theme [ui-card-size=\"2x2\"].nr-dashboard-button .md-button {\n            display: flex;\n            flex-direction: column;\n            justify-content: center;\n            align-items: center;\n            white-space: pre-line;\n        }\n        \n        .nr-dashboard-theme .nr-dashboard-button .md-button ui-icon {\n                margin-bottom: 2px;\n        }\n        .nr-dashboard-theme .nr-dashboard-button .md-button:hover {\n            background-color: var(--secondary);\n        }\n        body.nr-dashboard-theme md-content md-card {\n            background-color: var(--surface);\n        }\n        md-card.md-default-theme, md-card {\n            border-radius: var(--radius-s);\n        }\n        .nr-dashboard-theme .nr-dashboard-gauge-titlel {\n            font-weight: var(--font-weight-l) !important;      \n        }\n        .nr-dashboard-theme ui-card-panel p.nr-dashboard-cardtitle {\n            font-weight: var(--font-weight-l);  \n            text-transform: capitalize;\n            color: var(--on-background);\n        }\n        .nr-dashboard-cardpanel > p {\n            margin-left: 0;\n            padding-left: 16px;\n        }\n        body.nr-dashboard-theme md-toolbar {\n            background-color: var(--surface);\n        }\n        .md-default-theme .md-datepicker-calendar, .md-datepicker-calendar,\n        .md-default-theme .md-calendar, .md-calendar{\n            background-color: var(--surface);\n            color: var(--on-surface);\n        }\n        .md-default-theme .md-datepicker-calendar-pane, .md-datepicker-calendar-pane{\n            border: 0;\n        }\n        .md-default-theme .md-calendar-month-label md-icon, .md-calendar-month-label md-icon, .md-default-theme .md-datepicker-input, .md-datepicker-input {\n            color: var(--on-surface);\n        }\n        body.nr-dashboard-theme md-content md-card {\n            color: var(--on-surface);\n        }\n        .nr-dashboard-theme .nr-dashboard-numeric .value {\n            background-color: var(--surface);\n            color: var(--on-surface);\n        }\n        .nr-dashboard-theme .nr-dashboard-dropdown md-select .md-select-value, .nr-dashboard-theme .nr-dashboard-dropdown md-select .md-select-value.md-select-placeholder {\n            color: var(--on-surface);\n            border-color: var(--on-surface);\n        }\n        .nr-dashboard-theme .nr-dashboard-dropdown .md-select-icon {\n            color: var(--on-surface);\n        }\n        .nr-dashboard-theme .nr-dashboard-date-picker md-input-container .md-input {\n            color: var(--on-surface);\n            border-color: var(--on-surface);\n        }\n        .nr-dashboard-theme .nr-dashboard-date-picker .md-datepicker-triangle-button .md-datepicker-expand-triangle {\n            border-top-color: var(--on-surface);\n        }\n        body.nr-dashboard-theme md-sidenav {\n            background-color: var(--surface);\n        }\n        md-list-item._md-button-wrap > div.md-button:first-child, md-list-item .md-list-item-inner {\n            background-color: var(--surface);\n        }\n        body.nr-dashboard-theme {\n        --nr-dashboard-unit: calc(var(--nr-dashboard-unit) - 0.625)!important;\n        }\n/* Center the input element */\n        .nr-dashboard-numeric input.value {\n        display: inline-block;\n        text-align: center;\n        }\n        .nr-dashboard-text p {\n        font-size:14px !important;\n        }\n        .nr-dashboard-value {\n        font-size: 14px !important;\n        }\n        input {\n        font-size:90% !important;\n        }\n        .nr-dashboard-numeric {\n        padding: 0 0 0 0px !important;\n        }\n        .nr-dashboard-numeric {\n        text-align: center;\n        }\n\n        .nr-dashboard-widget {\n        height: calc(24px + 6 * var(--nr-dashboard-unit));\n        }\n        .nr-dashboard-spacer {\n        height: calc(24px + 6 * var(--nr-dashboard-unit));\n        }\n        \n        .nr-dashboard-theme .nr-dashboard-button .md-button {\n        font-size: 12px;\n        }\n\n\n        .multistate-switch-wrapper{\n        height:2.4em!important;\n        }\n\n        .multistate-switch-slider{\n        height: 2em !important;\n        transform: translate(0.25em,-0.5em)!important;\n        }\n\n        .multistate-switch-round {\n        border-radius: 1.2em;\n        }\n        .nr-dashboard-template {\n        padding: 0px 0px !important;\n        }\n\n        .md-card{\n        padding: 0px 0px !important;\n        }\n\nelement.style {\nleft: 270px;\ntop: 0px;\nwidth: 48px;\nheight: 48px;\n}\n<style>\n    .nr-dashboard-theme .nr-dashboard-template {\n        background-color: #333333;\n    }\n\n    .nr-dashboard-cardcontainer>.visible {\n        opacity: 1;\n    }\n\n    <style>body.nr-dashboard-theme md-content md-card {\n        color: var(--on-surface);\n    }\n\n    <style>body.nr-dashboard-theme md-content md-card {\n        background-color: var(--surface);\n    }\n\n    <style>body.nr-dashboard-theme md-content md-card {\n        color: var(--on-surface);\n    }\n\n    <style>body.nr-dashboard-theme md-content md-card {\n        background-color: var(--surface);\n    }\n\n    <style>body.nr-dashboard-theme md-content md-card {\n        color: var(--on-surface);\n    }\n\n    <style>body.nr-dashboard-theme md-content md-card {\n        background-color: var(--surface);\n    }\n\n    <style>body.nr-dashboard-theme md-content md-card {\n        color: var(--on-surface);\n    }\n\n    <style>body.nr-dashboard-theme md-content md-card {\n        background-color: var(--surface);\n    }\n\n    <style>body.nr-dashboard-theme md-content md-card {\n        background-color: #333333;\n        color: #eeeeee;\n    }\n\n    <style>.nr-dashboard-template {\n    padding: 0px 0px !important;\n    }\n\n    </style>\n</div>",
-        "storeOutMessages": true,
-        "fwdInMessages": true,
-        "resendOnRefresh": false,
-        "templateScope": "global",
-        "className": "",
-        "x": 380,
-        "y": 1080,
-        "wires": [
-            []
-        ],
-        "icon": "node-red-dashboard/ui_colour_picker.png",
-        "info": "# Modern Dark Theme for node-red-dashboard\n\nInspired by Victor Lucachi with his [Node Red Dashboard Concept](https://dribbble.com/shots/10356530-Node-Red-Dashboard-Concept) on Dribbble. Thank you for your work.\n\n## Customize\n\n1. Go on dashboard customisation tab (At the right of Debug Console).\n2. Select the style `Dark`.\n3. Pick the color you want. Example `#66B5F8`\n\n## Buttons\n\nUse `2x2` size for buttons with icon and text on the screenshot"
-    },
-    {
-        "id": "6445f9c925494d3f",
-        "type": "ui_text",
-        "z": "023badb6773ed153",
-        "group": "f578b662a4d24e96",
-        "order": 4,
-        "width": 5,
-        "height": 1,
-        "name": "",
-        "label": "",
-        "format": "{{msg.payload}}",
-        "layout": "row-left",
-        "className": "",
-        "x": 1370,
-        "y": 1620,
-        "wires": []
-    },
-    {
         "id": "584a561673d5a71e",
         "type": "comment",
         "z": "023badb6773ed153",
@@ -1026,10 +986,10 @@
         "id": "59f35dcd1dea9d30",
         "type": "comment",
         "z": "023badb6773ed153",
-        "name": "To g4n-rht--encode or to any other standard transport protocol that reaches it. (ex: mqtt). \\n The first node output or output 0 is always reserved for this purpouse.",
+        "name": "To g4nrht-encode or to any other standard transport protocol that reaches it. (ex: mqtt). \\n The first node output or output 0 is always reserved for this purpouse. \\n \"link in 4 \" in the  example G4NRHT provided",
         "info": "The first node output or output 0 is always reserved for this purpouse.",
-        "x": 1640,
-        "y": 80,
+        "x": 1680,
+        "y": 140,
         "wires": []
     },
     {
@@ -1043,123 +1003,16 @@
         "wires": []
     },
     {
-        "id": "b5d40f76a3c907d0",
-        "type": "sensor_dashboard",
-        "z": "023badb6773ed153",
-        "name": "Sensors configuration dashboard",
-        "x": 920,
-        "y": 540,
-        "wires": [
-            [
-                "a7e2d47538357eec"
-            ],
-            [
-                "d1643dfa21f3508f"
-            ],
-            [
-                "2020ef0e30bd5c88"
-            ],
-            [
-                "67ad5a3b2c9c6ae4"
-            ],
-            [
-                "cf00463125e23059"
-            ],
-            [
-                "fb74eecfef9e34d9"
-            ],
-            [
-                "26eb861f78ac4a9c"
-            ],
-            [
-                "8c55197c0c43eb56"
-            ],
-            [
-                "2520642f9faa917d"
-            ],
-            [
-                "a73a7bd3a59b7f73"
-            ],
-            [
-                "c7413208dde114cc"
-            ],
-            [
-                "472e5b0cb842b5ea"
-            ],
-            [
-                "ffa8b19d2b3ae7cc"
-            ],
-            [
-                "2091855c0f536ae5"
-            ],
-            [
-                "b6aae772a873ba2e"
-            ],
-            [
-                "67e5c91d703c7056"
-            ],
-            [
-                "580b68ccda57940e"
-            ],
-            [
-                "891453e0f2a6492b"
-            ],
-            [
-                "6fb13ef72747a0bf"
-            ],
-            [
-                "2111e137a9791949"
-            ],
-            [
-                "62ff3640344c5ae0"
-            ],
-            [
-                "58ede2bc6d3c2261"
-            ],
-            [
-                "3f209436fee5410f"
-            ],
-            [
-                "a64345de6941aa07"
-            ],
-            [
-                "7dc2046b15643742"
-            ],
-            [
-                "61d79d84e99c388a"
-            ],
-            [
-                "7ab4cb8923b24371"
-            ],
-            [
-                "859604fa507d52fa"
-            ],
-            [
-                "314c206eef93c53a"
-            ],
-            [
-                "be26b8bede410da0"
-            ],
-            [
-                "efcbddadf50b9687"
-            ],
-            [
-                "5e825b181d7b4b6c"
-            ],
-            [
-                "6445f9c925494d3f"
-            ]
-        ]
-    },
-    {
         "id": "a7e2d47538357eec",
         "type": "link out",
         "z": "023badb6773ed153",
         "name": "link out 2",
         "mode": "link",
-        "links": [],
-        "x": 1295,
-        "y": 80,
+        "links": [
+            "a12f54a2f005a71d"
+        ],
+        "x": 1325,
+        "y": 160,
         "wires": []
     },
     {
@@ -1167,12 +1020,14 @@
         "type": "link in",
         "z": "023badb6773ed153",
         "name": "link in 3",
-        "links": [],
+        "links": [
+            "bfd0c8c55d6bf840"
+        ],
         "x": 645,
         "y": 420,
         "wires": [
             [
-                "b5d40f76a3c907d0"
+                "bdad1263b8c2ae28"
             ]
         ]
     },
@@ -1323,6 +1178,155 @@
         "wires": []
     },
     {
+        "id": "bdad1263b8c2ae28",
+        "type": "g4nrht-dashboard",
+        "z": "023badb6773ed153",
+        "name": "Sensors dashboard",
+        "x": 950,
+        "y": 520,
+        "wires": [
+            [
+                "a7e2d47538357eec"
+            ],
+            [
+                "d1643dfa21f3508f"
+            ],
+            [
+                "2020ef0e30bd5c88"
+            ],
+            [
+                "67ad5a3b2c9c6ae4"
+            ],
+            [
+                "cf00463125e23059"
+            ],
+            [
+                "fb74eecfef9e34d9"
+            ],
+            [
+                "26eb861f78ac4a9c"
+            ],
+            [
+                "8c55197c0c43eb56"
+            ],
+            [
+                "2520642f9faa917d"
+            ],
+            [
+                "a73a7bd3a59b7f73"
+            ],
+            [
+                "c7413208dde114cc"
+            ],
+            [
+                "472e5b0cb842b5ea"
+            ],
+            [
+                "ffa8b19d2b3ae7cc"
+            ],
+            [
+                "2091855c0f536ae5"
+            ],
+            [
+                "b6aae772a873ba2e"
+            ],
+            [
+                "67e5c91d703c7056"
+            ],
+            [
+                "580b68ccda57940e"
+            ],
+            [
+                "891453e0f2a6492b"
+            ],
+            [
+                "6fb13ef72747a0bf"
+            ],
+            [
+                "2111e137a9791949"
+            ],
+            [
+                "62ff3640344c5ae0"
+            ],
+            [
+                "58ede2bc6d3c2261"
+            ],
+            [
+                "3f209436fee5410f"
+            ],
+            [
+                "a64345de6941aa07"
+            ],
+            [
+                "7dc2046b15643742"
+            ],
+            [
+                "61d79d84e99c388a"
+            ],
+            [
+                "7ab4cb8923b24371"
+            ],
+            [
+                "859604fa507d52fa"
+            ],
+            [
+                "314c206eef93c53a"
+            ],
+            [
+                "be26b8bede410da0"
+            ],
+            [
+                "efcbddadf50b9687"
+            ],
+            [
+                "5e825b181d7b4b6c"
+            ],
+            [
+                "740ac8fbd2199da0"
+            ]
+        ]
+    },
+    {
+        "id": "740ac8fbd2199da0",
+        "type": "ui_text",
+        "z": "023badb6773ed153",
+        "group": "f578b662a4d24e96",
+        "order": 4,
+        "width": 5,
+        "height": 1,
+        "name": "",
+        "label": "",
+        "format": "{{msg.payload}}",
+        "layout": "row-left",
+        "className": "",
+        "x": 1370,
+        "y": 1620,
+        "wires": []
+    },
+    {
+        "id": "896fc6e2a8800885",
+        "type": "ui_template",
+        "z": "023badb6773ed153",
+        "group": "2a745e6b.07df92",
+        "name": "Dashboard Theme : Modern Dark",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "format": "<div>\n    <link href=\"https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700&display=swap\" rel=\"stylesheet\">\n    <style>\n        body {\n            --background: #212529;\n            --on-background: white;\n            --surface: #2d3136;\n            --on-surface: white;\n            --primary: var(--nr-dashboard-widgetColor);\n            --on-primary: white;\n            --secondary: var(--nr-dashboard-groupTextColor);\n            --accent: red;\n            --radius-s: 8px;\n            --font-weight-m: 300;\n            --font-weight-m: 500;\n            --font-weight-l: 700;\n            --space-s: 8px;\n            --space-m: 16px;\n            --space-l: 32px;\n        }\n\n        body.nr-dashboard-theme {\n            background-color: var(--background);\n            font-family: 'Montserrat', sans-serif;\n        }\n        .nr-dashboard-theme ui-card-panel {\n            background-color: var(--background);\n            border: 0;\n        }\n        .nr-dashboard-theme .nr-dashboard-button .md-button {\n            background-color: var(--primary);\n            border-radius: var(--radius-s);\n            padding: 8px !important;\n            line-height: inherit;\n            font-weight: var(--font-weight-l);\n            color: var(--on-primary);\n        }\n        .nr-dashboard-theme [ui-card-size=\"2x2\"].nr-dashboard-button .md-button {\n            display: flex;\n            flex-direction: column;\n            justify-content: center;\n            align-items: center;\n            white-space: pre-line;\n        }\n        \n        .nr-dashboard-theme .nr-dashboard-button .md-button ui-icon {\n                margin-bottom: 2px;\n        }\n        .nr-dashboard-theme .nr-dashboard-button .md-button:hover {\n            background-color: var(--secondary);\n        }\n        body.nr-dashboard-theme md-content md-card {\n            background-color: var(--surface);\n        }\n        md-card.md-default-theme, md-card {\n            border-radius: var(--radius-s);\n        }\n        .nr-dashboard-theme .nr-dashboard-gauge-titlel {\n            font-weight: var(--font-weight-l) !important;      \n        }\n        .nr-dashboard-theme ui-card-panel p.nr-dashboard-cardtitle {\n            font-weight: var(--font-weight-l);  \n            text-transform: capitalize;\n            color: var(--on-background);\n        }\n        .nr-dashboard-cardpanel > p {\n            margin-left: 0;\n            padding-left: 16px;\n        }\n        body.nr-dashboard-theme md-toolbar {\n            background-color: var(--surface);\n        }\n        .md-default-theme .md-datepicker-calendar, .md-datepicker-calendar,\n        .md-default-theme .md-calendar, .md-calendar{\n            background-color: var(--surface);\n            color: var(--on-surface);\n        }\n        .md-default-theme .md-datepicker-calendar-pane, .md-datepicker-calendar-pane{\n            border: 0;\n        }\n        .md-default-theme .md-calendar-month-label md-icon, .md-calendar-month-label md-icon, .md-default-theme .md-datepicker-input, .md-datepicker-input {\n            color: var(--on-surface);\n        }\n        body.nr-dashboard-theme md-content md-card {\n            color: var(--on-surface);\n        }\n        .nr-dashboard-theme .nr-dashboard-numeric .value {\n            background-color: var(--surface);\n            color: var(--on-surface);\n        }\n        .nr-dashboard-theme .nr-dashboard-dropdown md-select .md-select-value, .nr-dashboard-theme .nr-dashboard-dropdown md-select .md-select-value.md-select-placeholder {\n            color: var(--on-surface);\n            border-color: var(--on-surface);\n        }\n        .nr-dashboard-theme .nr-dashboard-dropdown .md-select-icon {\n            color: var(--on-surface);\n        }\n        .nr-dashboard-theme .nr-dashboard-date-picker md-input-container .md-input {\n            color: var(--on-surface);\n            border-color: var(--on-surface);\n        }\n        .nr-dashboard-theme .nr-dashboard-date-picker .md-datepicker-triangle-button .md-datepicker-expand-triangle {\n            border-top-color: var(--on-surface);\n        }\n        body.nr-dashboard-theme md-sidenav {\n            background-color: var(--surface);\n        }\n        md-list-item._md-button-wrap > div.md-button:first-child, md-list-item .md-list-item-inner {\n            background-color: var(--surface);\n        }\n        body.nr-dashboard-theme {\n        --nr-dashboard-unit: calc(var(--nr-dashboard-unit) - 0.625)!important;\n        }\n/* Center the input element */\n        .nr-dashboard-numeric input.value {\n        display: inline-block;\n        text-align: center;\n        }\n        .nr-dashboard-text p {\n        font-size:14px !important;\n        }\n        .nr-dashboard-value {\n        font-size: 14px !important;\n        }\n        input {\n        font-size:90% !important;\n        }\n        .nr-dashboard-numeric {\n        padding: 0 0 0 0px !important;\n        }\n        .nr-dashboard-numeric {\n        text-align: center;\n        }\n\n        .nr-dashboard-widget {\n        height: calc(24px + 6 * var(--nr-dashboard-unit));\n        }\n        .nr-dashboard-spacer {\n        height: calc(24px + 6 * var(--nr-dashboard-unit));\n        }\n        \n        .nr-dashboard-theme .nr-dashboard-button .md-button {\n        font-size: 12px;\n        }\n\n\n        .multistate-switch-wrapper{\n        height:2.4em!important;\n        }\n\n        .multistate-switch-slider{\n        height: 2em !important;\n        transform: translate(0.25em,-0.5em)!important;\n        }\n\n        .multistate-switch-round {\n        border-radius: 1.2em;\n        }\n        .nr-dashboard-template {\n        padding: 0px 0px !important;\n        }\n\n        .md-card{\n        padding: 0px 0px !important;\n        }\n\nelement.style {\nleft: 270px;\ntop: 0px;\nwidth: 48px;\nheight: 48px;\n}\n<style>\n    .nr-dashboard-theme .nr-dashboard-template {\n        background-color: #333333;\n    }\n\n    .nr-dashboard-cardcontainer>.visible {\n        opacity: 1;\n    }\n\n    <style>body.nr-dashboard-theme md-content md-card {\n        color: var(--on-surface);\n    }\n\n    <style>body.nr-dashboard-theme md-content md-card {\n        background-color: var(--surface);\n    }\n\n    <style>body.nr-dashboard-theme md-content md-card {\n        color: var(--on-surface);\n    }\n\n    <style>body.nr-dashboard-theme md-content md-card {\n        background-color: var(--surface);\n    }\n\n    <style>body.nr-dashboard-theme md-content md-card {\n        color: var(--on-surface);\n    }\n\n    <style>body.nr-dashboard-theme md-content md-card {\n        background-color: var(--surface);\n    }\n\n    <style>body.nr-dashboard-theme md-content md-card {\n        color: var(--on-surface);\n    }\n\n    <style>body.nr-dashboard-theme md-content md-card {\n        background-color: var(--surface);\n    }\n\n    <style>body.nr-dashboard-theme md-content md-card {\n        background-color: #333333;\n        color: #eeeeee;\n    }\n\n    <style>.nr-dashboard-template {\n    padding: 0px 0px !important;\n    }\n\n    </style>\n</div>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": false,
+        "templateScope": "global",
+        "className": "",
+        "x": 380,
+        "y": 1080,
+        "wires": [
+            []
+        ],
+        "icon": "node-red-dashboard/ui_colour_picker.png",
+        "info": "# Modern Dark Theme for node-red-dashboard\n\nInspired by Victor Lucachi with his [Node Red Dashboard Concept](https://dribbble.com/shots/10356530-Node-Red-Dashboard-Concept) on Dribbble. Thank you for your work.\n\n## Customize\n\n1. Go on dashboard customisation tab (At the right of Debug Console).\n2. Select the style `Dark`.\n3. Pick the color you want. Example `#66B5F8`\n\n## Buttons\n\nUse `2x2` size for buttons with icon and text on the screenshot"
+    },
+    {
         "id": "f578b662a4d24e96",
         "type": "ui_group",
         "name": "Device selection",
@@ -1367,16 +1371,6 @@
         "className": ""
     },
     {
-        "id": "2a745e6b.07df92",
-        "type": "ui_group",
-        "name": "Default",
-        "tab": "e63bce2d.68925",
-        "order": 5,
-        "disp": true,
-        "width": "6",
-        "collapse": true
-    },
-    {
         "id": "f0fda1e7.d1d76",
         "type": "ui_group",
         "name": "",
@@ -1388,20 +1382,21 @@
         "className": ""
     },
     {
+        "id": "2a745e6b.07df92",
+        "type": "ui_group",
+        "name": "Default",
+        "tab": "e63bce2d.68925",
+        "order": 5,
+        "disp": true,
+        "width": "6",
+        "collapse": true
+    },
+    {
         "id": "f9fee606c0928d07",
         "type": "ui_tab",
         "name": "Device Configuration",
         "icon": "dashboard",
         "order": 3,
-        "disabled": false,
-        "hidden": false
-    },
-    {
-        "id": "e63bce2d.68925",
-        "type": "ui_tab",
-        "name": "Denon",
-        "icon": "dashboard",
-        "order": 16,
         "disabled": false,
         "hidden": false
     },
@@ -1413,5 +1408,14 @@
         "order": 1,
         "disabled": true,
         "hidden": true
+    },
+    {
+        "id": "e63bce2d.68925",
+        "type": "ui_tab",
+        "name": "Denon",
+        "icon": "dashboard",
+        "order": 16,
+        "disabled": false,
+        "hidden": false
     }
 ]
