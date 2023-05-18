@@ -24,10 +24,14 @@
         "gps4net devices"
     ],
     "node-red": {
+        "version": ">=3.0.2",
         "nodes": {
             "G4NRHT": "g4nrht/g4nrht.js",
             "G4NRHT-DASHBOARD": "g4nrht_dashboard/g4nrht_dashboard.js"
         }
     },
-    "dependencies": {}
+    "dependencies": {},
+    "engines": {
+        "node": ">=14.0.0"
+    }
 }
