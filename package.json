@@ -1,7 +1,7 @@
 {
     "name": "node-red-contrib-gps4net",
     "description": "GPS4NET Node-RED palette",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "scripts": {
         "test": "echo \"Error: no test specified yet!\" && exit 1"
     },

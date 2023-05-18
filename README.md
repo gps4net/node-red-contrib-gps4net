@@ -21,7 +21,7 @@ However for the functioning of these nodes there must be a working CAN-BUS conne
 
 To install the nodes and use the provided examples, you can install them via the Manage Palette -> Install (tab) -> Search for "gps4net" and click "install".
 
-![Installatin via pallete](/images/install.png)
+![Installatin via pallete](./images/install.png)
 Alternatively, you can install by running the following command in your terminal:
 
 ```
@@ -38,29 +38,29 @@ The **g4nrht-encode** does the opposite, receiving high-level messages tailored 
 
 **g4nrht-decode** is a node that decodes CAN frames from G4NRHT temperature and humidity sensors to higher-level data.
 
-![Adding example flows](/images/import_examples.png)
+![Adding example flows](./images/import_examples.png)
 
 The provided example flow gives a working example that must be connected to a CAN-BUS network, either directly or via any other transmission protocol that transports the CAN frames, such as MQTT.
 
-![Example of the flow](/images/decode_example.png)
+![Example of the flow](./images/decode_example.png)
 
 In this example, we have removed the links for in and out CAN-BUS communication with socketcan connections, but these can be easily substituted for MQTT connections or any other type.
 
-![Example of the G4NRHT decode and encode nodes connected using socket can](/images/decode_socketcan_example.png)
+![Example of the G4NRHT decode and encode nodes connected using socket can](./images/decode_socketcan_example.png)
 
 When used together, these nodes can extract meaningful real-time data that can be parsed, graphed, stored, and tailored to any use case. To support this, the **g4nrht-decode** node has rules that can be applied to parse its output to a specific payload if we are only interested in a few parameters. The rules can sort by PSN (product serial number) if one is specified, or can apply filter rules to all sensors as described below. The outputs will be generated as you create new rules so that you can directly use the filtered message.
 
-![Example of rht-decode rules](/images/decode_settings_rules.png)
+![Example of rht-decode rules](./images/decode_settings_rules.png)
 
 ## Usage of the g4nrht-dashboard
 
 The **g4nrht-dashboard** has a fully functioning GUI dashboard implemented that uses the **g4nrht** encode and decode nodes as its inputs and outputs. Its example can be imported in the same way as described above, and the comments will guide you in linking the two flows together.
 
-![Image of the g4nrht-dashboard node](/images/dashboard_flow.png)
+![Image of the g4nrht-dashboard node](./images/dashboard_flow.png)
 
 The node exposes all the available configuration functionality of a **g4nrht sensor** and is ready to use as soon as it is linked to the **g4nrht example** provided. The GUI is built with native Node-RED GUI components that can be changed with any tailored solution as long as the topic conditions described in the outputs/input section are met. The node comes with an HTML template as a color theme that can be customized according to your needs.
 
-![Image of the dashboard deployed on local host](/images/dashboard_configuration_ui.png)
+![Image of the dashboard deployed on local host](./images/dashboard_configuration_ui.png)
 
 -   The core functionality relies on querying (reading) the configuration of a sensor and writing it (programing it). The dashboard simplifies this process and provides a graphical interface.
 
