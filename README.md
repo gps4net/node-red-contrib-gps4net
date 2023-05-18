@@ -21,7 +21,8 @@ However for the functioning of these nodes there must be a working CAN-BUS conne
 
 To install the nodes and use the provided examples, you can install them via the Manage Palette -> Install (tab) -> Search for "gps4net" and click "install".
 
-![Installatin via pallete](./images/install.png)
+![Installaton via pallete](./images/install.png)
+
 Alternatively, you can install by running the following command in your terminal:
 
 ```
