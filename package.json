@@ -1,13 +1,13 @@
 {
     "name": "node-red-contrib-gps4net",
     "description": "GPS4NET Node-RED palette",
-    "version": "0.0.5",
+    "version": "0.0.6",
     "scripts": {
         "test": "echo \"Error: no test specified yet!\" && exit 1"
     },
     "repository": {
       "type": "git",
-      "url": ""
+      "url": "git+https://github.com/gps4net/node-red-contrib-gps4net"
     },
     "contributors": [
         {
@@ -16,6 +16,9 @@
         "url": "https://www.gps4net.eu"
         }
     ],
+    "bugs": {
+    "url": "https://github.com/gps4net/node-red-contrib-gps4net/issues"
+    },
     "license": "BSD-3-Clause",
     "keywords": [
         "node-red",
